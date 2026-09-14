@@ -1,0 +1,349 @@
+/* Container Général */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:host {
+  display: block;
+  position: fixed; /* 👈 Yebda b-dhabet min wara el sidebar w yoftol 3al ecran l-kol */
+  top: 0;
+  left: 250px;     /* 👈 3ardh el sidebar mte3k */
+  right: 0;
+  bottom: 0;
+  background-color: #060b19;
+  color: #f8fafc;
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  overflow-y: auto; /* 👈 Bech ykoun el scroll fi west el page mch fi body kbir */
+}
+.reports-container {
+  padding: 24px;
+  color: #f8fafc;
+  background-color: #0b0f19;
+  min-height: 100vh;
+}
+
+.top-header {
+  margin-bottom: 20px;
+}
+
+.page-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.back-wrapper {
+  margin-bottom: 16px;
+}
+
+.page-btn {
+  background: transparent;
+  border: 1px solid #1e293b;
+  color: #94a3b8;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.page-btn:hover {
+  background-color: #1e293b;
+  color: #fff;
+}
+
+/* Layout Grid System (العامودين يمين ويسار) */
+.details-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.details-left-col,
+.details-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Cards Design */
+.panel-card {
+  background-color: #111827;
+  border: 1px solid #1f293d;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+/* Meta & Header Inside Card */
+.incident-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.id-cell {
+  font-weight: 600;
+  color: #38bdf8;
+  font-size: 13px;
+}
+
+.main-heading {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.incident-desc {
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+/* Image Container */
+.incident-image-container {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #0f172a;
+  border: 1px solid #1e293b;
+}
+
+.incident-image-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* Pills & Badges */
+.priority-pill, .status-pill {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Priority Colors */
+.priority-pill.haute, .priority-pill.critique {
+  background-color: rgba(249, 115, 22, 0.15);
+  color: #fb923c;
+}
+.priority-pill.moyenne {
+  background-color: rgba(234, 179, 8, 0.15);
+  color: #facc15;
+}
+.priority-pill.basse {
+  background-color: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+}
+
+/* Status Colors */
+.status-pill.open, .status-pill.nouveau {
+  background-color: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+}
+.status-pill.in-progress {
+  background-color: rgba(14, 165, 233, 0.15);
+  color: #38bdf8;
+}
+.status-pill.resolved {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+}
+
+/* Actions Section */
+.section-sm-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 14px;
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.action-item {
+  width: 100%;
+  justify-content: center;
+  font-size: 12px;
+  padding: 8px;
+}
+
+.primary-action {
+  background-color: #1d4ed8;
+  color: #fff;
+  border-color: #1d4ed8;
+}
+.primary-action:hover {
+  background-color: #2563eb;
+}
+
+.resolve-action {
+  background-color: #047857;
+  color: #fff;
+  border-color: #047857;
+}
+.resolve-action:hover {
+  background-color: #059669;
+}
+
+/* Details Key-Value List */
+.details-kv-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.kv-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.kv-label {
+  color: #94a3b8;
+}
+
+.kv-val {
+  color: #f8fafc;
+  font-weight: 500;
+}
+
+/* Reporter & Assigned Cards */
+.reporter-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar-small {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 13px;
+  color: #fff;
+  background-color: #2563eb;
+}
+
+.rep-name {
+  font-weight: 500;
+  color: #f8fafc;
+  font-size: 13px;
+}
+
+.rep-dept {
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.assigned-header {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Notes & Activity */
+.notes-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.panel-subtitle {
+  color: #94a3b8;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.note-box {
+  background-color: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.note-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.note-author {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.author-name {
+  font-weight: 500;
+  font-size: 13px;
+  color: #fff;
+}
+
+.time-cell {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.note-text {
+  color: #cbd5e1;
+  font-size: 13px;
+  margin: 0;
+}
+
+.add-note-container textarea {
+  width: 100%;
+  background-color: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  padding: 12px;
+  color: #fff;
+  font-size: 13px;
+  resize: none;
+  height: 80px;
+  outline: none;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.add-note-container textarea:focus {
+  border-color: #3b82f6;
+}
+
+.add-btn-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.add-action-btn {
+  background-color: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+}
+.add-action-btn:hover {
+  background-color: #1d4ed8;
+}

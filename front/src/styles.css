@@ -1,0 +1,13 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #030712;
+  overflow-x: hidden;
+  overflow-y: auto !important;
+}
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}

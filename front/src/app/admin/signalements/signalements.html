@@ -1,0 +1,127 @@
+<div class="reports-container">
+  <!-- Top Header Navigation -->
+  <header class="top-header">
+    <div class="header-left">
+      <h1 class="page-title">Incident Reports</h1>
+    </div>
+  </header>
+
+  <!-- Main Section Card -->
+  <main class="main-body">
+    <div class="panel-card">
+      
+      <!-- Panel Header & Subtitle -->
+      <div class="panel-top">
+        <h2 class="panel-title">Incident Reports</h2>
+        <p class="panel-subtitle">{{ filteredIncidents.length }} incidents across all departments</p>
+      </div>
+
+      <!-- Filter Controls Bar -->
+      <div class="controls-bar">
+        <div class="search-box">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="Search by title, ID, or reporter..." [(ngModel)]="searchQuery" (input)="filterIncidents()">
+        </div>
+
+        <div class="filters-right">
+          <svg class="filter-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          
+          <!-- Status Options متناسقة مع Backend Enums (NOUVEAU, EN_COURS, RESOLU) -->
+          <!-- Status Options متناسقة مع Backend Enums (NOUVEAU, EN_COURS, RESOLU) -->
+          <select class="select-btn" [(ngModel)]="selectedStatus" (change)="filterIncidents()">
+            <option value="ALL">All status</option>
+            <option value="NOUVEAU">Nouveau</option>
+            <option value="EN_COURS">En Cours</option>
+            <option value="RESOLU">Resolu</option>
+          </select>
+
+          <!-- Priority Options متناسقة مع Backend Enums (BASSE, MOYENNE, HAUTE, CRITIQUE) -->
+          <select class="select-btn" [(ngModel)]="selectedPriority" (change)="filterIncidents()">
+            <option value="ALL">All priority</option>
+            <option value="CRITIQUE">Critique</option>
+            <option value="HAUTE">Haute</option>
+            <option value="MOYENNE">Moyenne</option>
+            <option value="BASSE">Basse</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-responsive">
+        <table class="incidents-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>INCIDENT</th>
+              <th>REPORTER</th>
+              <th>PRIORITY</th>
+              <th>STATUS</th>
+              <th>UPDATED</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="filteredIncidents.length > 0">
+            <tr *ngFor="let inc of paginatedIncidents" 
+    [routerLink]="['/admin/signalements', inc.id]" 
+    class="clickable-row">
+              <td class="id-cell">INC-{{ inc.id }}</td>
+              <td>
+                <div class="incident-title">{{ inc.title }}</div>
+                <div class="incident-sub">{{ inc.categoryName || 'General' }} &bull; {{ inc.departmentName || 'General' }}</div>
+              </td>
+              <td>
+                <div class="reporter-cell">
+                  <span class="avatar-small" [style.background-color]="'#2563eb'">{{ (inc.employeeEmail || 'U').substring(0,2).toUpperCase() }}</span>
+                  <span class="reporter-name">{{ inc.employeeEmail || 'Unknown' }}</span>
+                </div>
+              </td>
+              <td>
+                <span class="priority-pill" [ngClass]="getPriorityClass(inc.priority)">
+                  &bull; {{ inc.priority }}
+                </span>
+              </td>
+              <td>
+                <span class="status-pill" [ngClass]="getStatusClass(inc.status)">
+                  &bull; {{ inc.status }}
+                </span>
+              </td>
+              <td>
+                <time class="time-cell">{{ inc.createdAt ? (inc.createdAt | date:'short') : 'Recent' }}</time>
+              </td>
+            </tr>
+          </tbody>
+
+          <!-- حالة إذا الداتا ما زالت ما جاتش أو فارغة -->
+          <tbody *ngIf="filteredIncidents.length === 0">
+            <tr>
+              <td colspan="6" style="text-align: center; padding: 20px; color: #94a3b8;">
+                Chargement des incidents ou aucun résultat...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination-footer">
+        <button class="page-btn prev" [disabled]="currentPage === 1" (click)="currentPage = currentPage - 1">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          Prev
+        </button>
+        
+        <div class="page-numbers">
+          <button class="page-num" *ngFor="let p of [].constructor(totalPages); let i = index" 
+                  [class.active]="currentPage === (i + 1)" 
+                  (click)="currentPage = i + 1">
+            {{ i + 1 }}
+          </button>
+        </div>
+
+        <button class="page-btn next" [disabled]="currentPage >= totalPages" (click)="currentPage = currentPage + 1">
+          Next
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+
+    </div>
+  </main>
+</div>

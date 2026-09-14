@@ -1,0 +1,81 @@
+<div class="users-container">
+  <!-- Top Header -->
+  <header class="top-header">
+    <div class="header-left">
+      <h1 class="page-title">Users</h1>
+    </div>
+  </header>
+
+  <!-- Main Body -->
+  <main class="main-body">
+    <div class="panel-card">
+      
+      <div class="panel-header-row">
+        <div>
+          <h2 class="panel-title">Users</h2>
+          <p class="panel-subtitle">{{ users?.length || 0 }} team members</p>
+        </div>
+        <span class="all-roles-text">All roles</span>
+      </div>
+
+      <!-- Users Table -->
+      <div class="table-responsive">
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>Member</th>
+              <th>Role</th>
+              <th>Department</th>
+              <th>Contact</th>
+              <th style="text-align: right;">Action</th> <!-- عمود زر الحذف -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users">
+              <td>
+                <div class="member-cell">
+                  <span class="avatar-medium" [style.background-color]="user?.color">{{ user?.initials }}</span>
+                  <div class="member-info">
+                    <div class="member-name">{{ user?.name }}</div>
+                    <div class="member-sub">{{ user?.subtitle }}</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span class="role-pill" [ngClass]="getRoleClass(user?.role)">
+                  <svg *ngIf="user?.role === 'Administrator' || user?.role === 'ADMIN'" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  <svg *ngIf="user?.role === 'Technician' || user?.role === 'TECHNICIAN'" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                  <svg *ngIf="user?.role === 'Employee' || user?.role === 'EMPLOYEE'" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  {{ user?.role }}
+                </span>
+              </td>
+              <td>
+                <span class="dept-cell">{{ user?.department }}</span>
+              </td>
+              <td>
+                <div class="contact-lines">
+                  <div class="contact-line">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    <span>{{ user?.email }}</span>
+                  </div>
+                  <div class="contact-line">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    <span>{{ user?.phone }}</span>
+                  </div>
+                </div>
+              </td>
+              <td style="text-align: right;">
+                <!-- زر الحذف مقابل اليوزر مباشرة -->
+                <button class="delete-btn" (click)="deleteUser(user?.id)" title="Supprimer">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                  Supprimer
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </main>
+</div>

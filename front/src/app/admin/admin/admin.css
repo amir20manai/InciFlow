@@ -1,0 +1,16 @@
+.admin-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  background-color: #080f25; /* Dark background mta3 el-app */
+}
+
+.content-area {
+  flex: 1;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 2rem;
+  color: #ffffff; /* Be3ch el-text yabda abyaḍ w yban */
+  background-color: #0b1329;
+}

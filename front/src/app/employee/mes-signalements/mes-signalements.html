@@ -1,0 +1,112 @@
+<div class="dashboard-container">
+  <!-- Top Header -->
+  <header class="top-header">
+    <div class="header-left">
+      <h1 class="page-title">My Incidents</h1>
+    </div>
+  </header>
+
+  <!-- Main Body -->
+  <main class="main-body">
+    <div class="table-card">
+      
+      <!-- Card Header -->
+      <div class="card-header-info">
+        <h3>My Incidents</h3>
+        <p>{{ filteredIncidents.length }} incidents you've reported</p>
+      </div>
+
+      <!-- Filters and Search Toolbar -->
+      <div class="toolbar-filters">
+        <div class="search-table-input">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="Search by title, ID..." [(ngModel)]="tableSearch">
+        </div>
+        
+        <div class="filter-dropdowns">
+          <!-- Status Filter Dropdown -->
+          <div class="dropdown-wrapper">
+            <button class="filter-btn" (click)="toggleStatusDropdown()">
+              <span>{{ selectedStatus === 'All' ? 'All status' : selectedStatus }}</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="dropdown-menu" *ngIf="showStatusDropdown">
+              <div class="dropdown-item" *ngFor="let st of statusOptions" (click)="selectStatus(st)">{{ st }}</div>
+            </div>
+          </div>
+
+          <!-- Priority Filter Dropdown -->
+          <div class="dropdown-wrapper">
+            <button class="filter-btn" (click)="togglePriorityDropdown()">
+              <span>{{ selectedPriority === 'All' ? 'All priority' : selectedPriority }}</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="dropdown-menu" *ngIf="showPriorityDropdown">
+              <div class="dropdown-item" *ngFor="let pr of priorityOptions" (click)="selectPriority(pr)">{{ pr }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="isLoading" style="text-align: center; padding: 40px; color: #94a3b8;">
+        Loading incidents from database...
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="errorMessage && !isLoading" style="text-align: center; padding: 30px; color: #ef4444;">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Table -->
+      <div class="table-responsive" *ngIf="!isLoading && !errorMessage">
+        <table class="incidents-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>INCIDENT</th>
+              <th>REPORTER</th>
+              <th>PRIORITY</th>
+              <th>STATUS</th>
+              <th>UPDATED</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Empty state message inside table if no incidents match -->
+            <tr *ngIf="filteredIncidents.length === 0">
+              <td colspan="6" style="text-align: center; padding: 30px; color: #94a3b8;">
+                No incidents found.
+              </td>
+            </tr>
+
+            <tr *ngFor="let inc of filteredIncidents">
+              <td class="col-id">{{ inc.code }}</td>
+              <td class="col-incident">
+                <span class="inc-title">{{ inc.title }}</span>
+                <span class="inc-sub">{{ inc.category }}</span>
+              </td>
+              <td class="col-reporter">
+                <div class="reporter-info">
+                  <div class="reporter-avatar">{{ currentUserInitials }}</div>
+                  <span>{{ inc.reportedBy }}</span>
+                </div>
+              </td>
+              <td>
+                <span class="badge-priority" [ngClass]="(inc.severity || 'medium').toLowerCase()">
+                  <span class="dot"></span> {{ inc.severity }}
+                </span>
+              </td>
+              <td>
+                <span class="badge-status" [ngClass]="(inc.status || 'open').toLowerCase().replace(' ', '-')">
+                  <span class="dot"></span> {{ inc.status }}
+                </span>
+              </td>
+              <td class="col-updated">{{ inc.date }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </main>
+</div>

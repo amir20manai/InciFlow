@@ -1,0 +1,13 @@
+.employee-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8fafc;
+}
+
+.employee-content {
+  flex-grow: 1;
+  margin-left: 260px; /* Nafs el-width mta3 el-sidebar bech yji ba7dah mrigel */
+  padding: 32px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}

@@ -1,0 +1,85 @@
+<div class="categories-container">
+  <!-- Top Header -->
+  <header class="top-header">
+    <div class="header-left">
+      <h1 class="page-title">Categories</h1>
+    </div>
+  </header>
+
+  <!-- Main Body -->
+  <main class="main-body">
+    <div class="panel-card">
+      
+      <div class="panel-header-row">
+        <div>
+          <h2 class="panel-title">Categories</h2>
+          <p class="panel-subtitle">Incident classification types</p>
+        </div>
+        <!-- زر New Category يفتح بلارة الإضافة وحدها -->
+        <button class="btn-primary" (click)="openAddModal()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          New category
+        </button>
+      </div>
+
+      <!-- Categories Grid Cards -->
+      <div class="categories-grid">
+        <div class="category-card" *ngFor="let cat of categories">
+          <div class="category-info">
+            <div class="dot-indicator" [style.background-color]="cat.dotBg">
+              <div class="dot-inner" [style.background-color]="cat.dotColor"></div>
+            </div>
+            <div class="cat-details">
+              <span class="cat-name">{{ cat.name }}</span>
+              <span class="cat-count">{{ cat.count }} incidents</span>
+            </div>
+          </div>
+          <!-- زر Edit يفتح بلارة التعديل وحدها -->
+          <button class="edit-btn" (click)="openEditModal(cat)">Edit</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Add Modal Popup (بلارة الإضافة وحدها) -->
+  <div class="modal-backdrop" *ngIf="isAddModalVisible">
+    <div class="modal-box">
+      <h3>Add New Category</h3>
+      <div class="form-group">
+        <label>Category Name</label>
+        <input type="text" [(ngModel)]="newCategoryName" placeholder="e.g. Cloud, Database...">
+      </div>
+      <div class="form-group">
+        <label>Indicator Color</label>
+        <input type="color" [(ngModel)]="newCategoryColor">
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" (click)="closeAddModal()">Cancel</button>
+        <button class="btn-primary" (click)="saveCategory()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit / Delete Modal Popup (بلارة التعديل وحدها) -->
+  <div class="modal-backdrop" *ngIf="isEditModalVisible">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+      <h3>Edit Category</h3>
+      <div class="form-group">
+        <label>Category Name</label>
+        <input type="text" [(ngModel)]="editCategoryName" placeholder="Category Name">
+      </div>
+      <div class="form-group">
+        <label>Indicator Color</label>
+        <input type="color" [(ngModel)]="editCategoryColor">
+      </div>
+      <div class="modal-actions" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+        <button type="button" class="btn-cancel" style="background-color: #ef4444; color: white;" (click)="deleteCategory()">Supprimer</button>
+        <div style="display: flex; gap: 10px;">
+          <button type="button" class="btn-cancel" (click)="closeEditModal()">Cancel</button>
+          <button type="button" class="btn-primary" (click)="updateCategory()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

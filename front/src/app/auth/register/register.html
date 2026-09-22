@@ -1,6 +1,10 @@
+<!-- Conteneur principal de la page d'inscription (deux colonnes : formulaire + bannière) -->
 <div class="auth-container">
-  <!-- Left Side: Form -->
+
+  <!-- ============ PARTIE GAUCHE : FORMULAIRE D'INSCRIPTION ============ -->
   <div class="auth-left">
+
+    <!-- Logo et nom de la marque -->
     <div class="brand-logo">
       <div class="logo-icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -8,46 +12,93 @@
       <h1 class="logo-text">InciFlow</h1>
     </div>
 
+    <!-- Conteneur du formulaire -->
     <div class="form-wrapper">
       <h2>Créer votre compte</h2>
       <p class="subtitle">Rejoignez votre espace InciFlow en quelques instants</p>
 
+      <!-- Formulaire réactif d'inscription -->
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-        <!-- First Name -->
+
+        <!-- ============ CHAMP PRÉNOM ============ -->
         <div class="form-group">
           <label>Prénom</label>
           <div class="input-icon-wrapper">
             <svg class="field-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             <input type="text" formControlName="firstname" placeholder="Votre prénom" />
           </div>
+
+          <!-- Message d'erreur : prénom obligatoire -->
+          <small class="error-text"
+                 *ngIf="firstnameControl?.errors?.['required'] && (firstnameControl?.dirty || firstnameControl?.touched)">
+            Le prénom est obligatoire.
+          </small>
+
+          <!-- Message d'erreur : prénom doit être alphabétique -->
+          <small class="error-text"
+                 *ngIf="firstnameControl?.errors?.['pattern'] && (firstnameControl?.dirty || firstnameControl?.touched)">
+            Le prénom doit contenir uniquement des lettres.
+          </small>
         </div>
 
-        <!-- Last Name -->
+        <!-- ============ CHAMP NOM ============ -->
         <div class="form-group">
           <label>Nom</label>
           <div class="input-icon-wrapper">
             <svg class="field-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             <input type="text" formControlName="lastname" placeholder="Votre nom" />
           </div>
+
+          <!-- Message d'erreur : nom obligatoire -->
+          <small class="error-text"
+                 *ngIf="lastnameControl?.errors?.['required'] && (lastnameControl?.dirty || lastnameControl?.touched)">
+            Le nom est obligatoire.
+          </small>
+
+          <!-- Message d'erreur : nom doit être alphabétique -->
+          <small class="error-text"
+                 *ngIf="lastnameControl?.errors?.['pattern'] && (lastnameControl?.dirty || lastnameControl?.touched)">
+            Le nom doit contenir uniquement des lettres.
+          </small>
         </div>
+
+        <!-- ============ CHAMP TÉLÉPHONE ============ -->
         <div class="form-group">
           <label>Numéro de téléphone</label>
           <div class="input-icon-wrapper">
             <svg class="field-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
             <input type="text" formControlName="phone" placeholder="+216 XX XXX XXX" />
           </div>
+
+          <!-- Message d'erreur : téléphone doit contenir uniquement chiffres, espaces et "+" -->
+          <small class="error-text"
+                 *ngIf="phoneControl?.errors?.['pattern'] && (phoneControl?.dirty || phoneControl?.touched)">
+            Le téléphone doit contenir uniquement des chiffres et le caractère "+".
+          </small>
         </div>
 
-        <!-- Email -->
+        <!-- ============ CHAMP EMAIL ============ -->
         <div class="form-group">
           <label>Adresse e-mail</label>
           <div class="input-icon-wrapper">
             <svg class="field-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
             <input type="email" formControlName="email" placeholder="vous@entreprise.com" />
           </div>
+
+          <!-- Message d'erreur : email obligatoire -->
+          <small class="error-text"
+                 *ngIf="emailControl?.errors?.['required'] && (emailControl?.dirty || emailControl?.touched)">
+            L'email est obligatoire.
+          </small>
+
+          <!-- Message d'erreur : format d'email invalide -->
+          <small class="error-text"
+                 *ngIf="(emailControl?.errors?.['email'] || emailControl?.errors?.['pattern']) && (emailControl?.dirty || emailControl?.touched)">
+            L'email doit être valide (ex: nom&#64;domaine.com).
+          </small>
         </div>
 
-        <!-- Password -->
+        <!-- ============ CHAMP MOT DE PASSE ============ -->
         <div class="form-group">
           <label>Mot de passe</label>
           <div class="input-icon-wrapper">
@@ -55,40 +106,72 @@
             <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="••••••••" />
             <svg class="eye-icon" (click)="togglePasswordVisibility()" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </div>
+
+          <!-- Message d'erreur : mot de passe obligatoire -->
+          <small class="error-text"
+                 *ngIf="passwordControl?.errors?.['required'] && (passwordControl?.dirty || passwordControl?.touched)">
+            Le mot de passe est obligatoire.
+          </small>
+
+          <!-- Message d'erreur : mot de passe trop court -->
+          <small class="error-text"
+                 *ngIf="passwordControl?.errors?.['minlength'] && (passwordControl?.dirty || passwordControl?.touched)">
+            Le mot de passe doit contenir au moins 6 caractères.
+          </small>
         </div>
 
-        <!-- Confirm Password -->
+        <!-- ============ CHAMP CONFIRMATION MOT DE PASSE ============ -->
         <div class="form-group">
           <label>Confirmer le mot de passe</label>
           <div class="input-icon-wrapper">
             <svg class="field-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
             <input [type]="showPassword ? 'text' : 'password'" formControlName="confirmPassword" placeholder="••••••••" />
           </div>
+
+          <!-- Message d'erreur : confirmation obligatoire -->
+          <small class="error-text"
+                 *ngIf="confirmPasswordControl?.errors?.['required'] && (confirmPasswordControl?.dirty || confirmPasswordControl?.touched)">
+            La confirmation du mot de passe est obligatoire.
+          </small>
         </div>
 
-        <!-- Submit Button -->
-        <button type="submit" class="btn-primary" [disabled]="registerForm.invalid">
+        <!-- ============ MESSAGE D'ERREUR GLOBAL ============ -->
+        <div class="alert-error" *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
+
+        <!-- ============ MESSAGE DE SUCCÈS ============ -->
+        <div class="alert-success" *ngIf="successMessage">
+          {{ successMessage }}
+        </div>
+
+        <!-- ============ BOUTON DE SOUMISSION ============ -->
+        <!-- ✅ type="button" + (click) : déclenche onSubmit() à chaque clic, même si formulaire invalide -->
+        <button type="button" class="btn-primary" (click)="onSubmit()">
           Créer mon compte <span class="arrow">&rarr;</span>
         </button>
       </form>
 
+      <!-- Lien vers la page de connexion -->
       <p class="switch-auth">
         Vous avez déjà un compte ? <a routerLink="/login">Se connecter</a>
       </p>
     </div>
   </div>
 
-  <!-- Right Side (Banner) -->
+  <!-- ============ PARTIE DROITE : BANNIÈRE HERO ============ -->
   <div class="auth-right">
     <div class="hero-content">
+
       <div class="badge">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
         Plateforme de gestion des incidents
       </div>
 
       <h1>Gérez vos incidents plus rapidement<br />Gardez votre activité sous contrôle</h1>
+
       <p class="hero-desc">
-        InciFlow centralise le signalement, l’affectation et le suivi des incidents, jusqu’à leur résolution
+        InciFlow centralise le signalement, l'affectation et le suivi des incidents, jusqu'à leur résolution
       </p>
 
       <div class="features-grid">

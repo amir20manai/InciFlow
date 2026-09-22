@@ -1,6 +1,10 @@
+<!-- Conteneur principal de la page d'authentification -->
 <div class="auth-container">
-  <!-- Left Side: Form -->
+
+  <!-- ============ PARTIE GAUCHE : FORMULAIRE DE CONNEXION ============ -->
   <div class="auth-left">
+
+    <!-- Logo et nom de la marque -->
     <div class="brand-logo">
       <div class="logo-icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -8,58 +12,87 @@
       <h1 class="logo-text">InciFlow</h1>
     </div>
 
+    <!-- Conteneur du formulaire -->
     <div class="form-wrapper">
       <h2>Bienvenu</h2>
       <p class="subtitle">Connectez-vous à votre espace de travail InciFlow pour continuer</p>
 
+      <!-- Formulaire réactif de connexion -->
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <!-- Email -->
+
+        <!-- ============ CHAMP EMAIL ============ -->
         <div class="form-group">
           <label>Adresse email</label>
           <div class="input-icon-wrapper">
             <svg class="field-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
             <input type="email" formControlName="email" placeholder="vous@entreprise.com" />
           </div>
+
+          <!-- Erreur : email obligatoire -->
+          <small class="error-text"
+                 *ngIf="emailControl?.errors?.['required'] && (emailControl?.dirty || emailControl?.touched)">
+            L'email est obligatoire.
+          </small>
+
+          <!-- Erreur : format d'email invalide -->
+          <small class="error-text"
+                 *ngIf="(emailControl?.errors?.['email'] || emailControl?.errors?.['pattern']) && (emailControl?.dirty || emailControl?.touched)">
+            L'email doit être valide (ex: nom&#64;domaine.com).
+          </small>
         </div>
 
-        <!-- Password -->
+        <!-- ============ CHAMP MOT DE PASSE ============ -->
         <div class="form-group">
           <label>Mot de passe</label>
           <div class="input-icon-wrapper">
             <svg class="field-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+
             <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="••••••••" />
+
             <svg class="eye-icon" (click)="togglePasswordVisibility()" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </div>
+
+          <!-- Erreur : mot de passe obligatoire -->
+          <small class="error-text"
+                 *ngIf="passwordControl?.errors?.['required'] && (passwordControl?.dirty || passwordControl?.touched)">
+            Le mot de passe est obligatoire.
+          </small>
         </div>
 
+        <!-- ============ MESSAGE D'ERREUR GLOBAL ============ -->
+        <div class="alert-error" *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
 
-        <!-- Submit Button -->
-        <button type="submit" class="btn-primary" [disabled]="loginForm.invalid">
+        <!-- ============ BOUTON DE SOUMISSION ============ -->
+        <!-- ✅ type="button" + (click) : déclenche onSubmit() à chaque clic -->
+        <button type="button" class="btn-primary" (click)="onSubmit()">
           Se connecter <span class="arrow">&rarr;</span>
         </button>
       </form>
 
+      <!-- Lien vers la page d'inscription -->
       <p class="switch-auth">
         Vous n'avez pas de compte ? <a routerLink="/register">Créez-en un</a>
       </p>
     </div>
   </div>
 
-  <!-- Right Side: Hero Banner -->
+  <!-- ============ PARTIE DROITE : BANNIÈRE HERO ============ -->
   <div class="auth-right">
     <div class="hero-content">
+
       <div class="badge">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
         Plateforme de gestion des incidents
       </div>
 
       <h1>Gérez vos incidents<br />Assurez la continuité de votre activité.</h1>
+
       <p class="hero-desc">
         InciFlow centralise la gestion des incidents, du signalement à la résolution, pour un suivi simple, rapide et efficace
-
       </p>
 
-      <!-- Feature Cards -->
       <div class="features-grid">
         <div class="feature-card">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
@@ -75,7 +108,6 @@
         </div>
       </div>
 
-      <!-- Social Proof -->
       <div class="social-proof">
         <div class="avatars">
           <span class="avatar blue"></span>

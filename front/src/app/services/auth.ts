@@ -1,43 +1,47 @@
+// Importation des outils Angular et RxJS
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+// Service d'authentification (login, register, gestion du token)
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  // URL de base de l'API d'authentification
   private apiUrl = 'http://localhost:8080/api/auth';
 
+  // Injection du client HTTP
   constructor(private http: HttpClient) {}
 
-  // تسجيل حساب جديد (Register)
+  // Inscription d'un nouvel utilisateur
   register(userData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, userData);
   }
 
-  // تسجيل الدخول (Authenticate)
+  // Connexion (authentification) d'un utilisateur existant
   login(credentials: { email: string; password: string }): Observable<any> {
     return this.http.post(`${this.apiUrl}/authenticate`, credentials);
   }
 
-  // حفظ التوكن في الـ LocalStorage باستخدام المفتاح 'auth_token'
+  // ✅ Enregistre le token JWT avec la clé 'token' (unifiée)
   saveToken(token: string): void {
-    localStorage.setItem('auth_token', token);
+    localStorage.setItem('token', token);
   }
 
-  // جلب التوكن
+  // ✅ Récupère le token avec la clé 'token'
   getToken(): string | null {
-    return localStorage.getItem('auth_token');
+    return localStorage.getItem('token');
   }
 
-  // التحقق هل اليوزر مسجل دخول أم لا
+  // Vérifie si l'utilisateur est connecté
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
 
-  // تسجيل الخروج
+  // ✅ Déconnexion : supprime le token et le rôle
   logout(): void {
-    localStorage.removeItem('auth_token');
+    localStorage.removeItem('token');
     localStorage.removeItem('role');
   }
 }

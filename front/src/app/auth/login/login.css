@@ -1,5 +1,7 @@
+/* ============ IMPORTATION DE LA POLICE INTER ============ */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
+/* ============ HÔTE DU COMPOSANT ============ */
 :host {
   display: block;
   font-family: 'Inter', sans-serif;
@@ -7,22 +9,26 @@
   width: 100%;
 }
 
+/* ============ RÉINITIALISATION GLOBALE ============ */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* ============ CONTENEUR PRINCIPAL (2 COLONNES) ============ */
 .auth-container {
   display: flex;
-  height: 100vh; /* Baddel min-height b-height */
+  height: 100vh;
   width: 100%;
   background-color: #030712;
-  color: #ffffff ;
+  color: #ffffff;
   overflow: hidden;
 }
 
-/* --- LEFT PANEL --- */
+/* ============================================================
+   PANNEAU GAUCHE : FORMULAIRE DE CONNEXION
+   ============================================================ */
 .auth-left {
   flex: 1;
   padding: 3rem 4rem;
@@ -32,6 +38,7 @@
   max-width: 600px;
 }
 
+/* --- Logo et nom de la marque --- */
 .brand-logo {
   display: flex;
   align-items: center;
@@ -51,10 +58,10 @@
 
 .logo-text {
   font-weight: bold;
-  
   letter-spacing: -0.5px;
 }
 
+/* --- Conteneur du formulaire --- */
 .form-wrapper {
   max-width: 400px;
   width: 100%;
@@ -74,6 +81,7 @@
   margin-bottom: 2rem;
 }
 
+/* --- Groupes de champs --- */
 .form-group {
   margin-bottom: 1.25rem;
 }
@@ -86,6 +94,7 @@
   color: #e5e7eb;
 }
 
+/* --- Conteneur d'input avec icônes --- */
 .input-icon-wrapper {
   position: relative;
   display: flex;
@@ -96,6 +105,7 @@
   position: absolute;
   left: 14px;
   color: #6b7280;
+  pointer-events: none;
 }
 
 .eye-icon {
@@ -103,8 +113,14 @@
   right: 14px;
   color: #6b7280;
   cursor: pointer;
+  transition: color 0.2s ease;
 }
 
+.eye-icon:hover {
+  color: #9ca3af;
+}
+
+/* --- Champ input de base --- */
 .input-icon-wrapper input {
   width: 100%;
   padding: 0.75rem 1rem 0.75rem 2.75rem;
@@ -117,36 +133,79 @@
   transition: all 0.2s ease;
 }
 
+.input-icon-wrapper input::placeholder {
+  color: #6b7280;
+}
+
 .input-icon-wrapper input:focus {
   border-color: #3b82f6;
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
-.form-options {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  font-size: 0.875rem;
+/* ============ ÉTAT INVALIDE (BORDURE ROUGE) ============ */
+.input-icon-wrapper input.is-invalid,
+.input-icon-wrapper input.ng-invalid.ng-touched {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.15);
 }
 
-.checkbox-container {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #d1d5db;
-  cursor: pointer;
+.input-icon-wrapper input.is-invalid:focus,
+.input-icon-wrapper input.ng-invalid.ng-touched:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.25);
 }
 
-.forgot-link {
-  color: #3b82f6;
-  text-decoration: none;
+/* ============ MESSAGES D'ERREUR SOUS LES CHAMPS ============ */
+.error-text {
+  display: block;
+  color: #f87171;
+  font-size: 12px;
+  margin-top: 6px;
+  font-weight: 500;
+  padding-left: 4px;
+  line-height: 1.4;
+  animation: fadeInError 0.2s ease-in;
 }
 
-.forgot-link:hover {
-  text-decoration: underline;
+/* ============ MESSAGE D'ERREUR GLOBAL ============ */
+.alert-error {
+  display: block;                          /* Bloc bien visible */
+  background-color: rgba(220, 38, 38, 0.15);
+  color: #fecaca;
+  border: 1px solid #dc2626;
+  border-left: 4px solid #dc2626;          /* Barre rouge à gauche */
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  line-height: 1.4;
+  animation: fadeInError 0.25s ease-in;
 }
 
+.alert-error::before {
+  content: "⚠ ";
+  font-size: 16px;
+  color: #f87171;
+  font-weight: 700;
+}
+
+/* ============ ANIMATION D'APPARITION DES ERREURS ============ */
+@keyframes fadeInError {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================
+   BOUTON PRINCIPAL "SE CONNECTER"
+   ============================================================ */
 .btn-primary {
   width: 100%;
   padding: 0.85rem;
@@ -161,13 +220,22 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
 }
 
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
   background-color: #1d4ed8;
 }
 
+.btn-primary:disabled {
+  background-color: #1e3a8a;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ============================================================
+   LIEN "CRÉEZ-EN UN"
+   ============================================================ */
 .switch-auth {
   text-align: center;
   margin-top: 1.5rem;
@@ -179,9 +247,17 @@
   color: #3b82f6;
   text-decoration: none;
   font-weight: 500;
+  transition: color 0.2s ease;
 }
 
-/* --- RIGHT PANEL --- */
+.switch-auth a:hover {
+  color: #60a5fa;
+  text-decoration: underline;
+}
+
+/* ============================================================
+   PANNEAU DROIT : BANNIÈRE HERO
+   ============================================================ */
 .auth-right {
   flex: 1.2;
   background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 40%, #2563eb 100%);
@@ -271,4 +347,22 @@
   font-size: 0.85rem;
   color: #eff6ff;
   font-weight: 500;
+}
+
+/* ============================================================
+   RESPONSIVE : ADAPTATION MOBILE
+   ============================================================ */
+@media (max-width: 900px) {
+  .auth-right {
+    display: none;
+  }
+
+  .auth-left {
+    max-width: 100%;
+    padding: 2rem 1.5rem;
+  }
+
+  .form-wrapper {
+    max-width: 100%;
+  }
 }

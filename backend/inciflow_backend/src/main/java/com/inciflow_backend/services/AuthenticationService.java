@@ -8,6 +8,7 @@ import com.inciflow_backend.enums.Role;
 import com.inciflow_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class AuthenticationService {
 
         userRepository.save(user);
 
-        // génération de token réel aprés register
+        // génération de token réel après register
         var jwtToken = jwtService.generateToken(user);
 
         return AuthenticationResponse.builder()
@@ -43,20 +44,27 @@ public class AuthenticationService {
                 .build();
     }
 
-    // login
+    // login — MODIFIÉ pour distinguer "email inexistant" (404) de "mot de passe incorrect" (401)
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        //  AuthenticationManager
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
 
+        // ÉTAPE 1 : Vérifie d'abord si l'email existe dans la base
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // génération de token réel
+        // ÉTAPE 2 : L'email existe → on valide maintenant le mot de passe via AuthenticationManager
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()
+                    )
+            );
+        } catch (BadCredentialsException e) {
+            // Le mot de passe est incorrect
+            throw new RuntimeException("Invalid password");
+        }
+
+        // ÉTAPE 3 : Tout est bon → génération du token JWT
         var jwtToken = jwtService.generateToken(user);
 
         return AuthenticationResponse.builder()

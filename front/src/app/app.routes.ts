@@ -13,6 +13,8 @@ import { Categories } from './admin/categories/categories';
 import { Departements } from './admin/departements/departements';
 import { Statistiques } from './admin/statistiques/statistiques';
 import { IncidentDetails } from './admin/incident-details/incident-details';
+import { ProfileAdmin } from './admin/profile/profile';
+import { NotificationAdmin } from './admin/notification/notification';
 
 // Employee
 import { Employee } from './employee/employee/employee';
@@ -21,6 +23,7 @@ import { NouveauSignalement } from './employee/nouveau-signalement/nouveau-signa
 import { MesSignalements } from './employee/mes-signalements/mes-signalements';
 import { Notifications } from './employee/notifications/notifications';
 import { Profile } from './employee/profile/profile';
+import { IncidentDetailEmployee } from './employee/incident-detail-employee/incident-detail-employee';
 
 // Technicien
 import { Technicien } from './technicien/technicien/technicien';
@@ -80,11 +83,15 @@ export const routes: Routes = [
       },
       {
         path: 'profile',
-        component: Profile
+        component: ProfileAdmin
       },
       { 
         path: 'signalements/:id', 
         component: IncidentDetails 
+      },
+      {
+        path: 'notification',
+        component: NotificationAdmin
       }
     ]
   },
@@ -114,6 +121,10 @@ export const routes: Routes = [
       {
         path: 'profile',
         component: Profile
+      },
+      { 
+        path: 'signalements/:id', 
+        component: IncidentDetailEmployee 
       }
     ]
   },

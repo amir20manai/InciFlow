@@ -4,13 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user';
 
 @Component({
-  selector: 'app-profile',
+  selector: 'app-profile-admin',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './profile.html',
   styleUrl: './profile.css',
 })
-export class Profile implements OnInit {
+export class ProfileAdmin implements OnInit {
   firstName: string = '';
   lastName: string = '';
   fullName: string = '';

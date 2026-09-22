@@ -1,8 +1,8 @@
-<div class="dashboard-container">
+<div class="signal-container">
   <!-- Top Header -->
   <header class="top-header">
     <div class="header-left">
-      <h1 class="page-title">New Incident</h1>
+      <h1 class="page-title">Nouvel incident</h1>
     </div>
   </header>
 
@@ -10,52 +10,46 @@
   <main class="main-body">
     <div class="form-card">
       <div class="form-header">
-        <h2>Report a New Incident</h2>
-        <p>Provide details so your team can respond quickly</p>
+        <h2>Signaler un nouvel incident</h2>
+        <p>Fournissez des détails pour permettre à votre équipe de répondre rapidement.</p>
       </div>
 
       <form (ngSubmit)="onSubmit()" class="incident-form">
         
         <!-- Title -->
         <div class="form-group">
-          <label>Title</label>
-          <input type="text" placeholder="Brief summary of the issue" [(ngModel)]="incident.title" name="title" required>
+          <label>Titre</label>
+          <input type="text" placeholder="Bref résumé du problème" [(ngModel)]="incident.title" name="title" required>
         </div>
 
         <!-- Description -->
         <div class="form-group">
           <label>Description</label>
-          <textarea rows="4" placeholder="Describe what happened, when it started, and any error messages..." [(ngModel)]="incident.description" name="description" required></textarea>
+          <textarea rows="4" placeholder="Décrivez ce qui s'est passé, quand cela a commencé et les éventuels messages d'erreur..." [(ngModel)]="incident.description" name="description" required></textarea>
         </div>
 
         <!-- Category & Department Grid -->
         <div class="form-row">
           <div class="form-group">
-            <label>Category</label>
-            <select [(ngModel)]="incident.category" name="category">
-              <option value="" disabled selected>Select category...</option>
-              <option value="Security">Security</option>
-              <option value="Hardware">Hardware</option>
-              <option value="Software">Software</option>
-              <option value="Network">Network</option>
-              <option value="Facilities">Facilities</option>
+            <label>Catégorie</label>
+            <select [(ngModel)]="incident.category" name="category" required>
+              <option value="" disabled selected>Sélectionnez une catégorie...</option>
+              <option *ngFor="let cat of categories" [value]="cat.name">{{ cat.name }}</option>
             </select>
           </div>
 
           <div class="form-group">
-            <label>Department</label>
-            <select [(ngModel)]="incident.department" name="department">
-              <option value="" disabled selected>Select department...</option>
-              <option value="IT">IT Department</option>
-              <option value="HR">HR Department</option>
-              <option value="Finance">Finance</option>
-              <option value="Operations">Operations</option>
+            <label>Departement</label>
+            <select [(ngModel)]="incident.department" name="department" required>
+              <option value="" disabled selected>Sélectionnez un departement...</option>
+              <option *ngFor="let dept of departments" [value]="dept.name">{{ dept.name }}</option>
             </select>
           </div>
         </div>
+
         <!-- Priority Buttons Selector -->
         <div class="form-group">
-          <label>Priority</label>
+          <label>Priorité</label>
           <div class="priority-options">
             <button type="button" class="prio-btn" [class.active]="incident.priority === 'BASSE'" (click)="setPriority('BASSE')">Basse</button>
             <button type="button" class="prio-btn" [class.active]="incident.priority === 'MOYENNE'" (click)="setPriority('MOYENNE')">Moyenne</button>
@@ -66,19 +60,19 @@
 
         <!-- File Upload Area -->
         <div class="form-group">
-          <label>Attach image (optional)</label>
+          <label>Joindre une image (facultatif)</label>
           <label class="file-dropzone" for="fileInput">
             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            <span class="upload-text" *ngIf="!imageName"><strong>Click to upload an image</strong><br>PNG, JPG up to 5MB</span>
-            <span class="upload-text file-selected" *ngIf="imageName">Selected file: <strong>{{ imageName }}</strong></span>
+            <span class="upload-text" *ngIf="!imageName"><strong>Cliquez pour télécharger une image</strong><br>PNG, JPG jusqu'à 10 Mo</span>
+            <span class="upload-text file-selected" *ngIf="imageName">Fichier sélectionné : <strong>{{ imageName }}</strong></span>
             <input type="file" id="fileInput" accept="image/png, image/jpeg" (change)="onFileSelected($event)" style="display: none;">
           </label>
         </div>
 
         <!-- Form Actions (Cancel & Submit) -->
         <div class="form-actions">
-          <button type="button" class="cancel-btn" (click)="onCancel()">Cancel</button>
-          <button type="submit" class="submit-btn">Submit incident</button>
+          <button type="button" class="cancel-btn" (click)="onCancel()">Annuler</button>
+          <button type="submit" class="submit-btn">Signaler un incident</button>
         </div>
 
       </form>

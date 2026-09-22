@@ -2,7 +2,7 @@
   <!-- Top Header -->
   <header class="top-header">
     <div class="header-left">
-      <h1 class="page-title">Departments</h1>
+      <h1 class="page-title">Départements</h1>
     </div>
   </header>
 
@@ -12,12 +12,12 @@
       
       <div class="panel-header-row">
         <div>
-          <h2 class="panel-title">Departments</h2>
-          <p class="panel-subtitle">Organizational units</p>
+          <h2 class="panel-title">Départements</h2>
+          <p class="panel-subtitle">Unités organisationnelles</p>
         </div>
         <button class="btn-primary" (click)="openAddModal()">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          New department
+          Nouveau département
         </button>
       </div>
 
@@ -29,8 +29,8 @@
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             </div>
             <div style="display: flex; align-items: center; gap: 10px;">
-              <span class="dept-members-count">{{ dept.membersCount }} members</span>
-              <button class="edit-btn" style="background: transparent; border: 1px solid #475569; color: #cbd5e1; padding: 4px 10px; border-radius: 6px; cursor: pointer;" (click)="openEditModal(dept)">Edit</button>
+              <span class="dept-members-count">{{ dept.membersCount }} membres</span>
+              <button class="edit-btn"  (click)="openEditModal(dept)">Modifier</button>
             </div>
           </div>
 
@@ -41,7 +41,7 @@
           <div class="dept-footer-divider"></div>
 
           <div class="dept-head-info">
-            <span class="dept-head-label">Department head</span>
+            <span class="dept-head-label">Chef de département</span>
             <div class="dept-head-profile">
               <div class="avatar-small" [style.background-color]="dept.headColor">{{ dept.headInitials }}</div>
               <span class="dept-head-name">{{ dept.headName }}</span>
@@ -56,18 +56,23 @@
   <!-- Add Modal Popup -->
   <div class="modal-backdrop" *ngIf="isAddModalOpen">
     <div class="modal-box" (click)="$event.stopPropagation()">
-      <h3>Add New Department</h3>
+      <h3>Ajouter un nouveau département</h3>
       <div class="form-group">
-        <label>Department Name</label>
+        <label>Nom du département</label>
         <input type="text" [(ngModel)]="newDeptName" placeholder="e.g. Legal, Engineering...">
       </div>
       <div class="form-group">
-        <label>Department Head</label>
-        <input type="text" [(ngModel)]="newDeptHead" placeholder="e.g. Sarah Connor">
+        <label>Chef de département</label>
+        <select class="form-control" [(ngModel)]="newDeptHead">
+          <option value="" disabled selected>Sélectionner le chef du département</option>
+          <option *ngFor="let emp of employees" [value]="(emp.prenom && emp.nom) ? (emp.prenom + ' ' + emp.nom) : emp.username">
+            {{ (emp.prenom && emp.nom) ? (emp.prenom + ' ' + emp.nom) : emp.username }}
+          </option>
+        </select>
       </div>
       <div class="modal-actions">
-        <button type="button" class="btn-cancel" (click)="closeAddModal()">Cancel</button>
-        <button type="button" class="btn-primary" (click)="saveDepartment()">Save</button>
+        <button type="button" class="btn-cancel" (click)="closeAddModal()">Annuler</button>
+        <button type="button" class="btn-primary" (click)="saveDepartment()">Sauvegarder</button>
       </div>
     </div>
   </div>
@@ -75,20 +80,25 @@
   <!-- Edit / Delete Modal Popup -->
   <div class="modal-backdrop" *ngIf="isEditModalOpen">
     <div class="modal-box" (click)="$event.stopPropagation()">
-      <h3>Edit Department</h3>
+      <h3>Modifier le département</h3>
       <div class="form-group">
-        <label>Department Name</label>
-        <input type="text" [(ngModel)]="editDeptName" placeholder="Department Name">
+        <label>Nom du département</label>
+        <input type="text" [(ngModel)]="editDeptName" placeholder="Nom du département">
       </div>
       <div class="form-group">
-        <label>Department Head</label>
-        <input type="text" [(ngModel)]="editDeptHead" placeholder="Department Head">
+        <label>Chef de département</label>
+        <select class="form-control" [(ngModel)]="newDeptHead">
+          <option value="" disabled selected>Sélectionnez un employé</option>
+          <option *ngFor="let emp of employees" [value]="(emp.prenom && emp.nom) ? (emp.prenom + ' ' + emp.nom) : emp.username">
+            {{ (emp.prenom && emp.nom) ? (emp.prenom + ' ' + emp.nom) : emp.username }}
+          </option>
+        </select>
       </div>
       <div class="modal-actions" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
         <button type="button" class="btn-cancel" style="background-color: #ef4444; color: white;" (click)="deleteDepartment()">Supprimer</button>
         <div style="display: flex; gap: 10px;">
-          <button type="button" class="btn-cancel" (click)="closeEditModal()">Cancel</button>
-          <button type="button" class="btn-primary" (click)="updateDepartment()">Save</button>
+          <button type="button" class="btn-cancel" (click)="closeEditModal()">Annuler</button>
+          <button type="button" class="btn-primary" (click)="updateDepartment()">Sauvegarder</button>
         </div>
       </div>
     </div>

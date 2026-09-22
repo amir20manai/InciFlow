@@ -17,7 +17,7 @@ public class IncidentRequest {
     private String priority;
     private String department;
     private String category;
-    private MultipartFile image; // <--- لازم يكون موجود باش يقبل التصورة
+    private MultipartFile image;
 
     // Getters and Setters
 }

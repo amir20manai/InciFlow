@@ -1,6 +1,6 @@
 package com.inciflow_backend.entity;
 
-import com.inciflow_backend.enums.InterventionStatus;
+import com.inciflow_backend.enums.IncidentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -22,7 +22,7 @@ public class Intervention {
     private LocalDateTime interventionDate = LocalDateTime.now();
 
     @Enumerated(EnumType.STRING)
-    private InterventionStatus status;
+    private IncidentStatus status;
 
     @ManyToOne
     @JoinColumn(name = "incident_id")

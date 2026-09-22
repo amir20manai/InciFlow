@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthenticationResponse {
     private String token;
-    private String role; // زيد السطر هذا باش الـ Builder يقبل .role(...)
+    private String role;
 }

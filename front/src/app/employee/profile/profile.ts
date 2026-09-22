@@ -18,9 +18,10 @@ export class Profile implements OnInit {
   role: string = 'EMPLOYEE';
   initials: string = '';
   title: string = 'System User';
-  department: any = ''; // يمكن أن يكون نصاً أو كائناً حسب الباكند
+  department: string = '';
   phone: string = '';
 
+  // حقول تغيير كلمة السر
   currentPassword: string = '';
   newPassword: string = '';
   confirmPassword: string = '';
@@ -34,15 +35,16 @@ export class Profile implements OnInit {
   loadUserProfile(): void {
     this.userService.getProfile().subscribe({
       next: (user: any) => {
+        console.log("Full User Object from Backend:", user);
         if (user) {
           this.firstName = user.firstName || user.firstname || '';
           this.lastName = user.lastName || user.lastname || '';
           this.email = user.email || '';
           this.role = user.role || 'EMPLOYEE';
-          // إذا كان القسم يأتي على شكل كائن فيه name أو id
-          this.department = user.department?.name || user.department || '';
+          this.department = user.department || '';
           this.phone = user.phone || '';
           
+          // حساب الاسم الكامل والحروف الأولى لعرضها في البروفيل
           this.fullName = `${this.firstName} ${this.lastName}`.trim();
           this.initials = `${this.firstName ? this.firstName.charAt(0) : ''}${this.lastName ? this.lastName.charAt(0) : ''}`.toUpperCase();
           this.title = this.role === 'ADMIN' ? 'System Administrator' : 'Employee';
@@ -57,27 +59,25 @@ export class Profile implements OnInit {
   }
 
   updateProfile(): void {
-    const data = {
-      firstName: this.firstName,
-      lastName: this.lastName,
-      email: this.email,
-      department: typeof this.department === 'string' ? { name: this.department } : this.department,
-      phone: this.phone
-    };
+  const data = {
+    firstName: this.firstName,
+    lastName: this.lastName,
+    email: this.email,
+    department: { name: this.department },
+    phone: this.phone
+  };
 
-    this.userService.updateProfile(data).subscribe({
-      next: (res) => {
-        alert('Profile updated successfully!');
-        this.loadUserProfile();
-        // إعادة تحميل خفيفة أو تحديث لتنعكس البيانات في الـ Sidebar أيضاً
-        window.location.reload();
-      },
-      error: (err) => {
-        console.error('Error updating profile:', err);
-        alert('Error updating profile: ' + (err.error?.message || 'Check console for details'));
-      }
-    });
-  }
+  this.userService.updateProfile(data).subscribe({
+    next: (res) => {
+      alert('Profile updated successfully!');
+      window.location.reload(); // إعادة تحميل الصفحة ستجعل الـ Sidebar والـ Profile يجلبان الاسم الجديد من الباكند فوراً
+    },
+    error: (err) => {
+      console.error('Error updating profile:', err);
+      alert('Error updating profile');
+    }
+  });
+}
 
   changePassword(): void {
     if (this.newPassword !== this.confirmPassword) {

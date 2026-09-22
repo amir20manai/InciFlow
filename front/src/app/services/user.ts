@@ -21,13 +21,19 @@ export class UserService {
   changePassword(data: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/change-password`, data);
   }
-  // حذف مستخدم بواسطة الأدمين
+
+  // Supprimer un utilisateur par l'admin
   deleteUser(id: number): Observable<any> {
     return this.http.delete(`http://localhost:8080/api/admin/users/${id}`);
   }
 
-  // زيد هذي هون:
+  // Récupérer tous les utilisateurs
   getAllUsers(): Observable<any[]> {
     return this.http.get<any[]>('http://localhost:8080/api/admin/users');
+  }
+
+  // Modifier un utilisateur par l'admin (Zidha houni)
+  updateUser(id: number, data: any): Observable<any> {
+    return this.http.put(`http://localhost:8080/api/admin/users/${id}`, data);
   }
 }

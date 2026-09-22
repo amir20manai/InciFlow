@@ -8,7 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-
-    // هذه الميثود مهمة جداً باش الـ Spring Security و JwtFilter يلقاو المستخدم بالإيميل
     Optional<User> findByEmail(String email);
 }

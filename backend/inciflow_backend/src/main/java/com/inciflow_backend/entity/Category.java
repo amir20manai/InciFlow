@@ -18,7 +18,7 @@ public class Category {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(name = "dot_color") // لحفظ اللون (مثال: #3b82f6)
+    @Column(name = "dot_color")
     private String dotColor;
 
     @OneToMany(mappedBy = "category")

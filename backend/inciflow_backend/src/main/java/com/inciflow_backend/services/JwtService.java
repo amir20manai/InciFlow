@@ -29,7 +29,6 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    // دالة جديدة مخصصة للـ User Entity باش تحط firstName و lastName في الـ Token
     public String generateToken(User user) {
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("firstName", user.getFirstName());

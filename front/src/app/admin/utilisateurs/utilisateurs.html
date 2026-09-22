@@ -2,7 +2,7 @@
   <!-- Top Header -->
   <header class="top-header">
     <div class="header-left">
-      <h1 class="page-title">Users</h1>
+      <h1 class="page-title">Utilisateurs</h1>
     </div>
   </header>
 
@@ -10,12 +10,28 @@
   <main class="main-body">
     <div class="panel-card">
       
-      <div class="panel-header-row">
-        <div>
-          <h2 class="panel-title">Users</h2>
-          <p class="panel-subtitle">{{ users?.length || 0 }} team members</p>
+      <div class="panel-top">
+        <h2 class="panel-title">Utilisateurs</h2>
+        <p class="panel-subtitle">Gestion des comptes utilisateurs, techniciens et admins</p>
+      </div>
+
+      <!-- Filter Controls Bar -->
+      <div class="controls-bar">
+        <div class="search-box">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="Recherche un utilisateur...." [(ngModel)]="searchQuery" (input)="filterUsers()">
         </div>
-        <span class="all-roles-text">All roles</span>
+
+        <div class="filters-right">
+          <svg class="filter-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          
+          <select class="select-btn" [(ngModel)]="selectedRole" (change)="filterUsers()">
+            <option value="ALL">Tous les rôles</option>
+            <option value="ADMIN">Admin</option>
+            <option value="TECHNICIAN">Technicien</option>
+            <option value="EMPLOYEE">Employé</option>
+          </select>
+        </div>
       </div>
 
       <!-- Users Table -->
@@ -24,14 +40,14 @@
           <thead>
             <tr>
               <th>Member</th>
-              <th>Role</th>
-              <th>Department</th>
+              <th>Rôle</th>
+              <th>Département</th>
               <th>Contact</th>
-              <th style="text-align: right;">Action</th> <!-- عمود زر الحذف -->
+              <th>Action</th>
             </tr>
           </thead>
-          <tbody>
-            <tr *ngFor="let user of users">
+          <tbody *ngIf="filteredUsers && filteredUsers.length > 0">
+            <tr *ngFor="let user of filteredUsers">
               <td>
                 <div class="member-cell">
                   <span class="avatar-medium" [style.background-color]="user?.color">{{ user?.initials }}</span>
@@ -64,12 +80,23 @@
                   </div>
                 </div>
               </td>
-              <td style="text-align: right;">
-                <!-- زر الحذف مقابل اليوزر مباشرة -->
-                <button class="delete-btn" (click)="deleteUser(user?.id)" title="Supprimer">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                  Supprimer
-                </button>
+              <td>
+                <div class="action-buttons">
+                  <button class="edit-btn" (click)="openEditModal(user)" title="Modifier">
+                    Modifier
+                  </button>
+                  <button class="delete-btn" (click)="deleteUser(user?.id)" title="Supprimer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                    Supprimer
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="!filteredUsers || filteredUsers.length === 0">
+            <tr>
+              <td colspan="5" style="text-align: center; padding: 25px; color: #94a3b8; font-weight: 500;">
+                Aucun utilisateur trouvé...
               </td>
             </tr>
           </tbody>
@@ -78,4 +105,54 @@
 
     </div>
   </main>
+
+  <!-- Modal de Modification -->
+  <div class="modal-backdrop" *ngIf="isEditModalOpen">
+    <div class="modal-content-card">
+      <div class="modal-header">
+        <h3>Modifier l’utilisateur</h3>
+        <button class="close-btn" (click)="closeEditModal()">&times;</button>
+      </div>
+      
+      <form (ngSubmit)="saveUserChanges()">
+        <div class="form-group">
+          <label>Prénom</label>
+          <input type="text" [(ngModel)]="selectedUser.firstName" name="firstName" class="form-control" placeholder="Prénom" />
+        </div>
+
+        <div class="form-group">
+          <label>Nom</label>
+          <input type="text" [(ngModel)]="selectedUser.lastName" name="lastName" class="form-control" placeholder="Nom" />
+        </div>
+
+        <div class="form-group">
+          <label>Adresse e-mail</label>
+          <input type="email" [(ngModel)]="selectedUser.email" name="email" class="form-control" placeholder="email@entreprise.tn" />
+        </div>
+
+        <div class="form-group">
+          <label>Rôle</label>
+          <select [(ngModel)]="selectedUser.role" name="role" class="form-control">
+  <option value="ADMIN">ADMIN</option>
+  <option value="TECHNICIAN">TECHNICIAN</option>
+  <option value="EMPLOYEE">EMPLOYEE</option>
+</select>
+        </div>
+
+        <div class="form-group">
+          <label>Département</label>
+          <select [(ngModel)]="selectedUser.department" name="department" class="form-control">
+    <option *ngFor="let dept of departmentsList" [value]="dept">
+      {{ dept }}
+    </option>
+  </select>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" (click)="closeEditModal()">Annuler</button>
+          <button type="submit" class="btn-save">Enregistrer les modifications</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>

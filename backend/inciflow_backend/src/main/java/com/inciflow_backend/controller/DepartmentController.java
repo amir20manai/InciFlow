@@ -1,4 +1,4 @@
-package com.inciflow_backend.controllers;
+package com.inciflow_backend.controller;
 
 import com.inciflow_backend.dto.DepartmentResponseDTO;
 import com.inciflow_backend.entity.Department;

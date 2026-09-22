@@ -1,17 +1,19 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { IncidentService } from '../../services/incident';
 
-interface IncidentUI {
+export interface IncidentUI {
+  id: number;
   code: string;
   title: string;
   category: string;
-  reportedBy: string;
-  severity: string;
-  status: string;
+  departmentName: string;
+  severity?: string;
+  status?: string;
   date: string;
+  rawDate?: number; // زدناها باش تسهل علينا الـ Sorting
 }
 
 @Component({
@@ -22,19 +24,9 @@ interface IncidentUI {
   styleUrls: ['./mes-signalements.css']
 })
 export class MesSignalements implements OnInit {
-  tableSearch: string = '';
-  
-  selectedStatus: string = 'All';
-  selectedPriority: string = 'All';
-
-  showStatusDropdown: boolean = false;
-  showPriorityDropdown: boolean = false;
-
-  statusOptions: string[] = ['All', 'Open', 'In Progress', 'Resolved'];
-  priorityOptions: string[] = ['All', 'BASSE', 'MOYENNE', 'HAUTE', 'CRITIQUE'];
-
-  currentUserName: string = 'Employee';
-  currentUserInitials: string = 'EM';
+  searchQuery: string = '';
+  selectedStatus: string = 'ALL';
+  selectedPriority: string = 'ALL';
 
   incidents: IncidentUI[] = [];
   
@@ -43,21 +35,11 @@ export class MesSignalements implements OnInit {
 
   constructor(
     private incidentService: IncidentService,
+    private router: Router,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    const storedName = localStorage.getItem('userName') || localStorage.getItem('userEmail');
-    if (storedName) {
-      this.currentUserName = storedName.includes('@') ? storedName.split('@')[0] : storedName;
-      const parts = this.currentUserName.split(' ');
-      if (parts.length > 1) {
-        this.currentUserInitials = (parts[0][0] + parts[1][0]).toUpperCase();
-      } else if (parts[0].length >= 2) {
-        this.currentUserInitials = parts[0].substring(0, 2).toUpperCase();
-      }
-    }
-
     this.loadRealIncidents();
   }
 
@@ -67,20 +49,29 @@ export class MesSignalements implements OnInit {
 
     this.incidentService.getMyIncidents().subscribe({
       next: (data: any[]) => {
-        console.log('Raw data received for my incidents:', data);
-        
         if (!data || !Array.isArray(data) || data.length === 0) {
           this.incidents = [];
         } else {
-          this.incidents = data.map(inc => ({
-            code: `INC-${inc?.id || '0'}`,
-            title: inc?.title || 'No Title',
-            category: inc?.categoryName || inc?.category?.name || inc?.category || 'General',
-            reportedBy: this.currentUserName,
-            severity: inc?.priority || inc?.severity || 'Medium',
-            status: this.mapStatus(inc?.status),
-            date: this.formatDate(inc?.createdAt || inc?.date)
-          }));
+          // 1. Mappage mta' el data
+          const mappedIncidents = data.map(inc => {
+            const depName = inc?.departmentName || inc?.department?.name || inc?.department || 'General';
+            const rawDateValue = inc?.createdAt || inc?.date;
+
+            return {
+              id: inc?.id || 0,
+              code: `INC-${inc?.id || '0'}`,
+              title: inc?.title || 'No Title',
+              category: inc?.categoryName || inc?.category?.name || inc?.category || 'General',
+              departmentName: depName,
+              severity: inc?.priority || inc?.severity || 'MOYENNE',
+              status: inc?.status || 'NOUVEAU',
+              date: this.formatDate(rawDateValue),
+              rawDate: rawDateValue ? new Date(rawDateValue).getTime() : 0
+            };
+          });
+
+          // 2. Sorting: Mel Jdid lel Qdim (Descending order - الأحدث لفوق)
+          this.incidents = mappedIncidents.sort((a, b) => b.rawDate - a.rawDate);
         }
         
         this.isLoading = false;
@@ -96,12 +87,8 @@ export class MesSignalements implements OnInit {
     });
   }
 
-  mapStatus(backendStatus: string): string {
-    if (!backendStatus) return 'Open';
-    const s = backendStatus.toString().toUpperCase();
-    if (s === 'RESOLU' || s === 'RESOLVED') return 'Resolved';
-    if (s === 'EN_COURS' || s === 'IN_PROGRESS') return 'In Progress';
-    return 'Open';
+  filterIncidents(): void {
+    this.cdr.detectChanges();
   }
 
   formatDate(dateString?: string): string {
@@ -111,44 +98,51 @@ export class MesSignalements implements OnInit {
     return date.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
   }
 
-  toggleStatusDropdown() {
-    this.showStatusDropdown = !this.showStatusDropdown;
-    this.showPriorityDropdown = false;
+  viewDetails(id: number): void {
+    this.router.navigate(['/employee/signalements', id]);
   }
 
-  togglePriorityDropdown() {
-    this.showPriorityDropdown = !this.showPriorityDropdown;
-    this.showStatusDropdown = false;
-  }
-
-  selectStatus(status: string) {
-    this.selectedStatus = status;
-    this.showStatusDropdown = false;
-  }
-
-  selectPriority(priority: string) {
-    this.selectedPriority = priority;
-    this.showPriorityDropdown = false;
-  }
-
-  get filteredIncidents() {
+  get filteredIncidents(): IncidentUI[] {
     if (!this.incidents) return [];
+    
     return this.incidents.filter(inc => {
-      const searchVal = (this.tableSearch || '').toLowerCase();
+      const searchVal = (this.searchQuery || '').toLowerCase();
       const titleVal = (inc.title || '').toLowerCase();
       const codeVal = (inc.code || '').toLowerCase();
       
       const matchesSearch = titleVal.includes(searchVal) || codeVal.includes(searchVal);
       
       const matchesStatus = 
-        this.selectedStatus === 'All' || 
-        (inc.status || '').toLowerCase() === this.selectedStatus.toLowerCase();
+        this.selectedStatus === 'ALL' || 
+        inc.status === this.selectedStatus;
         
       const matchesPriority = 
-        this.selectedPriority === 'All' || 
-        (inc.severity || '').toLowerCase() === this.selectedPriority.toLowerCase();
+        this.selectedPriority === 'ALL' || 
+        inc.severity === this.selectedPriority;
 
       return matchesSearch && matchesStatus && matchesPriority;
     });
+  }
+
+  getStatusClass(status?: string): string {
+    if (!status) return 'open';
+    switch (status.toUpperCase()) {
+      case 'EN_COURS': return 'in-progress';
+      case 'NOUVEAU': return 'open';
+      case 'RESOLU': return 'resolved';
+      case 'REJETE': return 'rejected';
+      default: return 'open';
+    }
+  }
+
+  getPriorityClass(priority?: string): string {
+    if (!priority) return 'medium';
+    switch (priority.toUpperCase()) {
+      case 'CRITIQUE': return 'critical';
+      case 'HAUTE': return 'high';
+      case 'MOYENNE': return 'medium';
+      case 'BASSE': return 'low';
+      default: return 'medium';
+    }
   }
 }

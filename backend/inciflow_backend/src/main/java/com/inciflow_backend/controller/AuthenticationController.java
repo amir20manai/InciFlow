@@ -15,13 +15,13 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
-    // POST: لتسجيل حساب جديد -> http://localhost:8080/api/auth/register
+    // POST: register http://localhost:8080/api/auth/register
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authenticationService.register(request));
     }
 
-    // POST: لتسجيل الدخول -> http://localhost:8080/api/auth/authenticate
+    // POST:login http://localhost:8080/api/auth/authenticate
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
         return ResponseEntity.ok(authenticationService.authenticate(request));

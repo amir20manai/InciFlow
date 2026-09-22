@@ -25,7 +25,14 @@ public class AdminController {
 
     @DeleteMapping("/users/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id); // اسم الميثود الصحيح كما هو في الـ UserService
+        userService.deleteUser(id);
         return ResponseEntity.ok(Map.of("message", "User deleted successfully"));
+    }
+
+    @PutMapping("/users/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUserData) {
+        User updatedUser = userService.updateUser(id, updatedUserData);
+        updatedUser.setPassword(null); // Bch mayrja3ch el password fel response
+        return ResponseEntity.ok(updatedUser);
     }
 }

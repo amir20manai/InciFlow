@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class CategoryResponseDTO {
     private Long id;
     private String name;
-    private String dotColor; // إضافة اللون هنا
+    private String dotColor;
     private long count;
 }

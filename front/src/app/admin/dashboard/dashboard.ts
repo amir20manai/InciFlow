@@ -1,189 +1,301 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { IncidentService } from '../../services/incident';
+import { CategorieService } from '../../services/categorie';
+import { DepartmentService } from '../../services/departement';
+import { UserService } from '../../services/user';
+import { NotificationService, NotificationResponse } from '../../services/notification'; // زيدناها
+import { IncidentResponse } from '../../models/incident';
+import { CategoryResponse } from '../../models/categorie';
 
-interface Incident {
-  id: string;
-  title: string;
+interface DashboardIncident extends IncidentResponse {
   category: string;
   department: string;
   reporterName: string;
   reporterInitials: string;
   reporterColor: string;
-  priority: 'Critical' | 'High' | 'Medium' | 'Low';
-  status: 'Open' | 'In Progress' | 'Resolved';
   updatedAt: string;
-}
-
-interface NotificationItem {
-  id: number;
-  title: string;
-  message: string;
-  time: string;
 }
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [ CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
 export class Dashboard implements OnInit {
-  // User Info
-  userName: string = 'Alex Morgan';
+  userName: string = 'Utilisateur';
+  userEmail: string = '';
   userRole: string = 'Administrator';
-  userInitials: string = 'AM';
+  userInitials: string = 'U';
 
-  // Stats Data
-  stats = [
-    { title: 'Total Incidents', count: 8, change: '+12%', isPositive: true, type: 'total' },
-    { title: 'Open', count: 2, change: '-4%', isPositive: false, type: 'open' },
-    { title: 'In Progress', count: 2, change: '+8%', isPositive: true, type: 'progress' },
-    { title: 'Resolved', count: 3, change: '+18%', isPositive: true, type: 'resolved' }
+  incidents: DashboardIncident[] = [];
+  categoriesList: CategoryResponse[] = [];
+  departmentsList: any[] = [];
+  notifications: any[] = []; // زدناها
+
+  stats: any[] = [
+    { title: 'Total Incidents', count: 0, change: 'All', isPositive: true, type: 'total' },
+    { title: 'Critique', count: 0, change: 'Priority', isPositive: false, type: 'critical' },
+    { title: 'Haute', count: 0, change: 'Priority', isPositive: false, type: 'high' },
+    { title: 'Moyenne', count: 0, change: 'Priority', isPositive: true, type: 'medium' },
+    { title: 'Basse', count: 0, change: 'Priority', isPositive: true, type: 'low' }
   ];
 
-  // Incidents List (Table)
-  incidents: Incident[] = [
-    {
-      id: 'INC-2041',
-      title: 'Laptop will not boot after OS update',
-      category: 'Hardware',
-      department: 'Marketing',
-      reporterName: 'Priya Sharma',
-      reporterInitials: 'PS',
-      reporterColor: '#3b82f6',
-      priority: 'High',
-      status: 'In Progress',
-      updatedAt: '3h ago'
-    },
-    {
-      id: 'INC-2040',
-      title: 'VPN connection drops every 10 minutes',
-      category: 'Network',
-      department: 'Finance',
-      reporterName: 'Dana Whitfield',
-      reporterInitials: 'DW',
-      reporterColor: '#2563eb',
-      priority: 'Critical',
-      status: 'Open',
-      updatedAt: '8h ago'
-    },
-    {
-      id: 'INC-2039',
-      title: 'Request access to Salesforce dashboard',
-      category: 'Access',
-      department: 'Marketing',
-      reporterName: 'Priya Sharma',
-      reporterInitials: 'PS',
-      reporterColor: '#3b82f6',
-      priority: 'Low',
-      status: 'Resolved',
-      updatedAt: '22h ago'
-    },
-    {
-      id: 'INC-2038',
-      title: 'Conference room A/C leaking water',
-      category: 'Facilities',
-      department: 'Facilities',
-      reporterName: 'Hannah Kim',
-      reporterInitials: 'HK',
-      reporterColor: '#0284c7',
-      priority: 'Medium',
-      status: 'In Progress',
-      updatedAt: '6h ago'
-    },
-    {
-      id: 'INC-2037',
-      title: 'Suspicious phishing email reported',
-      category: 'Security',
-      department: 'IT Operations',
-      reporterName: 'Alex Morgan',
-      reporterInitials: 'AM',
-      reporterColor: '#2563eb',
-      priority: 'Critical',
-      status: 'Resolved',
-      updatedAt: '1d ago'
-    },
-    {
-      id: 'INC-2036',
-      title: 'Slack notifications not arriving on mobile',
-      category: 'Software',
-      department: 'Marketing',
-      reporterName: 'Priya Sharma',
-      reporterInitials: 'PS',
-      reporterColor: '#3b82f6',
-      priority: 'Medium',
-      status: 'Open',
-      updatedAt: '2d ago'
-    }
-  ];
+  categories: any[] = [];
+  categorySegments: any[] = [];
 
-  // Category Distribution Bar Chart Data
-  categories = [
-    { name: 'Hardware', count: 4, height: '70%', color: '#2563eb' },
-    { name: 'Software', count: 5, height: '90%', color: '#0ea5e9' },
-    { name: 'Network', count: 3, height: '55%', color: '#10b981' },
-    { name: 'Security', count: 2, height: '35%', color: '#ef4444' },
-    { name: 'Facilities', count: 2, height: '40%', color: '#f59e0b' },
-    { name: 'Access', count: 1, height: '25%', color: '#a855f7' }
-  ];
+  statusCounts = { open: 0, inProgress: 0, resolved: 0, rejected: 0, total: 0 };
+  statusSegments = {
+    openDash: '0 238.7', openOffset: '0',
+    progressDash: '0 238.7', progressOffset: '0',
+    resolvedDash: '0 238.7', resolvedOffset: '0',
+    rejectedDash: '0 238.7', rejectedOffset: '0'
+  };
 
-  // Notifications Sidebar
-  notifications: NotificationItem[] = [
-    {
-      id: 1,
-      title: 'Incident resolved',
-      message: 'INC-2041 "Laptop will not boot after OS update" was resolved by Alex Morgan.',
-      time: '55m ago'
-    },
-    {
-      id: 2,
-      title: 'Incident resolved',
-      message: 'INC-2038 "Conference room A/C leaking water" was resolved by Alex Morgan.',
-      time: '55m ago'
-    },
-    {
-      id: 3,
-      title: 'New critical incident',
-      message: 'INC-2040 "VPN connection drops every 10 minutes" was reported.',
-      time: '8h ago'
-    },
-    {
-      id: 4,
-      title: 'Incident assigned to you',
-      message: 'You have been assigned to INC-2041 by Priya Sharma.',
-      time: '4h ago'
-    }
-  ];
-
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private incidentService: IncidentService,
+    private categorieService: CategorieService,
+    private departmentService: DepartmentService,
+    private userService: UserService,
+    private notificationService: NotificationService, // زدناها
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
-    // Récupération mta3 el-user connecte
-    const savedUser = localStorage.getItem('user');
-    if (savedUser) {
-      const parsed = JSON.parse(savedUser);
-      if (parsed.fullName) {
-        this.userName = parsed.fullName;
-        this.userInitials = this.getInitials(parsed.fullName);
+    this.loadUserProfile();
+    this.loadDashboardData();
+    this.loadNotifications(); // زدناها
+  }
+
+  loadUserProfile(): void {
+    this.userService.getProfile().subscribe({
+      next: (user: any) => {
+        if (user) {
+          const fName = user.firstName || user.firstname || '';
+          const lName = user.lastName || user.lastname || '';
+          this.userEmail = user.email || '';
+          if (user.role) {
+            this.userRole = user.role;
+          }
+
+          if (fName || lName) {
+            this.userName = `${fName} ${lName}`.trim();
+            this.userInitials = `${fName.charAt(0)}${lName.charAt(0) || fName.charAt(1) || ''}`.toUpperCase();
+          } else {
+            const sub = this.userEmail.split('@')[0] || 'User';
+            this.userName = sub;
+            this.userInitials = this.userName.substring(0, 2).toUpperCase();
+          }
+          this.cdr.detectChanges();
+        }
+      },
+      error: (err) => {
+        console.error('Error loading profile in dashboard:', err);
+        this.userName = 'User';
+        this.userInitials = 'US';
+        this.cdr.detectChanges();
       }
-      if (parsed.role) {
-        this.userRole = parsed.role.charAt(0).toUpperCase() + parsed.role.slice(1);
-      }
+    });
+  }
+
+  private extractArray(res: any): any[] {
+    if (Array.isArray(res)) return res;
+    if (res && Array.isArray(res.content)) return res.content;
+    if (res && Array.isArray(res.data)) return res.data;
+    if (res && typeof res === 'object') {
+      const arrayKey = Object.keys(res).find(k => Array.isArray(res[k]));
+      if (arrayKey) return res[arrayKey];
     }
+    return [];
+  }
+
+  loadDashboardData(): void {
+    forkJoin({
+      incidents: this.incidentService.getAllIncidents().pipe(catchError(err => of([]))),
+      categories: this.categorieService.getAllCategories().pipe(catchError(err => of([]))),
+      departments: this.departmentService.getAllDepartments().pipe(catchError(err => of([])))
+    }).subscribe({
+      next: (res: any) => {
+        this.categoriesList = this.extractArray(res.categories);
+        this.departmentsList = this.extractArray(res.departments);
+
+        const rawData = this.extractArray(res.incidents);
+
+        const mappedIncidents = rawData.map((inc: any) => ({
+          ...inc,
+          category: inc.categoryName || inc.category?.name || 'General',
+          department: inc.departmentName || inc.department?.name || 'IT Department',
+          reporterName: inc.employeeEmail || inc.reporterName || 'Employee',
+          reporterInitials: this.getInitials(inc.employeeEmail || inc.reporterName || 'E'),
+          reporterColor: '#2563eb',
+          updatedAt: inc.createdAt ? new Date(inc.createdAt).toLocaleDateString() : 'Recent'
+        })) as DashboardIncident[];
+
+        // Tri du plus récent au plus ancien
+        const sortedIncidents = mappedIncidents.sort((a: any, b: any) => {
+          const dateA = new Date(a.createdAt || 0).getTime();
+          const dateB = new Date(b.createdAt || 0).getTime();
+          return dateB - dateA;
+        });
+
+        // حصر الجدول في أحدث 5 تقارير فقط
+        this.incidents = sortedIncidents.slice(0, 5);
+
+        this.calculateDashboardData(sortedIncidents);
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => {
+        console.error('Error:', err);
+      }
+    });
+  }
+
+  // جلب أحدث 5 تنبيهات مرتبة من الأجدد للقديم
+  loadNotifications(): void {
+    this.notificationService.getMyNotifications().subscribe({
+      next: (notifs: NotificationResponse[]) => {
+        if (!notifs || !Array.isArray(notifs)) {
+          this.notifications = [];
+          this.cdr.detectChanges();
+          return;
+        }
+
+        const sortedNotifs = notifs.sort((a: any, b: any) => {
+          const dateA = new Date(a.createdAt || 0).getTime();
+          const dateB = new Date(b.createdAt || 0).getTime();
+          return dateB - dateA;
+        });
+
+        this.notifications = sortedNotifs.slice(0, 5).map(n => ({
+          message: n.message,
+          time: this.formatTimeAgo(n.createdAt),
+          isRead: n.isRead
+        }));
+
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error fetching notifications:', err);
+        this.notifications = [];
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  formatTimeAgo(dateString?: string): string {
+    if (!dateString) return 'Recently';
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return 'Recently';
+    const now = new Date();
+    const diffHours = Math.abs(now.getTime() - date.getTime()) / 36e5;
+    if (diffHours < 24) {
+      return `${Math.floor(diffHours)}h ago`;
+    }
+    return `${Math.floor(diffHours / 24)}d ago`;
+  }
+
+  calculateDashboardData(allIncidents: DashboardIncident[]): void {
+    const totalCount = allIncidents.length;
+
+    const critiqueCount = allIncidents.filter(i => i.priority?.toString().toUpperCase() === 'CRITIQUE').length;
+    const hauteCount = allIncidents.filter(i => i.priority?.toString().toUpperCase() === 'HAUTE').length;
+    const moyenneCount = allIncidents.filter(i => i.priority?.toString().toUpperCase() === 'MOYENNE' || i.priority?.toString().toUpperCase() === 'MEDIUM').length;
+    const basseCount = allIncidents.filter(i => i.priority?.toString().toUpperCase() === 'BASSE' || i.priority?.toString().toUpperCase() === 'LOW').length;
+
+    this.stats = [
+      { title: 'Total Incidents', count: totalCount, change: 'All', isPositive: true, type: 'total' },
+      { title: 'Critique', count: critiqueCount, change: 'Priority', isPositive: false, type: 'critical' },
+      { title: 'Haute', count: hauteCount, change: 'Priority', isPositive: false, type: 'high' },
+      { title: 'Moyenne', count: moyenneCount, change: 'Priority', isPositive: true, type: 'medium' },
+      { title: 'Basse', count: basseCount, change: 'Priority', isPositive: true, type: 'low' }
+    ];
+
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    const recentIncidents = allIncidents.filter(inc => {
+      if (!inc.createdAt) return true;
+      return new Date(inc.createdAt) >= thirtyDaysAgo;
+    });
+
+    const categoryMap: { [key: string]: { count: number; color: string } } = {};
+    const defaultColors = ['#2563eb', '#0ea5e9', '#10b981', '#ef4444', '#f59e0b', '#a855f7', '#64748b', '#ec4899', '#14b8a6'];
+
+    this.categoriesList.forEach((cat: any, index: number) => {
+      const catName = typeof cat === 'string' ? cat : (cat.name || 'General');
+      const catColor = (typeof cat === 'object' && (cat.dotColor || cat.color || cat.couleur)) || defaultColors[index % defaultColors.length];
+      
+      categoryMap[catName] = { count: 0, color: catColor };
+    });
+
+    recentIncidents.forEach(inc => {
+      const catName = inc.category || 'General';
+      if (categoryMap[catName] !== undefined) {
+        categoryMap[catName].count++;
+      } else {
+        categoryMap[catName] = { count: 1, color: '#2563eb' };
+      }
+    });
+
+    this.categories = Object.keys(categoryMap).map(catName => {
+      return {
+        name: catName,
+        count: categoryMap[catName].count,
+        color: categoryMap[catName].color
+      };
+    });
+
+    let open = 0, inProgress = 0, resolved = 0, rejected = 0;
+    allIncidents.forEach(inc => {
+      const st = (inc.status || '').toUpperCase();
+      if (st === 'NOUVEAU' || st.includes('OPEN')) open++;
+      else if (st === 'EN_COURS' || st.includes('PROGRESS')) inProgress++;
+      else if (st === 'RESOLU' || st.includes('RESOLVED')) resolved++;
+      else if (st === 'REJETE' || st.includes('REJECTED') || st.includes('REJ')) rejected++;
+    });
+
+    this.statusCounts = { open, inProgress, resolved, rejected, total: totalCount };
+
+    const circumference = 238.7; 
+    if (totalCount > 0) {
+      const resolvedLen = (resolved / totalCount) * circumference;
+      const progressLen = (inProgress / totalCount) * circumference;
+      const openLen = (open / totalCount) * circumference;
+      const rejectedLen = (rejected / totalCount) * circumference;
+
+      this.statusSegments = {
+        resolvedDash: `${resolvedLen} ${circumference}`,
+        resolvedOffset: '0',
+        progressDash: `${progressLen} ${circumference}`,
+        progressOffset: `-${resolvedLen}`,
+        openDash: `${openLen} ${circumference}`,
+        openOffset: `-${resolvedLen + progressLen}`,
+        rejectedDash: `${rejectedLen} ${circumference}`,
+        rejectedOffset: `-${resolvedLen + progressLen + openLen}`
+      };
+    }
+
+    let currentCatOffset = 0;
+    this.categorySegments = this.categories.map(cat => {
+      const len = totalCount > 0 ? (cat.count / totalCount) * circumference : 0;
+      const offset = currentCatOffset;
+      currentCatOffset += len;
+      return {
+        color: cat.color,
+        dash: `${len} ${circumference}`,
+        offset: `-${offset}`
+      };
+    });
   }
 
   getInitials(name: string): string {
-    return name
-      .split(' ')
-      .map(part => part[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
-  }
-
-  goToSettings(): void {
-    this.router.navigate(['/profile-settings']);
+    if (!name) return 'U';
+    return name.split(' ').map(part => part[0]).join('').toUpperCase().slice(0, 2);
   }
 }

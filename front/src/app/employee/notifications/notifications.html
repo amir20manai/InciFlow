@@ -12,47 +12,66 @@
       <div class="notif-card-header">
         <div class="notif-title-group">
           <h2>Notifications</h2>
-          <p>{{ unreadCount }} unread of {{ notifications.length }} total</p>
+          <p>{{ unreadCount }} non lues sur {{ notifications.length }} au total</p>
         </div>
+      </div>
+
+      <!-- Controls & Filters Row (Search + Select Status + Mark All Button) -->
+      <div class="controls-bar">
+        <!-- Search Box -->
+        <div class="search-box">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="Rechercher une notification..." [(ngModel)]="searchQuery">
+        </div>
+
+        <!-- Filter Select Status (Kima fel Admin view) -->
+        <div class="filter-select-wrapper">
+          <svg class="filter-icon-inside" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          <select class="filter-select" [(ngModel)]="activeTab">
+            <option value="all">Tous les états</option>
+            <option value="unread">Non lues</option>
+            <option value="read">Lues</option>
+          </select>
+        </div>
+
+        <!-- Mark All Read Button 3al Ymin (Kima fel Admin) -->
         <button class="mark-all-btn" (click)="markAllAsRead()">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-          Mark all read
+          Tout marquer comme lu
         </button>
       </div>
 
-      <!-- Filters Row -->
-      <div class="notif-filters">
-        <button class="filter-icon-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-        </button>
-        <button class="tab-btn" [class.active]="activeTab === 'all'" (click)="setTab('all')">All</button>
-        <button class="tab-btn" [class.active]="activeTab === 'unread'" (click)="setTab('unread')">Unread</button>
-        <button class="tab-btn" [class.active]="activeTab === 'read'" (click)="setTab('read')">Read</button>
+      <!-- Loading / Empty States -->
+      <div *ngIf="isLoading" style="text-align: center; padding: 40px; color: #64748b;">
+        Chargement des notifications...
       </div>
 
       <!-- Notifications List -->
-      <div class="notifications-list">
-        <div class="notification-item" *ngFor="let item of filteredNotifications" [class.unread]="!item.read">
+      <div class="notifications-list" *ngIf="!isLoading">
+        <div *ngIf="filteredNotifications.length === 0" style="text-align: center; padding: 30px; color: #94a3b8; font-weight: 500;">
+          Aucune notification trouvée.
+        </div>
+
+        <div class="notification-item" *ngFor="let item of filteredNotifications" [class.unread]="!item.isRead" [class.read]="item.isRead">
           <div class="notif-left">
             <div class="notif-icon-box" [ngClass]="item.type">
-              <!-- Critical Icon -->
               <svg *ngIf="item.type === 'critical'" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-              <!-- Info / Assigned / Summary Icon -->
               <svg *ngIf="item.type !== 'critical' && item.type !== 'resolved'" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-              <!-- Resolved Icon -->
               <svg *ngIf="item.type === 'resolved'" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
             </div>
+            
             <div class="notif-texts">
               <div class="title-row">
-                <h3>{{ item.title }}</h3>
-                <span class="unread-dot" *ngIf="!item.read"></span>
+                <h3>Notification</h3>
+                <span class="unread-dot" *ngIf="!item.isRead"></span>
               </div>
               <p>{{ item.message }}</p>
-              <span class="time-text">{{ item.time }}</span>
+              <span class="time-text">{{ item.createdAt | date:'short' }}</span>
             </div>
           </div>
-          <div class="notif-right" *ngIf="!item.read">
-            <button class="mark-read-btn" (click)="markAsRead(item.id, $event)">Mark read</button>
+
+          <div class="notif-right" *ngIf="!item.isRead">
+            <button class="mark-read-btn" (click)="markAsRead(item.id, $event)">Marquer comme lu</button>
           </div>
         </div>
       </div>

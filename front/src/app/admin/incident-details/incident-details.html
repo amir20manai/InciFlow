@@ -1,8 +1,9 @@
 <div class="reports-container" *ngIf="incident">
+  
   <!-- Top Header Navigation -->
   <header class="top-header">
     <div class="header-left">
-      <h1 class="page-title">Incident Reports</h1>
+      <h1 class="page-title">Détails de l'incident</h1>
     </div>
   </header>
 
@@ -13,124 +14,94 @@
     <div class="back-wrapper">
       <button class="page-btn" (click)="goBack()">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-        Back
+        Retour
       </button>
     </div>
 
-    <!-- Grid Layout -->
-    <div class="details-layout">
+    <!-- Card Principale -->
+    <div class="panel-card full-width-card">
+      <div class="incident-meta-row">
+        <span class="id-cell">INC-{{ incident.id }}</span>
+        <span class="priority-pill" [ngStyle]="{
+          'background-color': priorityStyles[incident.priority]?.bg,
+          'color': priorityStyles[incident.priority]?.color,
+          'border': 'none',
+          'padding': '3px 10px',
+          'border-radius': '12px',
+          'font-weight': '600',
+          'font-size': '11px',
+          'display': 'inline-flex',
+          'align-items': 'center',
+          'gap': '4px'
+        }">&bull; {{ incident.priority }}</span>
+        <span class="status-pill" [ngClass]="getStatusClass(incident.status)">&bull; {{ incident.status }}</span>
+      </div>
       
-      <!-- Left Column -->
-      <div class="details-left-col">
-        
-        <!-- Main Incident Info Card -->
-        <div class="panel-card">
-          <div class="incident-meta-row">
-            <span class="id-cell">INC-{{ incident.id }}</span>
-            <span class="priority-pill" [ngClass]="getPriorityClass(incident.priority)">&bull; {{ incident.priority }}</span>
-            <span class="status-pill" [ngClass]="getStatusClass(incident.status)">&bull; {{ incident.status }}</span>
-          </div>
-          
-          <h2 class="panel-title main-heading">{{ incident.title }}</h2>
-          <p class="incident-desc">
-            {{ incident.description }}
-          </p>
+      <h2 class="panel-title main-heading">{{ incident.title }}</h2>
+      <p class="incident-desc">{{ incident.description }}</p>
 
-          <!-- Dynamic Image using Blob URL -->
-          <div *ngIf="attachmentUrl" class="incident-image-container" style="margin-top: 15px;">
-            <img [src]="attachmentUrl" alt="Incident attachment" style="max-width: 100%; border-radius: 8px;">
+      <!-- Dynamic Image using Blob URL -->
+      <div *ngIf="attachmentUrl" class="incident-image-container">
+        <img [src]="attachmentUrl" alt="Incident attachment">
+      </div>
+    </div>
+
+    <!-- Grid Louta -->
+    <div class="bottom-grid-section">
+      
+      <!-- Details Summary Card -->
+      <div class="panel-card">
+        <h3 class="panel-title section-sm-title">Détails</h3>
+        <div class="details-kv-list">
+          <div class="kv-row"><span class="kv-label">Catégorie</span><span class="kv-val">{{ incident.categoryName }}</span></div>
+          <div class="kv-row"><span class="kv-label">Département</span><span class="kv-val">{{ incident.departmentName }}</span></div>
+          <div class="kv-row"><span class="kv-label">Signalé</span><span class="kv-val">{{ incident.createdAt | date:'short' }}</span></div>
+          <div class="kv-row">
+            <span class="kv-label">Priorité</span>
+            <span class="priority-pill" [ngStyle]="{
+              'color': priorityStyles[incident.priority]?.color,
+              'border': 'none',
+              'padding': '3px 10px',
+              'border-radius': '12px',
+              'font-weight': '600',
+              'font-size': '11px',
+              'display': 'inline-flex',
+              'align-items': 'center',
+              'gap': '4px'
+            }">
+              &bull; {{ incident.priority }}
+            </span>
           </div>
+          <div class="kv-row"><span class="kv-label">Statut</span><span class="status-pill" [ngClass]="getStatusClass(incident.status)">&bull; {{ incident.status }}</span></div>
         </div>
-
-        <!-- Notes & Activity Section -->
-        <div class="panel-card">
-          <h3 class="panel-title notes-title">Notes & Activity</h3>
-          <p class="panel-subtitle">1 updates</p>
-          
-          <div class="note-box">
-            <div class="note-header">
-              <div class="note-author">
-                <span class="avatar-small" style="background-color: #2563eb;">ML</span>
-                <span class="author-name">Marcus Lee</span>
-              </div>
-              <span class="time-cell">2h ago</span>
-            </div>
-            <p class="note-text">Reproduced the issue. Booting into safe mode now.</p>
-          </div>
-
-          <!-- Add Note Box -->
-          <div class="add-note-container">
-            <textarea placeholder="Add a note or update..."></textarea>
-            <div class="add-btn-wrapper">
-              <button class="page-btn add-action-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                Add
-              </button>
-            </div>
-          </div>
-        </div>
-
       </div>
 
-      <!-- Right Column -->
-      <div class="details-right-col">
+      <!-- Assign & Action Card -->
+      <div class="panel-card">
+        <h3 class="panel-title section-sm-title">Attribuer et traiter</h3>
         
-        <!-- Actions Card -->
-        <div class="panel-card">
-          <h3 class="panel-title section-sm-title">Actions</h3>
-          <div class="actions-grid">
-            <button class="page-btn action-item" (click)="updateStatus('NOUVEAU')">Accept</button>
-            <button class="page-btn action-item primary-action" (click)="updateStatus('EN_COURS')">
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-              Start
-            </button>
-            <button class="page-btn action-item resolve-action" (click)="updateStatus('RESOLU')">Resolve</button>
-          </div>
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label style="display: block; margin-bottom: 8px; font-weight: 500; font-size: 13px; color: #475569;">Sélectionner un technicien</label>
+          <select [(ngModel)]="selectedTechnicianId" class="form-control">
+            <option [ngValue]="null" disabled>-- Choisir un technicien --</option>
+            <option *ngFor="let tech of technicians" [value]="tech.id">
+              {{ tech.firstName }} {{ tech.lastName }}
+            </option>
+          </select>
         </div>
 
-        <!-- Details Summary Card -->
-        <div class="panel-card">
-          <h3 class="panel-title section-sm-title">Details</h3>
-          <div class="details-kv-list">
-            <div class="kv-row"><span class="kv-label">Category</span><span class="kv-val">{{ incident.categoryName }}</span></div>
-            <div class="kv-row"><span class="kv-label">Department</span><span class="kv-val">{{ incident.departmentName }}</span></div>
-            <div class="kv-row"><span class="kv-label">Reported</span><span class="kv-val">{{ incident.createdAt | date:'short' }}</span></div>
-            <div class="kv-row"><span class="kv-label">Priority</span><span class="priority-pill" [ngClass]="getPriorityClass(incident.priority)">&bull; {{ incident.priority }}</span></div>
-            <div class="kv-row"><span class="kv-label">Status</span><span class="status-pill" [ngClass]="getStatusClass(incident.status)">&bull; {{ incident.status }}</span></div>
-          </div>
+        <div class="action-buttons-row">
+          <button class="btn-accept" (click)="acceptIncident()" [disabled]="incident?.status !== 'NOUVEAU'">Accepter</button>
+          <button class="btn-reject" (click)="rejectIncident()" [disabled]="incident?.status !== 'NOUVEAU'">Rejeter</button>
         </div>
-
-        <!-- Reporter Card -->
-        <div class="panel-card">
-          <h3 class="panel-title section-sm-title">Reporter</h3>
-          <div class="reporter-cell">
-            <span class="avatar-small" style="background-color: #2563eb;">{{ incident.employeeEmail ? incident.employeeEmail.substring(0,2).toUpperCase() : 'US' }}</span>
-            <div>
-              <div class="rep-name">{{ incident.employeeEmail }}</div>
-              <div class="rep-dept">{{ incident.departmentName }}</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Assigned To Card -->
-        <div class="panel-card">
-          <h3 class="panel-title assigned-header">Assigned To</h3>
-          <div class="reporter-cell assigned-user-cell">
-            <span class="avatar-small" style="background-color: #2563eb;">{{ incident.technicianEmail ? incident.technicianEmail.substring(0,2).toUpperCase() : 'TC' }}</span>
-            <div>
-              <div class="rep-name">{{ incident.technicianEmail || 'Not Assigned' }}</div>
-              <div class="rep-dept">Technician</div>
-            </div>
-          </div>
-        </div>
-
       </div>
 
     </div>
+
   </main>
 </div>
 
-<!-- حالة التحميل -->
+<!-- État de chargement -->
 <div *ngIf="!incident" style="text-align: center; padding: 50px; color: #94a3b8;">
   Chargement des détails de l'incident...
 </div>

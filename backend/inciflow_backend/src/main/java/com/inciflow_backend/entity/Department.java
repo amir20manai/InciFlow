@@ -21,11 +21,9 @@ public class Department {
     @Column(name = "head_name")
     private String headName;
 
-    // الحوادث المرتبطة بالقسم سيتم حذفها تلقائياً عند حذف القسم
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Incident> incidents;
 
-    // المستخدمين لن يتم حذفهم، بل سنقوم بفك ارتباطهم برمجياً
     @OneToMany(mappedBy = "department")
     private List<User> users;
 }

@@ -1,7 +1,8 @@
-import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, NgZone, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DepartmentService, Department } from '../../services/departement';
+import { UserService } from '../../services/user'; // 1. Importi UserService
 
 @Component({
   selector: 'app-departments',
@@ -13,6 +14,11 @@ import { DepartmentService, Department } from '../../services/departement';
 export class Departements implements OnInit {
   globalSearch: string = '';
   
+  private departmentService = inject(DepartmentService);
+  private userService = inject(UserService); // Injecti UserService
+  private cdr = inject(ChangeDetectorRef);
+  private ngZone = inject(NgZone);
+
   // Modals States
   isAddModalOpen: boolean = false;
   isEditModalOpen: boolean = false;
@@ -27,15 +33,11 @@ export class Departements implements OnInit {
   editDeptHead: string = '';
 
   departments: Department[] = [];
-
-  constructor(
-    private departmentService: DepartmentService,
-    private cdr: ChangeDetectorRef,
-    private ngZone: NgZone
-  ) {}
+  employees: any[] = []; // 2. Tableau bech n7ottou fih el employees
 
   ngOnInit(): void {
     this.loadDepartments();
+    this.loadEmployees(); // 3. Chargi el employees ki t7el el component
   }
 
   loadDepartments(): void {
@@ -61,6 +63,23 @@ export class Departements implements OnInit {
         });
       },
       error: (err) => console.error('Error loading departments:', err)
+    });
+  }
+
+  // 4. Fonction bech tjib kan el users eli role mte3hom EMPLOYEE
+  loadEmployees(): void {
+    this.userService.getAllUsers().subscribe({
+      next: (users: any[]) => {
+        console.log('--- ALL USERS ---', users); // Athahrou fel Console bech tthabat
+        this.employees = (users || []).filter((u: any) => {
+          const r = (u.role || '').toString().toUpperCase();
+          const roles = Array.isArray(u.roles) ? u.roles.map((x: string) => x.toUpperCase()) : [];
+          // Nacceptiw ay role fih EMP (kima EMPLOYEE, ROLE_EMPLOYEE, emp, etc.)
+          return r.includes('EMP') || roles.some((x: string) => x.includes('EMP'));
+        });
+        console.log('--- FILTERED EMPLOYEES ---', this.employees);
+      },
+      error: (err) => console.error('Error loading employees:', err)
     });
   }
 
@@ -140,17 +159,17 @@ export class Departements implements OnInit {
   }
 
   deleteDepartment() {
-  if (!this.selectedDepartment || !this.selectedDepartment.id) return;
-  
-  this.departmentService.deleteDepartment(this.selectedDepartment.id).subscribe({
-    next: () => {
-      console.log('Department deleted successfully');
-      this.loadDepartments();
-      this.closeEditModal(); // <-- استعملنا الاسم الصحيح لإغلاق النافذة
-    },
-    error: (err) => {
-      console.error('FULL ERROR OBJECT:', err);
-    }
-  });
-}
+    if (!this.selectedDepartment || !this.selectedDepartment.id) return;
+    
+    this.departmentService.deleteDepartment(this.selectedDepartment.id).subscribe({
+      next: () => {
+        console.log('Department deleted successfully');
+        this.loadDepartments();
+        this.closeEditModal();
+      },
+      error: (err) => {
+        console.error('FULL ERROR OBJECT:', err);
+      }
+    });
+  }
 }

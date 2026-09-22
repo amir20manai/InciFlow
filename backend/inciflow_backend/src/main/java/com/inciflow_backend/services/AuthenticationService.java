@@ -21,7 +21,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    // تسجيل مستعمل جديد
+    // register
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
                 .firstName(request.getFirstName())
@@ -34,7 +34,7 @@ public class AuthenticationService {
 
         userRepository.save(user);
 
-        // توليد توكن حقيقي للمستخدم الجديد مباشرة بعد التسجيل
+        // génération de token réel aprés register
         var jwtToken = jwtService.generateToken(user);
 
         return AuthenticationResponse.builder()
@@ -43,9 +43,9 @@ public class AuthenticationService {
                 .build();
     }
 
-    // تسجيل الدخول
+    // login
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        // التحقق من الإيميل وكلمة المرور عبر الـ AuthenticationManager
+        //  AuthenticationManager
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -56,7 +56,7 @@ public class AuthenticationService {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // توليد توكن JWT حقيقي وصحيح
+        // génération de token réel
         var jwtToken = jwtService.generateToken(user);
 
         return AuthenticationResponse.builder()

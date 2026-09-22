@@ -3,6 +3,8 @@
 :host {
   display: block;
   font-family: 'Inter', sans-serif;
+  position: fixed;
+  width: 100%;
 }
 
 * {
@@ -48,8 +50,7 @@
 }
 
 .logo-text {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: bold;
   letter-spacing: -0.5px;
 }
 

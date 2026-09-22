@@ -1,91 +1,109 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-
-interface AppNotification {
-  id: number;
-  type: 'critical' | 'assigned' | 'resolved' | 'info';
-  title: string;
-  message: string;
-  time: string;
-  read: boolean;
-}
+import { NotificationService, NotificationResponse } from '../../services/notification';
 
 @Component({
-  selector: 'app-notifications',
+  selector: 'app-employee-notifications',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './notifications.html',
   styleUrls: ['./notifications.css']
 })
-export class Notifications {
+export class Notifications implements OnInit {
   activeTab: 'all' | 'unread' | 'read' = 'all';
+  searchQuery: string = ''; 
+  selectedCategory: string = ''; // <--- المتغير الجديد للفلترة حسب النوع (kima fel admin)
+  
+  notifications: NotificationResponse[] = [];
+  isLoading: boolean = true;
+  errorMessage: string = '';
 
-  notifications: AppNotification[] = [
-    {
-      id: 1,
-      type: 'critical',
-      title: 'New critical incident',
-      message: 'INC-2040 "VPN connection drops every 10 minutes" was reported.',
-      time: '6h ago',
-      read: false
-    },
-    {
-      id: 2,
-      type: 'assigned',
-      title: 'Incident assigned to you',
-      message: 'You have been assigned to INC-2041 by Priya Sharma.',
-      time: '2h ago',
-      read: false
-    },
-    {
-      id: 3,
-      type: 'resolved',
-      title: 'Incident resolved',
-      message: 'INC-2037 "Suspicious phishing email reported" was marked as resolved.',
-      time: '1d ago',
-      read: false
-    },
-    {
-      id: 4,
-      type: 'info',
-      title: 'Weekly summary ready',
-      message: 'Your weekly incident summary for last week is available in Statistics.',
-      time: '2d ago',
-      read: true
-    },
-    {
-      id: 5,
-      type: 'info',
-      title: 'System maintenance scheduled',
-      message: 'Scheduled maintenance will take place this Sunday at midnight.',
-      time: '3d ago',
-      read: true
-    }
-  ];
+  constructor(
+    private notificationService: NotificationService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit(): void {
+    this.loadNotifications();
+  }
+
+  loadNotifications(): void {
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    this.notificationService.getMyNotifications().subscribe({
+      next: (data) => {
+        this.notifications = data.map(n => ({
+          ...n,
+          type: this.determineType(n.message)
+        }));
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Erreur chargement notifications:', err);
+        this.errorMessage = 'Erreur lors de la récupération des notifications.';
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  determineType(message: string): 'critical' | 'assigned' | 'resolved' | 'info' {
+    const lower = message.toLowerCase();
+    if (lower.includes('critical') || lower.includes('urgent')) return 'critical';
+    if (lower.includes('assigned') || lower.includes('affecté')) return 'assigned';
+    if (lower.includes('resolved') || lower.includes('résolu')) return 'resolved';
+    return 'info';
+  }
 
   get unreadCount(): number {
-    return this.notifications.filter(n => !n.read).length;
+    return this.notifications.filter(n => !n.isRead).length;
   }
 
-  get filteredNotifications() {
-    if (this.activeTab === 'unread') return this.notifications.filter(n => !n.read);
-    if (this.activeTab === 'read') return this.notifications.filter(n => n.read);
-    return this.notifications;
+  // <--- فلترة شاملة تجمع بين: البحث + الـ Tab (All/Unread/Read) + الفلتر حسب النوع (Category/Type)
+  get filteredNotifications(): NotificationResponse[] {
+    return this.notifications.filter(n => {
+      const matchesSearch = n.message.toLowerCase().includes(this.searchQuery.toLowerCase());
+      
+      let matchesTab = true;
+      if (this.activeTab === 'unread') matchesTab = !n.isRead;
+      if (this.activeTab === 'read') matchesTab = n.isRead;
+
+      let matchesCategory = true;
+      if (this.selectedCategory) {
+        matchesCategory = n.type === this.selectedCategory;
+      }
+
+      return matchesSearch && matchesTab && matchesCategory;
+    });
   }
 
-  markAsRead(id: number, event: Event) {
+  markAsRead(id: number, event: Event): void {
     event.stopPropagation();
-    const item = this.notifications.find(n => n.id === id);
-    if (item) item.read = true;
+    this.notificationService.markAsRead(id).subscribe({
+      next: () => {
+        const item = this.notifications.find(n => n.id === id);
+        if (item) item.isRead = true;
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Erreur mark as read:', err)
+    });
   }
 
-  markAllAsRead() {
-    this.notifications.forEach(n => n.read = true);
+  markAllAsRead(): void {
+    this.notificationService.markAllAsRead().subscribe({
+      next: () => {
+        this.notifications.forEach(n => n.isRead = true);
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Erreur mark all as read:', err)
+    });
   }
 
-  setTab(tab: 'all' | 'unread' | 'read') {
+  setTab(tab: 'all' | 'unread' | 'read'): void {
     this.activeTab = tab;
   }
 }

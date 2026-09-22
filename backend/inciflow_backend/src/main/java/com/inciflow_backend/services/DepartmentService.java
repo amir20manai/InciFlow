@@ -47,14 +47,13 @@ public class DepartmentService {
         Department department = departmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Department not found with id " + id));
 
-        // 1. جعل قسم المستخدمين المرتبطين بهذا القسم يساوي null (بدون حذفهم)
+
         if (department.getUsers() != null) {
             for (User user : department.getUsers()) {
                 user.setDepartment(null);
             }
         }
 
-        // 2. حذف القسم (الـ Incidents سيتم حذفهم تلقائياً بفضل CascadeType.ALL و orphanRemoval)
         departmentRepository.delete(department);
     }
 

@@ -1,0 +1,181 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:host {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 260px; /* Taba3 3ardh el sidebar */
+  right: 0;
+  bottom: 0;
+  color: #0f172a;
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.reports-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100%;
+  padding: 32px;
+  box-sizing: border-box;
+  background-color: #f1f5f9;
+}
+
+/* Header */
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+/* Back Button */
+.back-wrapper {
+  margin-bottom: 20px;
+}
+
+.page-btn {
+  background: transparent;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.page-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+/* Main Body */
+.main-body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Panel Cards */
+.panel-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  padding: 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.full-width-card {
+  width: 100%;
+}
+
+.incident-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.id-cell {
+  font-weight: 600;
+  font-size: 14px;
+  color: #2563eb;
+}
+
+.main-heading {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 12px 0;
+}
+
+.incident-desc {
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.5;
+  margin: 0 0 20px 0;
+}
+
+.incident-image-container {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  margin-top: 16px;
+}
+
+.incident-image-container img {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 700px !important;
+  object-fit: cover !important;
+  border-radius: 8px;
+  display: block;
+}
+
+.section-sm-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 16px 0;
+}
+
+.details-kv-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.kv-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.kv-label {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.kv-val {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+/* Status & Priority Pills styling (ken t7ejthom) */
+.status-pill, .priority-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 12px;
+}

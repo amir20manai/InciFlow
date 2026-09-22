@@ -28,7 +28,7 @@ public class User implements UserDetails {
     private String email;
     private String password;
 
-    // حقل الهاتف كـ String لقبول الأصفار والرموز الزائدة مثل +
+
     private String phone;
 
 
@@ -39,7 +39,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    // إرجاع اسم القسم كـ String للفرونت إند
+
     @JsonProperty("department")
     public String getDepartmentNameForJson() {
         return department != null ? department.getName() : null;

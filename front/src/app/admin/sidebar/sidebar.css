@@ -21,6 +21,7 @@
   padding: 1.5rem 1rem;
   box-sizing: border-box;
   border-right: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 0 30px 30px 0;
 }
 
 /* Brand */
@@ -53,7 +54,7 @@
 
 /* Admin Badge */
 .admin-badge {
-  background-color: #131f3e;
+  background-color: #2563eb;
   border-radius: 12px;
   padding: 0.75rem 1rem;
   display: flex;
@@ -99,12 +100,12 @@
 
 .nav-item:hover {
   color: #ffffff;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: #172a54;
 }
 
 .nav-item.active {
-  background-color: #172a54;
-  color: #38bdf8;
+  background-color: #2563eb;
+  color: white;
   font-weight: 600;
 }
 

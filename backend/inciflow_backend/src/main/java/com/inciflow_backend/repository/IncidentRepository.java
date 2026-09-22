@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface IncidentRepository extends JpaRepository<Incident, Long> {
 
-    // الدوال الزوز هذيما لازم يكونوا مكتوبين هكا بالظبط داخل الـ Interface:
+
     List<Incident> findByStatus(IncidentStatus status);
 
     List<Incident> findByEmployee(User employee);

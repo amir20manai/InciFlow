@@ -4,14 +4,14 @@
   display: block;
   position: fixed;
   top: 0;
-  left: 250px;
+  left: 260px;
   right: 0;
   bottom: 0;
-  background-color: #060b19;
-  color: #f8fafc;
+  color: #060b19;
   font-family: 'Inter', sans-serif;
   box-sizing: border-box;
   overflow-y: auto;
+  z-index: 10;
 }
 
 .categories-container {
@@ -19,126 +19,38 @@
   flex-direction: column;
   width: 100%;
   min-height: 100%;
+  padding: 32px; 
   box-sizing: border-box;
+  background-color: #f1f5f9;
 }
 
-/* Header */
 .top-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 0.85rem 1.5rem;
-  background-color: #0b1329;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  align-items: center;
+  margin-bottom: 24px;
   width: 100%;
-  box-sizing: border-box;
 }
 
 .page-title {
-  font-size: 1.15rem;
+  font-size: 24px;
   font-weight: 700;
-  color: #ffffff;
+  color: #0f172a;
   margin: 0;
 }
 
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-}
-
-.search-header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  padding: 0.35rem 0.85rem;
-  color: #64748b;
-  width: 220px;
-}
-
-.search-header input {
-  background: none;
-  border: none;
-  outline: none;
-  color: #ffffff;
-  font-size: 0.78rem;
-  width: 100%;
-}
-
-.icon-btn {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #94a3b8;
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.profile-pill {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.2rem 0.6rem 0.2rem 0.2rem;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  cursor: pointer;
-  color: #64748b;
-}
-
-.avatar-circle {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #2563eb;
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 0.75rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.user-details {
-  display: flex;
-  flex-direction: column;
-}
-
-.user-name {
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: #ffffff;
-}
-
-.user-role {
-  font-size: 0.68rem;
-  color: #64748b;
-}
 
 /* Main Body */
 .main-body {
-  padding: 1.5rem;
   width: 100%;
-  box-sizing: border-box;
 }
 
 .panel-card {
-  background-color: #0b1329;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 14px;
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  padding: 24px;
   width: 100%;
   box-sizing: border-box;
 }
@@ -151,20 +63,20 @@
 }
 
 .panel-title {
-  font-size: 1.1rem;
+  font-size: 18px;
   font-weight: 700;
-  color: #ffffff;
-  margin: 0 0 0.2rem 0;
+  color: #0f172a;
+  margin: 0 0 4px 0;
 }
 
 .panel-subtitle {
-  font-size: 0.8rem;
+  font-size: 14px;
   color: #64748b;
   margin: 0;
 }
 
 .btn-primary {
-  background-color: #2563eb;
+  background-color:  #172a54;
   color: #ffffff;
   border: none;
   padding: 0.5rem 1rem;
@@ -178,7 +90,7 @@
 }
 
 .btn-primary:hover {
-  background-color: #1d4ed8;
+  background-color: #2563eb;
 }
 
 /* Categories Grid */
@@ -191,7 +103,7 @@
 
 .category-card {
   background: rgba(255, 255, 255, 0.015);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid #cbd5e1;
   border-radius: 10px;
   padding: 1rem 1.25rem;
   display: flex;
@@ -200,9 +112,6 @@
   transition: background 0.2s;
 }
 
-.category-card:hover {
-  background: rgba(255, 255, 255, 0.03);
-}
 
 .category-info {
   display: flex;
@@ -234,7 +143,7 @@
 .cat-name {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #ffffff;
+  color: black;
 }
 
 .cat-count {
@@ -243,16 +152,21 @@
 }
 
 .edit-btn {
-  background: none;
-  border: none;
-  color: #94a3b8;
-  font-size: 0.8rem;
-  font-weight: 500;
+  color: black;
+  border: 1px solid ;
+  border-color: #9da0a4;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
+
 .edit-btn:hover {
-  color: #ffffff;
+  color: black;
+  background-color:#b8bdc3 ;
+  border-radius: 6px;
 }
 
 /* Modal Popup */
@@ -270,8 +184,8 @@
 }
 
 .modal-box {
-  background: #0b1329;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: white;
+  border: 1px solid black;
   border-radius: 12px;
   padding: 1.5rem;
   width: 350px;
@@ -283,7 +197,7 @@
 .modal-box h3 {
   margin: 0;
   font-size: 1.1rem;
-  color: #ffffff;
+  color: black;
 }
 
 .form-group {
@@ -294,15 +208,15 @@
 
 .form-group label {
   font-size: 0.78rem;
-  color: #94a3b8;
+  color: black;
 }
 
 .form-group input[type="text"] {
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid black;
   border-radius: 6px;
   padding: 0.5rem;
-  color: #ffffff;
+  color: black;
   font-size: 0.85rem;
   outline: none;
 }
@@ -311,7 +225,7 @@
   width: 100%;
   height: 35px;
   background: none;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid black;
   border-radius: 6px;
   cursor: pointer;
 }
@@ -325,17 +239,14 @@
 
 .btn-cancel {
   background: transparent;
-  color: #94a3b8;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: black;
+  border: 1px solid #b8bdc3;
   padding: 0.5rem 1rem;
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.8rem;
 }
 
-.btn-cancel:hover {
-  color: #ffffff;
-}
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -346,24 +257,23 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999999; /* رقم كبير برشة باش يجي فوق أي عنصر آخر في الصفحة */
-  pointer-events: auto !important; /* ضمان استقبال الكليكات */
+  z-index: 999999; 
+  pointer-events: auto !important; 
 }
 
 .modal-box {
-  background-color: #1e293b;
+  background-color: whitesmoke;
   padding: 24px;
   border-radius: 12px;
   width: 400px;
   max-width: 90%;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  color: #fff;
+  color: black;
   position: relative;
   z-index: 1000000;
   pointer-events: auto !important;
 }
 
-/* ضمان أن الأزرار قابلة للضغط داخل المودال */
 .modal-box button {
   position: relative;
   z-index: 1000001;

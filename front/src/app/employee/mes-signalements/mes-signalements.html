@@ -1,8 +1,8 @@
-<div class="dashboard-container">
+<div class="reports-container">
   <!-- Top Header -->
   <header class="top-header">
     <div class="header-left">
-      <h1 class="page-title">My Incidents</h1>
+      <h1 class="page-title">Mes incidents</h1>
     </div>
   </header>
 
@@ -12,45 +12,43 @@
       
       <!-- Card Header -->
       <div class="card-header-info">
-        <h3>My Incidents</h3>
-        <p>{{ filteredIncidents.length }} incidents you've reported</p>
+        <h2>Mes incidents</h2>
+        <p>{{ filteredIncidents.length }} les incidents que vous avez signalés</p>
       </div>
 
       <!-- Filters and Search Toolbar -->
-      <div class="toolbar-filters">
-        <div class="search-table-input">
+      <div class="controls-bar">
+        <div class="search-box">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" placeholder="Search by title, ID..." [(ngModel)]="tableSearch">
+          <input type="text" placeholder="Rechercher un incident...." [(ngModel)]="searchQuery" (input)="filterIncidents()">
         </div>
-        
-        <div class="filter-dropdowns">
-          <!-- Status Filter Dropdown -->
-          <div class="dropdown-wrapper">
-            <button class="filter-btn" (click)="toggleStatusDropdown()">
-              <span>{{ selectedStatus === 'All' ? 'All status' : selectedStatus }}</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="dropdown-menu" *ngIf="showStatusDropdown">
-              <div class="dropdown-item" *ngFor="let st of statusOptions" (click)="selectStatus(st)">{{ st }}</div>
-            </div>
-          </div>
 
-          <!-- Priority Filter Dropdown -->
-          <div class="dropdown-wrapper">
-            <button class="filter-btn" (click)="togglePriorityDropdown()">
-              <span>{{ selectedPriority === 'All' ? 'All priority' : selectedPriority }}</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="dropdown-menu" *ngIf="showPriorityDropdown">
-              <div class="dropdown-item" *ngFor="let pr of priorityOptions" (click)="selectPriority(pr)">{{ pr }}</div>
-            </div>
-          </div>
+        <div class="filters-right">
+          <svg class="filter-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          
+          <!-- Status Options -->
+          <select class="select-btn" [(ngModel)]="selectedStatus" (change)="filterIncidents()">
+            <option value="ALL">Tous les statuts</option>
+            <option value="NOUVEAU">Nouveau</option>
+            <option value="EN_COURS">En Cours</option>
+            <option value="RESOLU">Résolu</option>
+            <option value="REJETE">Rejeté</option>
+          </select>
+
+          <!-- Priority Options -->
+          <select class="select-btn" [(ngModel)]="selectedPriority" (change)="filterIncidents()">
+            <option value="ALL">Toutes les priorités</option>
+            <option value="CRITIQUE">Critique</option>
+            <option value="HAUTE">Haute</option>
+            <option value="MOYENNE">Moyenne</option>
+            <option value="BASSE">Basse</option>
+          </select>
         </div>
       </div>
 
       <!-- Loading State -->
       <div *ngIf="isLoading" style="text-align: center; padding: 40px; color: #94a3b8;">
-        Loading incidents from database...
+        Chargement des incidents depuis la base de données...
       </div>
 
       <!-- Error State -->
@@ -65,21 +63,21 @@
             <tr>
               <th>ID</th>
               <th>INCIDENT</th>
-              <th>REPORTER</th>
-              <th>PRIORITY</th>
-              <th>STATUS</th>
-              <th>UPDATED</th>
+              <th>DEPARTEMENT</th>
+              <th>PRIORITÉ</th>
+              <th>STATUT</th>
+              <th>MIS À JOUR</th>
             </tr>
           </thead>
           <tbody>
             <!-- Empty state message inside table if no incidents match -->
             <tr *ngIf="filteredIncidents.length === 0">
               <td colspan="6" style="text-align: center; padding: 30px; color: #94a3b8;">
-                No incidents found.
+                Aucun incident détecté.
               </td>
             </tr>
 
-            <tr *ngFor="let inc of filteredIncidents">
+            <tr *ngFor="let inc of filteredIncidents" (click)="viewDetails(inc.id)" style="cursor: pointer;">
               <td class="col-id">{{ inc.code }}</td>
               <td class="col-incident">
                 <span class="inc-title">{{ inc.title }}</span>
@@ -87,17 +85,16 @@
               </td>
               <td class="col-reporter">
                 <div class="reporter-info">
-                  <div class="reporter-avatar">{{ currentUserInitials }}</div>
-                  <span>{{ inc.reportedBy }}</span>
+                  <span class="reporter-name">{{ inc.departmentName }}</span>
                 </div>
               </td>
               <td>
-                <span class="badge-priority" [ngClass]="(inc.severity || 'medium').toLowerCase()">
+                <span class="badge-priority" [ngClass]="getPriorityClass(inc.severity)">
                   <span class="dot"></span> {{ inc.severity }}
                 </span>
               </td>
               <td>
-                <span class="badge-status" [ngClass]="(inc.status || 'open').toLowerCase().replace(' ', '-')">
+                <span class="badge-status" [ngClass]="getStatusClass(inc.status)">
                   <span class="dot"></span> {{ inc.status }}
                 </span>
               </td>

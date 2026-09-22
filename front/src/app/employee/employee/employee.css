@@ -1,13 +1,16 @@
-.employee-container {
+.admin-container {
   display: flex;
-  min-height: 100vh;
-  background-color: #f8fafc;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  background-color: #f1f5f9; /* Dark background mta3 el-app */
 }
 
-.employee-content {
-  flex-grow: 1;
-  margin-left: 260px; /* Nafs el-width mta3 el-sidebar bech yji ba7dah mrigel */
-  padding: 32px;
-  min-height: 100vh;
-  box-sizing: border-box;
+.content-area {
+  flex: 1;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 2rem;
+  color: black; /* Be3ch el-text yabda abyaḍ w yban */
+  background-color: #f1f5f9;
 }

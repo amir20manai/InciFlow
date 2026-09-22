@@ -3,5 +3,6 @@ package com.inciflow_backend.enums;
 public enum IncidentStatus {
     NOUVEAU,
     EN_COURS,
-    RESOLU
+    RESOLU,
+    REJETE   // <-- زيدها هنا بحدة
 }

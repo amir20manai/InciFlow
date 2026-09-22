@@ -26,7 +26,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(@NonNull HttpServletRequest request) throws ServletException {
-        // تخلي الفلتر يتجاوز مسارات المصادقة والتسجيل وعرض الصور بالكامل
         String path = request.getRequestURI();
         return path.startsWith("/api/auth/") || path.startsWith("/uploads/");
     }
@@ -50,8 +49,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         try {
             userEmail = jwtService.extractUsername(jwt);
-            System.out.println("EXTRACTED EMAIL FROM JWT: " + userEmail);
-
             if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
                 if (jwtService.isTokenValid(jwt, userDetails)) {
@@ -62,14 +59,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     );
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
-                    System.out.println("AUTHENTICATION SUCCESSFUL for user: " + userEmail);
-                } else {
-                    System.out.println("JWT TOKEN IS INVALID!");
                 }
             }
         } catch (Exception e) {
             System.out.println("ERROR IN JWT FILTER: " + e.getMessage());
-            e.printStackTrace();
         }
 
         filterChain.doFilter(request, response);

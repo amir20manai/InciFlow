@@ -4,7 +4,7 @@
   display: block;
   position: fixed;
   top: 0;
-  left: 260px; /* Taba3 3ardh el sidebar */
+  left: 260px;
   right: 0;
   bottom: 0;
   color: #0f172a;
@@ -24,7 +24,7 @@
   background-color: #f1f5f9;
 }
 
-/* Header */
+/* ============ Header ============ */
 .top-header {
   display: flex;
   justify-content: space-between;
@@ -40,7 +40,7 @@
   margin: 0;
 }
 
-/* Back Button */
+/* ============ Back Button ============ */
 .back-wrapper {
   margin-bottom: 20px;
 }
@@ -65,7 +65,7 @@
   color: #0f172a;
 }
 
-/* Main Body */
+/* ============ Main Body ============ */
 .main-body {
   width: 100%;
   display: flex;
@@ -73,7 +73,7 @@
   gap: 20px;
 }
 
-/* Panel Cards (White background like Users page) */
+/* Panel Cards (white background, matches Users page style) */
 .panel-card {
   background: #ffffff;
   border-radius: 16px;
@@ -116,7 +116,7 @@
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid #e2e8f0;
-  background: #f8fafc; /* Nreddouh byadh wala fatih bech may9leqch 3al 3en */
+  background: #f8fafc;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -128,12 +128,12 @@
   width: 100% !important;
   height: auto !important;
   max-height: 700px !important;
-  object-fit: cover !important; /* Tched el 3ardh el kol w tetmadded bel gdhed */
+  object-fit: cover !important;
   border-radius: 8px;
   display: block;
 }
 
-/* Bottom Grid */
+/* ============ Bottom Grid ============ */
 .bottom-grid-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -178,7 +178,7 @@
   font-weight: 600;
 }
 
-/* Form controls */
+/* ============ Form controls ============ */
 .form-group label {
   display: block;
   margin-bottom: 8px;
@@ -205,16 +205,16 @@
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
-/* Action buttons */
+/* ============ Action buttons ============ */
 .action-buttons-row {
   display: flex;
   gap: 12px;
   margin-top: 20px;
 }
 
-.btn-accept {
+.btn-accept,
+.btn-reject {
   flex: 1;
-  background-color: #16a34a;
   color: white;
   border: none;
   padding: 10px 16px;
@@ -223,35 +223,26 @@
   font-size: 14px;
   cursor: pointer;
   transition: background-color 0.2s;
+}
+
+.btn-accept:disabled,
+.btn-reject:disabled {
+  background-color: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.btn-accept {
+  background-color: #16a34a;
 }
 
 .btn-accept:hover:not(:disabled) {
   background-color: #15803d;
 }
 
-.btn-accept:disabled {
-  background-color: #cbd5e1;
-  cursor: not-allowed;
-}
-
 .btn-reject {
-  flex: 1;
   background-color: #dc2626;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.2s;
 }
 
 .btn-reject:hover:not(:disabled) {
   background-color: #b91c1c;
-}
-
-.btn-reject:disabled {
-  background-color: #cbd5e1;
-  cursor: not-allowed;
 }

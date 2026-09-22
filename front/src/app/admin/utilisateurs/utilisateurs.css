@@ -24,7 +24,7 @@
   background-color: #f1f5f9;
 }
 
-/* Header */
+/* ============ Header ============ */
 .top-header {
   display: flex;
   justify-content: space-between;
@@ -40,7 +40,7 @@
   margin: 0;
 }
 
-/* Main Body & Panel Card */
+/* ============ Main Body & Panel ============ */
 .main-body {
   width: 100%;
 }
@@ -72,7 +72,7 @@
   margin: 0;
 }
 
-/* Controls Bar */
+/* ============ Controls Bar ============ */
 .controls-bar {
   display: flex;
   align-items: center;
@@ -130,7 +130,7 @@
   background: #f1f5f9;
 }
 
-/* Table */
+/* ============ Table ============ */
 .table-responsive {
   width: 100%;
   overflow-x: auto;
@@ -230,7 +230,7 @@
   font-size: 0.75rem;
 }
 
-/* Action Buttons */
+/* ============ Action Buttons ============ */
 .action-buttons {
   display: flex;
   flex-direction: column;
@@ -285,7 +285,7 @@
   stroke: #dc2626;
 }
 
-/* Modal Styles */
+/* ============ Modal ============ */
 .modal-backdrop {
   position: fixed;
   top: 0;

@@ -25,7 +25,7 @@
   background-color: #f1f5f9;
 }
 
-/* Header */
+/* ============ Header ============ */
 .top-header {
   display: flex;
   justify-content: space-between;
@@ -41,7 +41,7 @@
   margin: 0;
 }
 
-/* Main Body & Form Card (Light Mode & Wider) */
+/* ============ Main Body & Form Card ============ */
 .main-body {
   width: 100%;
 }
@@ -52,7 +52,7 @@
   border-radius: 16px;
   padding: 2.5rem;
   width: 100%;
-  max-width: 100%; /* Roddeneha 100% bech tched el 3ardh el kol kima el page de détail */
+  max-width: 100%;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
   display: flex;
   flex-direction: column;
@@ -91,8 +91,8 @@
   color: #475569;
 }
 
-.form-group input, 
-.form-group textarea, 
+.form-group input,
+.form-group textarea,
 .form-group select {
   background: #ffffff;
   border: 1px solid #cbd5e1;
@@ -105,8 +105,8 @@
   transition: all 0.2s;
 }
 
-.form-group input:focus, 
-.form-group textarea:focus, 
+.form-group input:focus,
+.form-group textarea:focus,
 .form-group select:focus {
   border-color: #2563eb;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
@@ -123,13 +123,13 @@
   gap: 1rem;
 }
 
-@media(max-width: 600px) {
+@media (max-width: 600px) {
   .form-row {
     grid-template-columns: 1fr;
   }
 }
 
-/* Priority Options */
+/* ============ Priority Options ============ */
 .priority-options {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -159,7 +159,7 @@
   color: #2563eb;
 }
 
-/* File Dropzone */
+/* ============ File Dropzone ============ */
 .file-dropzone {
   border: 2px dashed #cbd5e1;
   border-radius: 10px;
@@ -196,7 +196,7 @@
   font-weight: 600;
 }
 
-/* Form Actions */
+/* ============ Form Actions ============ */
 .form-actions {
   display: flex;
   align-items: center;
@@ -225,7 +225,7 @@
 }
 
 .submit-btn {
-  background-color:#172a54;
+  background-color: #172a54;
   border: none;
   color: #ffffff;
   padding: 0.65rem 1.25rem;

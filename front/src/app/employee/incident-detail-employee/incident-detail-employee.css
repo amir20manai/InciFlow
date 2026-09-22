@@ -4,7 +4,7 @@
   display: block;
   position: fixed;
   top: 0;
-  left: 260px; /* Taba3 3ardh el sidebar */
+  left: 260px;
   right: 0;
   bottom: 0;
   color: #0f172a;
@@ -24,7 +24,7 @@
   background-color: #f1f5f9;
 }
 
-/* Header */
+/* ============ Header ============ */
 .top-header {
   display: flex;
   justify-content: space-between;
@@ -40,7 +40,7 @@
   margin: 0;
 }
 
-/* Back Button */
+/* ============ Back Button ============ */
 .back-wrapper {
   margin-bottom: 20px;
 }
@@ -65,7 +65,7 @@
   color: #0f172a;
 }
 
-/* Main Body */
+/* ============ Main Body ============ */
 .main-body {
   width: 100%;
   display: flex;
@@ -73,7 +73,6 @@
   gap: 20px;
 }
 
-/* Panel Cards */
 .panel-card {
   background: #ffffff;
   border-radius: 16px;
@@ -169,7 +168,7 @@
   font-weight: 600;
 }
 
-/* Status & Priority Pills styling (ken t7ejthom) */
+/* ============ Status & Priority Pills ============ */
 .status-pill, .priority-pill {
   display: inline-flex;
   align-items: center;

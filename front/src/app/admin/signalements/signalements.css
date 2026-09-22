@@ -4,7 +4,7 @@
   display: block;
   position: fixed;
   top: 0;
-  left: 260px; /* Roddha taba3 3ardh el sidebar mte3ek bil-gdhed (260px) */
+  left: 260px;
   right: 0;
   bottom: 0;
   color: #060b19;
@@ -19,10 +19,12 @@
   flex-direction: column;
   width: 100%;
   min-height: 100%;
-  padding: 32px; /* Zidna el padding mel foug w el janb bech mayetgabba chay taht el sidebar */
+  padding: 32px;
   box-sizing: border-box;
   background-color: #f1f5f9;
 }
+
+/* ============ Header ============ */
 .top-header {
   display: flex;
   justify-content: space-between;
@@ -38,7 +40,7 @@
   margin: 0;
 }
 
-/* Main Body & Panel Card - Lazmhom ya5ouha el 3ardh lkol 100% */
+/* ============ Main Body & Panel ============ */
 .main-body {
   width: 100%;
 }
@@ -53,7 +55,6 @@
   box-sizing: border-box;
 }
 
-/* Panel Header */
 .panel-top {
   margin-bottom: 20px;
 }
@@ -71,7 +72,7 @@
   margin: 0;
 }
 
-/* Controls Bar (Search & Filters) */
+/* ============ Controls Bar (Search & Filters) ============ */
 .controls-bar {
   display: flex;
   justify-content: space-between;
@@ -142,7 +143,7 @@
   border-color: #94a3b8;
 }
 
-/* Table Design */
+/* ============ Table ============ */
 .table-responsive {
   width: 100%;
   overflow-x: auto;
@@ -224,7 +225,12 @@
   font-weight: 500;
 }
 
-/* Status & Priority Pills */
+.time-cell {
+  color: #64748b;
+  font-size: 13px;
+}
+
+/* ============ Status & Priority Pills ============ */
 .status-pill, .priority-pill {
   display: inline-flex;
   align-items: center;
@@ -234,7 +240,11 @@
   font-weight: 500;
 }
 
-/* Status colors */
+.priority-pill {
+  background-color: transparent;
+  font-weight: 600;
+}
+
 .status-pill.nouveau, .status-pill.ouvert {
   background-color: #fef2f2;
   color: #dc2626;
@@ -250,31 +260,19 @@
   color: #16a34a;
 }
 
-/* Priority colors */
 .priority-pill.critique, .priority-pill.haute {
   color: #dc2626;
-  background-color: transparent;
-  font-weight: 600;
 }
 
 .priority-pill.moyenne {
   color: #d97706;
-  background-color: transparent;
-  font-weight: 600;
 }
 
 .priority-pill.basse {
   color: #64748b;
-  background-color: transparent;
-  font-weight: 600;
 }
 
-.time-cell {
-  color: #64748b;
-  font-size: 13px;
-}
-
-/* Pagination Footer */
+/* ============ Pagination Footer ============ */
 .pagination-footer {
   display: flex;
   justify-content: space-between;

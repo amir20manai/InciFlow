@@ -24,6 +24,7 @@
   background-color: #f1f5f9;
 }
 
+/* ============ Header ============ */
 .top-header {
   display: flex;
   justify-content: space-between;
@@ -39,6 +40,7 @@
   margin: 0;
 }
 
+/* ============ Panel ============ */
 .notifications-content {
   width: 100%;
 }
@@ -70,7 +72,7 @@
   margin: 0;
 }
 
-/* Controls Bar */
+/* ============ Controls Bar ============ */
 .controls-bar {
   display: flex;
   justify-content: space-between;
@@ -126,7 +128,7 @@
   color: #64748b;
 }
 
-/* Select Dropdown style متناسق مع Mes Incidents */
+/* Select dropdown, matches "Mes Incidents" style */
 .select-btn {
   padding: 10px 16px;
   border: 1px solid #cbd5e1;
@@ -162,7 +164,7 @@
   background-color: #2563eb;
 }
 
-/* Notifications List */
+/* ============ Notifications List ============ */
 .notifications-list {
   display: flex;
   flex-direction: column;
@@ -180,7 +182,6 @@
   border-radius: 10px;
 }
 
-/* Unread: اللون المطلوب #e1e6f4 */
 .notification-item.unread {
   background-color: #e1e6f4;
   border-color: #94a3b8;
@@ -189,12 +190,6 @@
 .notification-item.unread .notif-texts p {
   color: #0f172a;
   font-weight: 600;
-}
-
-/* Read: أبيض عادي */
-.notification-item.read {
-  border: 1px solid #cbd5e1;
-  border-radius: 10px;
 }
 
 .notification-item.read .notif-texts p {

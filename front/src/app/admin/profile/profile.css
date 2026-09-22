@@ -4,7 +4,7 @@
   display: block;
   position: fixed;
   top: 0;
-  left: 260px; /* Roddha taba3 3ardh el sidebar mte3ek bil-gdhed */
+  left: 260px;
   right: 0;
   bottom: 0;
   color: #0f172a;
@@ -24,7 +24,7 @@
   padding-bottom: 40px;
 }
 
-/* Titre mel foug */
+/* ============ Header ============ */
 .page-header-title {
   padding: 32px 32px 0 32px;
   display: flex;
@@ -47,7 +47,7 @@
   margin: 0;
 }
 
-/* Zone principale */
+/* ============ Main Content ============ */
 .profile-content {
   padding: 24px 32px;
   display: flex;
@@ -58,7 +58,7 @@
   width: 100%;
 }
 
-/* Hero Card (Banner Azraq) */
+/* ============ Hero Card ============ */
 .profile-hero-card {
   background-color: #ffffff;
   border: 1px solid #e2e8f0;
@@ -129,7 +129,7 @@
   margin-top: 4px;
 }
 
-/* Grille mta3 les cartes (minmax bech mayصيرch overflow 3al ymin) */
+/* ============ Cards Grid ============ */
 .profile-grid {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
@@ -171,7 +171,7 @@
   margin: 0;
 }
 
-/* Formulaires */
+/* ============ Forms ============ */
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

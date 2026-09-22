@@ -4,7 +4,7 @@
   display: block;
   position: fixed;
   top: 0;
-  left: 260px; /* Roddha taba3 3ardh el sidebar mte3ek bil-gdhed (260px) */
+  left: 260px;
   right: 0;
   bottom: 0;
   color: #060b19;
@@ -19,12 +19,12 @@
   flex-direction: column;
   width: 100%;
   min-height: 100%;
-  padding: 32px; /* Padding mel foug w el janb bech mayetgabba chay taht el sidebar */
+  padding: 32px;
   box-sizing: border-box;
   background-color: #f1f5f9;
 }
 
-/* Top Header */
+/* ============ Header ============ */
 .top-header {
   display: flex;
   justify-content: space-between;
@@ -40,30 +40,30 @@
   margin: 0;
 }
 
-/* Main Body - Lazmha tnaffas w taba3ed les sections 3la b3adhhom */
+/* ============ Main Body ============ */
 .main-body {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 28px; /* Espacement vertical bin el metrics, el charts row, w el weekly trend */
+  gap: 28px;
 }
 
-/* Metrics Grid (4 Cols lel priorités lkol) - Zidna el gap bech ma yebdewsh lesqin */
+/* ============ Metrics Grid (4 priority cards) ============ */
 .metrics-grid.four-cols {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 24px; /* Espace bin les cards */
+  gap: 24px;
   width: 100%;
   box-sizing: border-box;
 }
 
-@media(max-width: 1200px) {
+@media (max-width: 1200px) {
   .metrics-grid.four-cols {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media(max-width: 768px) {
+@media (max-width: 768px) {
   .metrics-grid.four-cols {
     grid-template-columns: 1fr;
   }
@@ -133,16 +133,16 @@
   margin: 0;
 }
 
-/* Charts Rows - Espace bin el graph mel 3ardh w el tech list */
+/* ============ Charts Row ============ */
 .charts-row {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-  gap: 24px; /* Espace bin les deux panel cards */
+  gap: 24px;
   width: 100%;
   box-sizing: border-box;
 }
 
-@media(max-width: 1100px) {
+@media (max-width: 1100px) {
   .charts-row {
     grid-template-columns: 1fr;
   }
@@ -193,7 +193,7 @@
 
 .cat-name {
   color: #334155;
-  font-weight: 505;
+  font-weight: 500;
 }
 
 .cat-count {
@@ -258,7 +258,7 @@
   font-weight: 500;
 }
 
-/* Weekly Trend / Evolution Mensuelle */
+/* ============ Weekly Trend / Evolution ============ */
 .weekly-trend-card {
   width: 100%;
 }

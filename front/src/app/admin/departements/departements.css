@@ -4,7 +4,7 @@
   display: block;
   position: fixed;
   top: 0;
-  left: 260px; /* Roddha taba3 3ardh el sidebar mte3ek bil-gdhed (260px) */
+  left: 260px;
   right: 0;
   bottom: 0;
   color: #060b19;
@@ -19,12 +19,12 @@
   flex-direction: column;
   width: 100%;
   min-height: 100%;
-  padding: 32px; /* Zidna el padding mel foug w el janb bech mayetgabba chay taht el sidebar */
+  padding: 32px;
   box-sizing: border-box;
   background-color: #f1f5f9;
 }
 
-/* Header */
+/* ============ Header ============ */
 .top-header {
   display: flex;
   justify-content: space-between;
@@ -40,8 +40,7 @@
   margin: 0;
 }
 
-
-/* Main Body */
+/* ============ Main Body ============ */
 .main-body {
   width: 100%;
 }
@@ -76,6 +75,7 @@
   margin: 0;
 }
 
+/* ============ Buttons ============ */
 .btn-primary {
   background-color: #172a54;
   color: #ffffff;
@@ -95,7 +95,38 @@
   background-color: #2563eb;
 }
 
-/* Departments Grid */
+.btn-cancel {
+  background: transparent;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.btn-cancel:hover {
+  background: #f1f5f9;
+}
+
+.btn-delete {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-delete:hover {
+  background: #dc2626;
+}
+
+/* ============ Departments Grid ============ */
 .departments-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -134,25 +165,6 @@
 .dept-members-count {
   font-size: 0.75rem;
   color: #475569;
-}
-
-/* Edit Button on Card */
-.edit-btn {
-  color: #0f172a;
-  border: 1px solid;
-  border-color: #9da0a4;
-  padding: 0.25rem 0.6rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  cursor: pointer;
-  background: transparent;
-  transition: all 0.2s;
-}
-
-.edit-btn:hover {
-  color: #ffffff;
-  background-color: #475569;
-  border-color: #475569;
 }
 
 .dept-name-area h3 {
@@ -206,7 +218,25 @@
   color: #0f172a;
 }
 
-/* Modal Popup */
+/* Edit Button on Card */
+.edit-btn {
+  color: #0f172a;
+  border: 1px solid #9da0a4;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.2s;
+}
+
+.edit-btn:hover {
+  color: #ffffff;
+  background-color: #475569;
+  border-color: #475569;
+}
+
+/* ============ Modal Popup ============ */
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -250,7 +280,7 @@
   color: #475569;
 }
 
-/* Inputs w Select unified design */
+/* Inputs & select share a unified design */
 .form-group input[type="text"],
 .form-group select.form-control,
 .form-group select {
@@ -287,36 +317,4 @@
   justify-content: flex-end;
   gap: 0.5rem;
   margin-top: 0.5rem;
-}
-
-.btn-cancel {
-  background: transparent;
-  color: #475569;
-  border: 1px solid #cbd5e1;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.8rem;
-  font-weight: 500;
-}
-
-.btn-cancel:hover {
-  background: #f1f5f9;
-}
-
-/* Delete Button inside Edit Modal */
-.btn-delete {
-  background: #ef4444;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.8rem;
-  font-weight: 500;
-  transition: all 0.2s;
-}
-
-.btn-delete:hover {
-  background: #dc2626;
 }

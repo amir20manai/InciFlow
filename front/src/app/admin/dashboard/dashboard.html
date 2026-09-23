@@ -1,21 +1,21 @@
 <div class="dashboard-layout">
-  <!-- Top Header Navigation -->
+  <!-- En-tête de la page -->
   <header class="top-header">
     <div class="header-left">
       <h1 class="page-title">Tableau de bord</h1>
     </div>
   </header>
 
-  <!-- Main Scrollable Content -->
+  <!-- Contenu principal -->
   <main class="dashboard-body">
     
-    <!-- Welcome Header -->
+    <!-- Section de bienvenue -->
     <section class="welcome-section">
       <h2>Bienvenu {{ userName }} </h2>
       <p class="subtitle">Voici ce qui se passe dans votre organisation aujourd'hui.</p>
     </section>
 
-    <!-- Stat Cards Row (5 Cards: Total + 4 Priorities) -->
+    <!-- Rangée des cartes de statistiques (Total + 4 priorités) -->
     <section class="stats-grid five-cols">
       <div class="stat-card" *ngFor="let stat of stats">
         <span class="stat-title">{{ stat.title }}</span>
@@ -23,9 +23,9 @@
       </div>
     </section>
 
-    <!-- Analytics Charts Section (Two Equal Ring Charts) -->
+    <!-- Section des graphiques en anneau (2 donuts) -->
     <section class="charts-grid equal-grid">
-      <!-- Category Ring Overview -->
+      <!-- Graphique : Incidents par catégorie -->
       <div class="panel-card category-panel">
         <div class="panel-header">
           <h3>Incidents par catégorie</h3>
@@ -34,14 +34,18 @@
         <div class="ring-chart-container">
           <div class="ring-graphic">
             <svg viewBox="0 0 100 100" class="donut-svg">
+              <!-- Cercle de fond -->
               <circle cx="50" cy="50" r="38" fill="none" stroke="#1e293b" stroke-width="12"/>
+              <!-- Segments dynamiques par catégorie -->
               <circle *ngFor="let cat of categorySegments" cx="50" cy="50" r="38" fill="none" [attr.stroke]="cat.color" stroke-width="12" [attr.stroke-dasharray]="cat.dash" [attr.stroke-dashoffset]="cat.offset"/>
             </svg>
+            <!-- Texte au centre -->
             <div class="ring-center-text">
               <span class="total-num">{{ statusCounts.total }}</span>
               <span class="total-label">Total</span>
             </div>
           </div>
+          <!-- Légende -->
           <div class="ring-legend">
             <div class="legend-item" *ngFor="let cat of categories">
               <span class="dot" [style.background-color]="cat.color"></span> 
@@ -52,7 +56,7 @@
         </div>
       </div>
 
-      <!-- Status Ring Overview -->
+      <!-- Graphique : Vue d'ensemble du statut -->
       <div class="panel-card status-panel">
         <div class="panel-header">
           <h3>Vue d'ensemble du statut</h3>
@@ -61,17 +65,21 @@
         <div class="ring-chart-container">
           <div class="ring-graphic">
             <svg viewBox="0 0 100 100" class="donut-svg">
+              <!-- Cercle de fond -->
               <circle cx="50" cy="50" r="38" fill="none" stroke="#1e293b" stroke-width="12"/>
+              <!-- Segments par statut -->
               <circle cx="50" cy="50" r="38" fill="none" stroke="#10b981" stroke-width="12" [attr.stroke-dasharray]="statusSegments.resolvedDash" [attr.stroke-dashoffset]="statusSegments.resolvedOffset"/>
               <circle cx="50" cy="50" r="38" fill="none" stroke="#0ea5e9" stroke-width="12" [attr.stroke-dasharray]="statusSegments.progressDash" [attr.stroke-dashoffset]="statusSegments.progressOffset"/>
               <circle cx="50" cy="50" r="38" fill="none" stroke="#2563eb" stroke-width="12" [attr.stroke-dasharray]="statusSegments.openDash" [attr.stroke-dashoffset]="statusSegments.openOffset"/>
               <circle cx="50" cy="50" r="38" fill="none" stroke="#64748b" stroke-width="12" [attr.stroke-dasharray]="statusSegments.rejectedDash" [attr.stroke-dashoffset]="statusSegments.rejectedOffset"/>
             </svg>
+            <!-- Texte au centre -->
             <div class="ring-center-text">
               <span class="total-num">{{ statusCounts.total }}</span>
               <span class="total-label">Total</span>
             </div>
           </div>
+          <!-- Légende -->
           <div class="ring-legend">
             <div class="legend-item"><span class="dot open"></span> Nouveau <strong class="legend-val">{{ statusCounts.open }}</strong></div>
             <div class="legend-item"><span class="dot progress"></span> En cours <strong class="legend-val">{{ statusCounts.inProgress }}</strong></div>
@@ -82,9 +90,9 @@
       </div>
     </section>
 
-    <!-- Bottom Row: Table & Notifications -->
+    <!-- Rangée du bas : Tableau des incidents + Notifications -->
     <section class="bottom-grid">
-      <!-- Recent Incidents Table -->
+      <!-- Tableau : Incidents récents -->
       <div>
         <div class="panel-header flex-between">
           <div>
@@ -108,27 +116,33 @@
             </thead>
             <tbody>
               <tr *ngFor="let inc of incidents">
+                <!-- Colonne : ID -->
                 <td class="id-cell">{{ inc.id }}</td>
+                <!-- Colonne : Titre + Catégorie + Département -->
                 <td>
                   <div class="incident-title">{{ inc.title }}</div>
                   <div class="incident-sub">{{ inc.category }} &bull; {{ inc.department }}</div>
                 </td>
+                <!-- Colonne : Reporter (avatar + nom) -->
                 <td>
                   <div class="reporter-cell">
                     <span class="avatar-small" [style.background-color]="inc.reporterColor">{{ inc.reporterInitials }}</span>
                     <span>{{ inc.reporterName }}</span>
                   </div>
                 </td>
+                <!-- Colonne : Priorité -->
                 <td>
                   <span class="priority-pill" [ngClass]="(inc.priority || '').toLowerCase()">
                     &bull; {{ inc.priority }}
                   </span>
                 </td>
+                <!-- Colonne : Statut -->
                 <td>
                   <span class="status-pill" [ngClass]="(inc.status || '').toLowerCase().replace(' ', '-')">
                     &bull; {{ inc.status }}
                   </span>
                 </td>
+                <!-- Colonne : Date de mise à jour -->
                 <td class="time-cell">{{ inc.updatedAt }}</td>
               </tr>
             </tbody>
@@ -136,7 +150,7 @@
         </div>
       </div>
 
-      <!-- Notifications List (أحدث 5 تنبيهات) -->
+      <!-- Liste : Notifications récentes (5 dernières) -->
       <div class="right-section-white">
         <div class="section-header">
           <div>
@@ -149,9 +163,11 @@
           </a>
         </div>
         <div class="notifications-list">
+          <!-- Message si aucune notification -->
           <div *ngIf="notifications.length === 0" class="no-data-msg-dark">
             Aucune nouvelle notification.
           </div>
+          <!-- Boucle des notifications -->
           <div class="notification-item-white" *ngFor="let n of notifications">
             <div class="notif-icon-white">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg> 

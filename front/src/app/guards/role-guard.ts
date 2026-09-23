@@ -20,12 +20,12 @@ export const roleGuard: CanActivateFn = (route, state) => {
   // Log de débogage (à retirer en production)
   console.log('roleGuard : rôle utilisateur =', userRole, '| rôle attendu =', expectedRole);
 
-  // ✅ Cas 1 : Les rôles correspondent → accès autorisé
+  //  Cas 1 : Les rôles correspondent → accès autorisé
   if (userRole === expectedRole) {
     return true;
   }
 
-  // ❌ Cas 2 : Rôles différents → redirection vers l'espace du bon rôle
+  //  Cas 2 : Rôles différents → redirection vers l'espace du bon rôle
   console.warn('roleGuard : Accès refusé. Redirection.');
 
   switch (userRole) {

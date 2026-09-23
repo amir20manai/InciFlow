@@ -7,5 +7,10 @@ import java.util.Optional;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
+
+    // ============================================================
+    // Récupérer une catégorie par son nom
+    // (utilisé lors de la création d'un incident)
+    // ============================================================
     Optional<Category> findByName(String name);
 }

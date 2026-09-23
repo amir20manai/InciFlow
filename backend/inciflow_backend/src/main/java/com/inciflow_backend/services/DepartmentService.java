@@ -17,11 +17,14 @@ public class DepartmentService {
     @Autowired
     private DepartmentRepository departmentRepository;
 
+    // Récupérer tous les départements sous forme de DTO
     public List<DepartmentResponseDTO> getAllDepartments() {
         return departmentRepository.findAll().stream().map(this::mapToDTO).collect(Collectors.toList());
     }
 
+    // Créer un nouveau département
     public DepartmentResponseDTO createDepartment(Department department) {
+        // Si aucun chef n'est défini, on met "Unassigned"
         if (department.getHeadName() == null || department.getHeadName().trim().isEmpty()) {
             department.setHeadName("Unassigned");
         }
@@ -29,6 +32,7 @@ public class DepartmentService {
         return mapToDTO(saved);
     }
 
+    // Mettre à jour un département existant
     public DepartmentResponseDTO updateDepartment(Long id, Department departmentDetails) {
         Department department = departmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Department not found with id " + id));
@@ -42,12 +46,13 @@ public class DepartmentService {
         return mapToDTO(updated);
     }
 
+    // Supprimer un département (en détachant d'abord les utilisateurs liés)
     @Transactional
     public void deleteDepartment(Long id) {
         Department department = departmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Department not found with id " + id));
 
-
+        // Détacher tous les utilisateurs avant la suppression
         if (department.getUsers() != null) {
             for (User user : department.getUsers()) {
                 user.setDepartment(null);
@@ -57,6 +62,7 @@ public class DepartmentService {
         departmentRepository.delete(department);
     }
 
+    // Mapper l'entité Department vers le DTO de réponse
     private DepartmentResponseDTO mapToDTO(Department dept) {
         int count = dept.getUsers() != null ? dept.getUsers().size() : 0;
         String head = dept.getHeadName() != null && !dept.getHeadName().trim().isEmpty()

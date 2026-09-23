@@ -4,8 +4,6 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // Module de formulaires
 import { FormsModule } from '@angular/forms';
-// Lien de navigation
-import { RouterLink } from '@angular/router';
 // Service des notifications
 import { NotificationService, NotificationResponse } from '../../services/notification';
 
@@ -13,7 +11,7 @@ import { NotificationService, NotificationResponse } from '../../services/notifi
 @Component({
   selector: 'app-employee-notifications',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule],
   templateUrl: './notifications.html',
   styleUrls: ['./notifications.css']
 })

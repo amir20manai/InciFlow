@@ -1,35 +1,38 @@
 <div class="signal-container">
-  <!-- Top Header -->
+  <!-- En-tête de la page -->
   <header class="top-header">
     <div class="header-left">
       <h1 class="page-title">Nouvel incident</h1>
     </div>
   </header>
 
-  <!-- Main Body -->
+  <!-- Contenu principal -->
   <main class="main-body">
     <div class="form-card">
+      <!-- En-tête du formulaire -->
       <div class="form-header">
         <h2>Signaler un nouvel incident</h2>
         <p>Fournissez des détails pour permettre à votre équipe de répondre rapidement.</p>
       </div>
 
+      <!-- Formulaire de signalement -->
       <form (ngSubmit)="onSubmit()" class="incident-form">
         
-        <!-- Title -->
+        <!-- Champ : Titre -->
         <div class="form-group">
           <label>Titre</label>
           <input type="text" placeholder="Bref résumé du problème" [(ngModel)]="incident.title" name="title" required>
         </div>
 
-        <!-- Description -->
+        <!-- Champ : Description -->
         <div class="form-group">
           <label>Description</label>
           <textarea rows="4" placeholder="Décrivez ce qui s'est passé, quand cela a commencé et les éventuels messages d'erreur..." [(ngModel)]="incident.description" name="description" required></textarea>
         </div>
 
-        <!-- Category & Department Grid -->
+        <!-- Grille : Catégorie + Département -->
         <div class="form-row">
+          <!-- Champ : Catégorie -->
           <div class="form-group">
             <label>Catégorie</label>
             <select [(ngModel)]="incident.category" name="category" required>
@@ -38,6 +41,7 @@
             </select>
           </div>
 
+          <!-- Champ : Département -->
           <div class="form-group">
             <label>Departement</label>
             <select [(ngModel)]="incident.department" name="department" required>
@@ -47,7 +51,7 @@
           </div>
         </div>
 
-        <!-- Priority Buttons Selector -->
+        <!-- Sélecteur de priorité (boutons) -->
         <div class="form-group">
           <label>Priorité</label>
           <div class="priority-options">
@@ -58,7 +62,7 @@
           </div>
         </div>
 
-        <!-- File Upload Area -->
+        <!-- Zone de téléchargement d'image -->
         <div class="form-group">
           <label>Joindre une image (facultatif)</label>
           <label class="file-dropzone" for="fileInput">
@@ -69,7 +73,7 @@
           </label>
         </div>
 
-        <!-- Form Actions (Cancel & Submit) -->
+        <!-- Actions du formulaire (Annuler / Envoyer) -->
         <div class="form-actions">
           <button type="button" class="cancel-btn" (click)="onCancel()">Annuler</button>
           <button type="submit" class="submit-btn">Signaler un incident</button>

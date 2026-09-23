@@ -5,14 +5,12 @@ import com.inciflow_backend.dto.IncidentResponse;
 import com.inciflow_backend.entity.Incident;
 import com.inciflow_backend.entity.User;
 import com.inciflow_backend.entity.Notification;
-import com.inciflow_backend.entity.Intervention;
 import com.inciflow_backend.enums.IncidentPriority;
 import com.inciflow_backend.enums.IncidentStatus;
 import com.inciflow_backend.repository.CategoryRepository;
 import com.inciflow_backend.repository.DepartmentRepository;
 import com.inciflow_backend.repository.IncidentRepository;
 import com.inciflow_backend.repository.UserRepository;
-import com.inciflow_backend.repository.InterventionRepository;
 import com.inciflow_backend.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,21 +34,26 @@ public class IncidentService {
     private final DepartmentRepository departmentRepository;
     private final CategoryRepository categoryRepository;
     private final NotificationRepository notificationRepository;
-    private final InterventionRepository interventionRepository;
 
+    // Dossier de stockage des images uploadées
     private final String UPLOAD_DIR = "uploads/";
 
+    // ============================================================
+    // CRÉATION
+    // ============================================================
     @Transactional
     public IncidentResponse createIncident(String userEmail, IncidentRequest request) {
         User employee = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
 
+        // Récupération du département et de la catégorie
         var department = request.getDepartment() != null ?
                 departmentRepository.findByName(request.getDepartment()).orElse(null) : null;
 
         var category = request.getCategory() != null ?
                 categoryRepository.findByName(request.getCategory()).orElse(null) : null;
 
+        // Gestion de l'upload d'image
         String imageUrl = null;
         MultipartFile imageFile = request.getImage();
 
@@ -74,6 +77,7 @@ public class IncidentService {
             }
         }
 
+        // Construction de l'incident
         Incident incident = Incident.builder()
                 .title(request.getTitle())
                 .description(request.getDescription())
@@ -88,7 +92,7 @@ public class IncidentService {
 
         Incident savedIncident = incidentRepository.save(incident);
 
-        // --- ZIEDET EL NOTIFICATION LEL ADMIN (Msa77aha b .contains("ADMIN")) ---
+        // Envoi de notification à tous les admins
         String notifMessage = String.format("(INC-%d) %s a été signalé", savedIncident.getId(), savedIncident.getTitle());
 
         List<User> admins = userRepository.findAll().stream()
@@ -104,11 +108,13 @@ public class IncidentService {
                     .build();
             notificationRepository.save(notification);
         }
-        // ---------------------------------------------------------------------
 
         return mapToResponse(savedIncident);
     }
 
+    // ============================================================
+    // LECTURE
+    // ============================================================
     public List<IncidentResponse> getAllIncidents() {
         return incidentRepository.findAll().stream()
                 .map(this::mapToResponse)
@@ -129,31 +135,15 @@ public class IncidentService {
                 .collect(Collectors.toList());
     }
 
-    public IncidentResponse updateIncidentStatus(Long incidentId, IncidentStatus newStatus) {
-        Incident incident = incidentRepository.findById(incidentId)
+    public IncidentResponse getIncidentById(Long id) {
+        Incident incident = incidentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Incident not found"));
-
-        incident.setStatus(newStatus);
-        Incident updatedIncident = incidentRepository.save(incident);
-
-        return mapToResponse(updatedIncident);
+        return mapToResponse(incident);
     }
 
-    public IncidentResponse assignTechnician(Long incidentId, String technicianEmail) {
-        Incident incident = incidentRepository.findById(incidentId)
-                .orElseThrow(() -> new RuntimeException("Incident not found"));
-
-        User technician = userRepository.findByEmail(technicianEmail)
-                .orElseThrow(() -> new RuntimeException("Technician not found"));
-
-        incident.setTechnician(technician);
-        incident.setStatus(IncidentStatus.EN_COURS);
-
-        Incident updatedIncident = incidentRepository.save(incident);
-
-        return mapToResponse(updatedIncident);
-    }
-
+    // ============================================================
+    // SUPPRESSION
+    // ============================================================
     public void deleteIncident(Long incidentId) {
         if (!incidentRepository.existsById(incidentId)) {
             throw new RuntimeException("Incident not found");
@@ -161,12 +151,9 @@ public class IncidentService {
         incidentRepository.deleteById(incidentId);
     }
 
-    public IncidentResponse getIncidentById(Long id) {
-        Incident incident = incidentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Incident not found"));
-        return mapToResponse(incident);
-    }
-
+    // ============================================================
+    // MAPPER (entité -> DTO)
+    // ============================================================
     private IncidentResponse mapToResponse(Incident incident) {
         String empEmail = null;
         if (incident.getEmployee() != null) {
@@ -185,41 +172,100 @@ public class IncidentService {
                 .categoryName(incident.getCategory() != null ? incident.getCategory().getName() : null)
                 .employeeEmail(empEmail)
                 .technicianEmail(incident.getTechnician() != null ? incident.getTechnician().getEmail() : null)
+                .notes(incident.getNotes())
                 .build();
     }
 
+    // ============================================================
+    // TECHNICIEN
+    // ============================================================
+
+    // Récupérer les incidents assignés au technicien connecté (via email du token)
+    public List<IncidentResponse> getActiveIncidentsByTechnicianEmail(String email) {
+        User technician = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Technician not found: " + email));
+
+        List<Incident> allIncidents = incidentRepository.findByTechnicianId(technician.getId());
+
+        return allIncidents.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    // Démarrer un incident (passer à EN_COURS) + notification
     @Transactional
-    public IncidentResponse acceptIncidentWithIntervention(Long incidentId, Long technicianId) {
+    public IncidentResponse startIncident(Long incidentId) {
+        Incident incident = incidentRepository.findById(incidentId)
+                .orElseThrow(() -> new RuntimeException("Incident not found"));
+
+        incident.setStatus(IncidentStatus.EN_COURS);
+        Incident saved = incidentRepository.save(incident);
+
+        String message = "L'incident (INC-" + incident.getId() + " - " + incident.getTitle() + ") est en cours de fixation.";
+        sendNotificationToEmployeeAndAdmins(incident, message);
+
+        return mapToResponse(saved);
+    }
+
+    // Terminer un incident (passer à RESOLU) + notification
+    @Transactional
+    public IncidentResponse completeIncident(Long incidentId, String notes) {
+        Incident incident = incidentRepository.findById(incidentId)
+                .orElseThrow(() -> new RuntimeException("Incident not found"));
+
+        incident.setStatus(IncidentStatus.RESOLU);
+        incident.setNotes(notes);
+        Incident saved = incidentRepository.save(incident);
+
+        String message = "L'incident (INC-" + incident.getId() + " - " + incident.getTitle() + ") est résolu.";
+        sendNotificationToEmployeeAndAdmins(incident, message);
+
+        return mapToResponse(saved);
+    }
+
+    // ============================================================
+    // ADMIN : Accepter un incident + assigner un technicien
+    // ============================================================
+    @Transactional
+    public IncidentResponse acceptIncidentWithTechnician(Long incidentId, Long technicianId) {
         Incident incident = incidentRepository.findById(incidentId)
                 .orElseThrow(() -> new RuntimeException("Incident not found"));
 
         User technician = userRepository.findById(technicianId)
                 .orElseThrow(() -> new RuntimeException("Technician not found"));
 
-        incident.setStatus(IncidentStatus.EN_COURS);
+        // Changement de statut + affectation du technicien
+        incident.setStatus(IncidentStatus.ACCEPTE);
         incident.setTechnician(technician);
-        Incident savedIncident = incidentRepository.save(incident);
+        Incident saved = incidentRepository.save(incident);
 
-        User targetUser = incident.getEmployee();
-        if (targetUser != null) {
-            Notification notification = new Notification();
-            notification.setUser(targetUser);
-            notification.setMessage("Votre incident (INC-" + incident.getId() + ") a été accepté.");
-            notification.setCreatedAt(LocalDateTime.now());
-            notification.setRead(false);
-            notificationRepository.save(notification);
+        // Notification au technicien
+        Notification notifTech = Notification.builder()
+                .user(technician)
+                .message("Vous êtes assigné à l'incident (INC-" + incident.getId() + " - " + incident.getTitle() + ").")
+                .createdAt(LocalDateTime.now())
+                .isRead(false)
+                .build();
+        notificationRepository.save(notifTech);
+
+        // Notification à l'employé qui a signalé l'incident
+        User employee = incident.getEmployee();
+        if (employee != null) {
+            Notification notifEmp = Notification.builder()
+                    .user(employee)
+                    .message("Votre incident (INC-" + incident.getId() + " - " + incident.getTitle() + ") a été accepté.")
+                    .createdAt(LocalDateTime.now())
+                    .isRead(false)
+                    .build();
+            notificationRepository.save(notifEmp);
         }
 
-        Intervention intervention = new Intervention();
-        intervention.setIncident(savedIncident);
-        intervention.setTechnician(technician);
-        intervention.setInterventionDate(LocalDateTime.now());
-        intervention.setStatus(IncidentStatus.EN_COURS);
-        interventionRepository.save(intervention);
-
-        return mapToResponse(savedIncident);
+        return mapToResponse(saved);
     }
 
+    // ============================================================
+    // ADMIN : Rejeter un incident + notification
+    // ============================================================
     @Transactional
     public IncidentResponse rejectIncidentWithNotification(Long incidentId, Long technicianId) {
         Incident incident = incidentRepository.findById(incidentId)
@@ -233,18 +279,52 @@ public class IncidentService {
             incident.setTechnician(technician);
         }
 
-        Incident savedIncident = incidentRepository.save(incident);
+        Incident saved = incidentRepository.save(incident);
 
-        User targetUser = incident.getEmployee();
-        if (targetUser != null) {
-            Notification notification = new Notification();
-            notification.setUser(targetUser);
-            notification.setMessage("Votre incident (INC-" + incident.getId() + ") a été rejeté.");
-            notification.setCreatedAt(LocalDateTime.now());
-            notification.setRead(false);
-            notificationRepository.save(notification);
+        // Notification à l'employé
+        User employee = incident.getEmployee();
+        if (employee != null) {
+            Notification notifEmp = Notification.builder()
+                    .user(employee)
+                    .message("Votre incident (INC-" + incident.getId() + " - " + incident.getTitle() + ") a été rejeté.")
+                    .createdAt(LocalDateTime.now())
+                    .isRead(false)
+                    .build();
+            notificationRepository.save(notifEmp);
         }
 
-        return mapToResponse(savedIncident);
+        return mapToResponse(saved);
+    }
+
+    // ============================================================
+    // HELPER : Envoyer une notification à l'employé + tous les admins
+    // ============================================================
+    private void sendNotificationToEmployeeAndAdmins(Incident incident, String message) {
+        // Notification à l'employé
+        User employee = incident.getEmployee();
+        if (employee != null) {
+            Notification notif = Notification.builder()
+                    .user(employee)
+                    .message(message)
+                    .createdAt(LocalDateTime.now())
+                    .isRead(false)
+                    .build();
+            notificationRepository.save(notif);
+        }
+
+        // Notification à tous les admins
+        List<User> admins = userRepository.findAll().stream()
+                .filter(u -> u.getRole() != null && u.getRole().name().toUpperCase().contains("ADMIN"))
+                .toList();
+
+        for (User admin : admins) {
+            Notification notif = Notification.builder()
+                    .user(admin)
+                    .message(message)
+                    .createdAt(LocalDateTime.now())
+                    .isRead(false)
+                    .build();
+            notificationRepository.save(notif);
+        }
     }
 }

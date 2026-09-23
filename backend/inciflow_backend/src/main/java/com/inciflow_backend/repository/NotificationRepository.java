@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
+    // ============================================================
+    // Récupérer les notifications d'un utilisateur donné
+    // triées par date de création décroissante (les plus récentes en premier)
+    // ============================================================
     List<Notification> findByUserOrderByCreatedAtDesc(User user);
-
-    List<Notification> findByUserAndIsReadFalseOrderByCreatedAtDesc(User user);
 }

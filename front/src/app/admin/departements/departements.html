@@ -1,45 +1,51 @@
 <div class="departments-container">
-  <!-- Top Header -->
+  <!-- En-tête de la page -->
   <header class="top-header">
     <div class="header-left">
       <h1 class="page-title">Départements</h1>
     </div>
   </header>
 
-  <!-- Main Body -->
+  <!-- Contenu principal -->
   <main class="main-body">
     <div class="panel-card">
       
+      <!-- En-tête du panneau -->
       <div class="panel-header-row">
         <div>
           <h2 class="panel-title">Départements</h2>
           <p class="panel-subtitle">Unités organisationnelles</p>
         </div>
+        <!-- Bouton : Nouveau département -->
         <button class="btn-primary" (click)="openAddModal()">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           Nouveau département
         </button>
       </div>
 
-      <!-- Departments Grid Cards -->
+      <!-- Grille des départements -->
       <div class="departments-grid">
         <div class="dept-card" *ngFor="let dept of departments">
+          <!-- Haut de la carte : icône + membres + modifier -->
           <div class="dept-card-top">
             <div class="dept-icon-box">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             </div>
             <div style="display: flex; align-items: center; gap: 10px;">
               <span class="dept-members-count">{{ dept.membersCount }} membres</span>
-              <button class="edit-btn"  (click)="openEditModal(dept)">Modifier</button>
+              <button class="edit-btn" (click)="openEditModal(dept)">Modifier</button>
             </div>
           </div>
 
+          <!-- Nom du département -->
           <div class="dept-name-area">
             <h3>{{ dept.name }}</h3>
           </div>
 
+          <!-- Séparateur -->
           <div class="dept-footer-divider"></div>
 
+          <!-- Chef de département -->
           <div class="dept-head-info">
             <span class="dept-head-label">Chef de département</span>
             <div class="dept-head-profile">
@@ -53,14 +59,16 @@
     </div>
   </main>
 
-  <!-- Add Modal Popup -->
+  <!-- Modal : Ajouter un département -->
   <div class="modal-backdrop" *ngIf="isAddModalOpen">
     <div class="modal-box" (click)="$event.stopPropagation()">
       <h3>Ajouter un nouveau département</h3>
+      <!-- Champ : Nom -->
       <div class="form-group">
         <label>Nom du département</label>
         <input type="text" [(ngModel)]="newDeptName" placeholder="e.g. Legal, Engineering...">
       </div>
+      <!-- Champ : Chef -->
       <div class="form-group">
         <label>Chef de département</label>
         <select class="form-control" [(ngModel)]="newDeptHead">
@@ -70,6 +78,7 @@
           </option>
         </select>
       </div>
+      <!-- Actions -->
       <div class="modal-actions">
         <button type="button" class="btn-cancel" (click)="closeAddModal()">Annuler</button>
         <button type="button" class="btn-primary" (click)="saveDepartment()">Sauvegarder</button>
@@ -77,14 +86,16 @@
     </div>
   </div>
 
-  <!-- Edit / Delete Modal Popup -->
+  <!-- Modal : Modifier / Supprimer un département -->
   <div class="modal-backdrop" *ngIf="isEditModalOpen">
     <div class="modal-box" (click)="$event.stopPropagation()">
       <h3>Modifier le département</h3>
+      <!-- Champ : Nom -->
       <div class="form-group">
         <label>Nom du département</label>
         <input type="text" [(ngModel)]="editDeptName" placeholder="Nom du département">
       </div>
+      <!-- Champ : Chef -->
       <div class="form-group">
         <label>Chef de département</label>
         <select class="form-control" [(ngModel)]="newDeptHead">
@@ -94,6 +105,7 @@
           </option>
         </select>
       </div>
+      <!-- Actions -->
       <div class="modal-actions" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
         <button type="button" class="btn-cancel" style="background-color: #ef4444; color: white;" (click)="deleteDepartment()">Supprimer</button>
         <div style="display: flex; gap: 10px;">

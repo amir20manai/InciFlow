@@ -18,35 +18,58 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final UserRepository userRepository;
 
-    // 1. Yjib notifications mta3 user elli mconecté (بواسطة الـ email متاعو) مرتبين من الأحدث للأقدم
+    // ============================================================
+    // Récupérer les notifications de l'utilisateur connecté
+    // (via son email, triées de la plus récente à la plus ancienne)
+    // ============================================================
     public List<Notification> getUserNotifications(String userEmail) {
+        // Chercher l'utilisateur par son email
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Retourner ses notifications, triées par date décroissante
         return notificationRepository.findByUserOrderByCreatedAtDesc(user);
     }
 
-    // 2. Yred notification wahda lu (isRead = true)
+    // ============================================================
+    // Marquer une notification comme lue (isRead = true)
+    // ============================================================
     @Transactional
     public void markAsRead(Long notificationId) {
+        // Chercher la notification par son ID
         Notification notification = notificationRepository.findById(notificationId)
                 .orElseThrow(() -> new RuntimeException("Notification not found"));
+
+        // La marquer comme lue
         notification.setRead(true);
         notificationRepository.save(notification);
     }
 
-    // 3. Yred el notifications الكل read للـ user المكتوب إيميلو
+    // ============================================================
+    // Marquer TOUTES les notifications comme lues pour un utilisateur
+    // (via son email)
+    // ============================================================
     @Transactional
     public void markAllAsRead(String userEmail) {
+        // Chercher l'utilisateur par son email
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Récupérer toutes ses notifications
         List<Notification> notifications = notificationRepository.findByUserOrderByCreatedAtDesc(user);
+
+        // Les marquer toutes comme lues
         for (Notification n : notifications) {
             n.setRead(true);
         }
+
+        // Sauvegarder en batch
         notificationRepository.saveAll(notifications);
     }
 
-    // 4. Method باش تصنع notification جديدة لأي user تحب عليه
+    // ============================================================
+    // Créer une nouvelle notification pour un utilisateur donné
+    // ============================================================
     @Transactional
     public void createNotification(User user, String message) {
         Notification notification = Notification.builder()

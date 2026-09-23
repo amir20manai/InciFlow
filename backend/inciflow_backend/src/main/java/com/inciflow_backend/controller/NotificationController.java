@@ -17,7 +17,10 @@ public class NotificationController {
 
     private final NotificationService notificationService;
 
-    // GET: الـ Angular يعيط لها باش يجيب الـ notifications متاع الـ user المكونكتي
+    // ============================================================
+    // Récupérer toutes les notifications de l'utilisateur connecté
+    // GET /api/notifications
+    // ============================================================
     @GetMapping
     public ResponseEntity<List<Notification>> getMyNotifications(Principal principal) {
         String email = principal.getName();
@@ -25,7 +28,10 @@ public class NotificationController {
         return ResponseEntity.ok(notifications);
     }
 
-    // PATCH: تقريب notification فردية تردها مقروءة
+    // ============================================================
+    // Marquer une notification comme lue
+    // PATCH /api/notifications/{id}/read
+    // ============================================================
     @PatchMapping("/{id}/read")
     public ResponseEntity<Void> markAsRead(@PathVariable Long id) {
         System.out.println(">>> Mark as read called for notification ID: " + id);
@@ -33,6 +39,10 @@ public class NotificationController {
         return ResponseEntity.ok().build();
     }
 
+    // ============================================================
+    // Marquer TOUTES les notifications comme lues
+    // PATCH /api/notifications/read-all
+    // ============================================================
     @PatchMapping("/read-all")
     public ResponseEntity<Void> markAllAsRead(Principal principal) {
         if (principal == null) {

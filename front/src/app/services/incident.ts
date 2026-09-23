@@ -75,4 +75,23 @@ export class IncidentService {
   rejectIncident(incidentId: number, data: { technicianId: number | null }): Observable<any> {
     return this.http.post(`${this.apiUrl}/${incidentId}/reject`, data);
   }
+   
+  // Récupérer les interventions d'un technicien
+  getInterventionsByTechnician(techId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/technician/${techId}`);
+  }
+
+  // Démarrer une intervention
+  startIntervention(id: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}/start`, {});
+  }
+
+  // Terminer une intervention
+  completeIntervention(id: number, report: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}/complete`, { report });
+  }
+  // Récupérer les interventions du technicien connecté (via token)
+getMyTechnicianIncidents(): Observable<any[]> {
+  return this.http.get<any[]>(`${this.apiUrl}/my-technician-incidents`);
+}
 }

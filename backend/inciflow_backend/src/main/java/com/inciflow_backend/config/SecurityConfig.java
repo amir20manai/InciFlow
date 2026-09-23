@@ -16,6 +16,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+// Configuration principale de la sécurité Spring Security
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -24,27 +25,55 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 
+    // ============================================================
+    // Chaîne de filtres de sécurité
+    // ============================================================
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                // Active CORS avec la configuration par défaut
                 .cors(Customizer.withDefaults())
-                .csrf(csrf -> csrf.disable()) // إيقاف الـ CSRF نهائياً
+
+                // Désactive CSRF (inutile car on utilise JWT)
+                .csrf(csrf -> csrf.disable())
+
+                // Autorise toutes les requêtes (à restreindre en production)
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll() // فتح كل شيء مؤقتاً للتجربة وإلغاء أي 403 احتمالية
+                        .anyRequest().permitAll()
                 )
+
+                // Pas de session côté serveur (stateless, car JWT)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+                // Fournisseur d'authentification personnalisé
                 .authenticationProvider(authenticationProvider)
+
+                // Ajoute le filtre JWT avant le filtre d'authentification standard
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
+    // ============================================================
+    // Configuration CORS (autorise le frontend Angular)
+    // ============================================================
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
+
+        // Origine autorisée : le frontend Angular en développement
         configuration.setAllowedOrigins(List.of("http://localhost:4200"));
+
+        // Méthodes HTTP autorisées
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+
+        // Autorise tous les en-têtes
         configuration.setAllowedHeaders(List.of("*"));
+
+        // En-têtes exposés au frontend
         configuration.setExposedHeaders(List.of("Authorization", "Content-Type"));
+
+        // Autorise l'envoi des cookies / credentials
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

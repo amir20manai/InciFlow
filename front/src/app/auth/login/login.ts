@@ -75,13 +75,13 @@ export class LoginComponent implements OnInit {
 
   // Soumission du formulaire de connexion
   onSubmit(): void {
-    // 1️⃣ Réinitialise le message d'erreur
+    // 1️ Réinitialise le message d'erreur
     this.errorMessage = '';
 
-    // 2️⃣ Marque tous les champs comme "touchés" pour afficher les erreurs sous les champs
+    // 2️ Marque tous les champs comme "touchés" pour afficher les erreurs sous les champs
     this.loginForm.markAllAsTouched();
 
-    // 3️⃣ Vérifie la validité du formulaire
+    // 3️ Vérifie la validité du formulaire
     if (this.loginForm.invalid) {
       if (this.emailControl?.errors?.['required']) {
         this.errorMessage = 'Veuillez saisir votre adresse email.';
@@ -98,10 +98,10 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    // 4️⃣ Récupère les identifiants saisis
+    // 4️ Récupère les identifiants saisis
     const credentials = this.loginForm.value;
 
-    // 5️⃣ Appel au service d'authentification
+    // 5️ Appel au service d'authentification
     this.authService.login(credentials).subscribe({
       next: (response: any) => {
         // CAS 1 : Réponse sans token → email inexistant
@@ -111,7 +111,7 @@ export class LoginComponent implements OnInit {
           return;
         }
 
-        // ✅ CORRECTION : utilise authService.saveToken() pour unifier la clé 'token'
+        //  CORRECTION : utilise authService.saveToken() pour unifier la clé 'token'
         this.authService.saveToken(response.token);
 
         const role = response.role ? response.role.toLowerCase() : 'employee';

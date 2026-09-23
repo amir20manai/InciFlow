@@ -1,16 +1,16 @@
 <div class="reports-container" *ngIf="incident">
   
-  <!-- Top Header Navigation -->
+  <!-- En-tête de la page -->
   <header class="top-header">
     <div class="header-left">
       <h1 class="page-title">Détails de l'incident</h1>
     </div>
   </header>
 
-  <!-- Main Section Card -->
+  <!-- Section principale -->
   <main class="main-body">
     
-    <!-- Back Button -->
+    <!-- Bouton Retour -->
     <div class="back-wrapper">
       <button class="page-btn" (click)="goBack()">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
@@ -18,10 +18,11 @@
       </button>
     </div>
 
-    <!-- Card Principale -->
+    <!-- Carte principale : Titre + Description + Image -->
     <div class="panel-card full-width-card">
       <div class="incident-meta-row">
         <span class="id-cell">INC-{{ incident.id }}</span>
+        <!-- Badge priorité -->
         <span class="priority-pill" [ngStyle]="{
           'background-color': priorityStyles[incident.priority]?.bg,
           'color': priorityStyles[incident.priority]?.color,
@@ -34,28 +35,37 @@
           'align-items': 'center',
           'gap': '4px'
         }">&bull; {{ incident.priority }}</span>
+        <!-- Badge statut -->
         <span class="status-pill" [ngClass]="getStatusClass(incident.status)">&bull; {{ incident.status }}</span>
       </div>
       
       <h2 class="panel-title main-heading">{{ incident.title }}</h2>
       <p class="incident-desc">{{ incident.description }}</p>
 
-      <!-- Dynamic Image using Blob URL -->
+      <!-- Image dynamique (Blob URL) -->
       <div *ngIf="attachmentUrl" class="incident-image-container">
         <img [src]="attachmentUrl" alt="Incident attachment">
       </div>
     </div>
 
-    <!-- Grid Louta -->
+    <!-- Grille inférieure : Détails + Attribution -->
     <div class="bottom-grid-section">
       
-      <!-- Details Summary Card -->
+      <!-- Carte : Détails de l'incident -->
       <div class="panel-card">
         <h3 class="panel-title section-sm-title">Détails</h3>
         <div class="details-kv-list">
           <div class="kv-row"><span class="kv-label">Catégorie</span><span class="kv-val">{{ incident.categoryName }}</span></div>
           <div class="kv-row"><span class="kv-label">Département</span><span class="kv-val">{{ incident.departmentName }}</span></div>
           <div class="kv-row"><span class="kv-label">Signalé</span><span class="kv-val">{{ incident.createdAt | date:'short' }}</span></div>
+          
+          <!-- Technicien assigné -->
+          <div class="kv-row">
+            <span class="kv-label">Technicien assigné</span>
+            <span class="kv-val technician-assigned">{{ technicianName }}</span>
+          </div>
+
+          <!-- Priorité -->
           <div class="kv-row">
             <span class="kv-label">Priorité</span>
             <span class="priority-pill" [ngStyle]="{
@@ -72,17 +82,19 @@
               &bull; {{ incident.priority }}
             </span>
           </div>
+          <!-- Statut -->
           <div class="kv-row"><span class="kv-label">Statut</span><span class="status-pill" [ngClass]="getStatusClass(incident.status)">&bull; {{ incident.status }}</span></div>
         </div>
       </div>
 
-      <!-- Assign & Action Card -->
+      <!-- Carte : Attribution et Traitement -->
       <div class="panel-card">
         <h3 class="panel-title section-sm-title">Attribuer et traiter</h3>
         
+        <!-- Sélecteur de technicien -->
         <div class="form-group" style="margin-bottom: 20px;">
           <label style="display: block; margin-bottom: 8px; font-weight: 500; font-size: 13px; color: #475569;">Sélectionner un technicien</label>
-          <select [(ngModel)]="selectedTechnicianId" class="form-control">
+          <select [(ngModel)]="selectedTechnicianId" class="form-control" [disabled]="incident?.status !== 'NOUVEAU'">
             <option [ngValue]="null" disabled>-- Choisir un technicien --</option>
             <option *ngFor="let tech of technicians" [value]="tech.id">
               {{ tech.firstName }} {{ tech.lastName }}
@@ -90,12 +102,34 @@
           </select>
         </div>
 
+        <!-- Boutons d'action -->
         <div class="action-buttons-row">
           <button class="btn-accept" (click)="acceptIncident()" [disabled]="incident?.status !== 'NOUVEAU'">Accepter</button>
           <button class="btn-reject" (click)="rejectIncident()" [disabled]="incident?.status !== 'NOUVEAU'">Rejeter</button>
         </div>
       </div>
 
+    </div>
+
+    <!-- Carte : Rapport d'intervention (affichée uniquement si RESOLU) -->
+    <div class="panel-card full-width-card" *ngIf="incident.status === 'RESOLU'">
+      <h3 class="panel-title section-sm-title">Rapport d'intervention</h3>
+      <div class="report-notes-box">
+        <!-- En-tête du rapport -->
+        <div class="report-header">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+          <span>Solution apportée par le technicien</span>
+        </div>
+        <!-- Texte des notes -->
+        <p class="report-text">
+          {{ incident.notes || 'Aucune note fournie par le technicien.' }}
+        </p>
+      </div>
     </div>
 
   </main>

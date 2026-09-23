@@ -15,6 +15,7 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    // Récupérer toutes les catégories avec leur nombre d'incidents
     public List<CategoryResponseDTO> getAllCategories() {
         List<Category> categories = categoryRepository.findAll();
 
@@ -29,6 +30,7 @@ public class CategoryService {
         }).collect(Collectors.toList());
     }
 
+    // Créer une nouvelle catégorie
     public CategoryResponseDTO createCategory(Category category) {
         Category savedCategory = categoryRepository.save(category);
         long count = 0;
@@ -40,13 +42,13 @@ public class CategoryService {
         );
     }
 
+    // Mettre à jour une catégorie existante
     public CategoryResponseDTO updateCategory(Long id, Category categoryDetails) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Category not found with id: " + id));
 
         category.setName(categoryDetails.getName());
         if (categoryDetails.getDotColor() != null) {
-            category.getDotColor();
             category.setDotColor(categoryDetails.getDotColor());
         }
 
@@ -61,6 +63,7 @@ public class CategoryService {
         );
     }
 
+    // Supprimer une catégorie par son ID
     public void deleteCategory(Long id) {
         categoryRepository.deleteById(id);
     }

@@ -22,20 +22,22 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    // register
+    // ============================================================
+    // INSCRIPTION
+    // ============================================================
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
+                .password(passwordEncoder.encode(request.getPassword()))  // Mot de passe hashé
                 .phone(request.getPhone())
-                .role(Role.EMPLOYEE)
+                .role(Role.EMPLOYEE)                                       // Rôle par défaut
                 .build();
 
         userRepository.save(user);
 
-        // génération de token réel après register
+        // Génération d'un token JWT après l'inscription
         var jwtToken = jwtService.generateToken(user);
 
         return AuthenticationResponse.builder()
@@ -44,14 +46,17 @@ public class AuthenticationService {
                 .build();
     }
 
-    // login — MODIFIÉ pour distinguer "email inexistant" (404) de "mot de passe incorrect" (401)
+    // ============================================================
+    // CONNEXION
+    // Distingue "email inexistant" (404) de "mot de passe incorrect" (401)
+    // ============================================================
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
 
         // ÉTAPE 1 : Vérifie d'abord si l'email existe dans la base
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // ÉTAPE 2 : L'email existe → on valide maintenant le mot de passe via AuthenticationManager
+        // ÉTAPE 2 : L'email existe → on valide le mot de passe via AuthenticationManager
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(

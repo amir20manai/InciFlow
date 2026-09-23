@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 // Module de formulaires
 import { FormsModule } from '@angular/forms';
 // Routage
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 // Services utilisés
 import { IncidentService } from '../../services/incident';
 import { CategorieService } from '../../services/categorie';
@@ -19,7 +19,7 @@ import { IncidentPriority } from '../../models/incident';
 @Component({
   selector: 'app-nouveau-signalement',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule],
   templateUrl: './nouveau-signalement.html',
   styleUrls: ['./nouveau-signalement.css']
 })

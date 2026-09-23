@@ -4,8 +4,6 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // Importation du module de formulaires pour ngModel
 import { FormsModule } from '@angular/forms';
-// Importation du module de routage pour les liens routerLink
-import { RouterLink } from '@angular/router';
 // Importation du service de notifications et de l'interface de réponse
 import { NotificationService, NotificationResponse } from '../../services/notification';
 
@@ -13,7 +11,7 @@ import { NotificationService, NotificationResponse } from '../../services/notifi
 @Component({
   selector: 'app-notification-admin',       // Sélecteur HTML du composant
   standalone: true,                          // Composant autonome (pas besoin de NgModule)
-  imports: [CommonModule, FormsModule, RouterLink], // Modules importés
+  imports: [CommonModule, FormsModule], // Modules importés
   templateUrl: './notification.html',        // Fichier HTML du composant
   styleUrls: ['./notification.css']          // Fichier(s) CSS du composant
 })

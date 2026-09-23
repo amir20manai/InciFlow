@@ -18,14 +18,20 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
-    // POST: register http://localhost:8080/api/auth/register
+    // ============================================================
+    // Inscription d'un nouvel utilisateur
+    // POST /api/auth/register
+    // ============================================================
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authenticationService.register(request));
     }
 
-    // POST: login http://localhost:8080/api/auth/authenticate
-    // ✅ Modifié pour renvoyer 404 si email inexistant, 401 si mot de passe incorrect
+    // ============================================================
+    // Authentification (connexion)
+    // POST /api/auth/authenticate
+    // Renvoie 404 si email inexistant, 401 si mot de passe incorrect
+    // ============================================================
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest request) {
         try {
@@ -34,21 +40,21 @@ public class AuthenticationController {
         } catch (RuntimeException e) {
             String message = e.getMessage() != null ? e.getMessage().toLowerCase() : "";
 
-            // ✅ Cas 1 : Email inexistant → 404 Not Found
+            // Cas 1 : Email inexistant → 404 Not Found
             if (message.contains("user not found")) {
                 return ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
                         .body(Map.of("error", "User not found"));
             }
 
-            // ✅ Cas 2 : Mot de passe incorrect → 401 Unauthorized
+            // Cas 2 : Mot de passe incorrect → 401 Unauthorized
             if (message.contains("invalid password")) {
                 return ResponseEntity
                         .status(HttpStatus.UNAUTHORIZED)
                         .body(Map.of("error", "Invalid password"));
             }
 
-            // ✅ Cas par défaut : 401
+            // Cas par défaut : 401
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", "Authentication failed"));

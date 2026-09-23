@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 
+// Entité représentant un utilisateur de l'application
+// Implémente UserDetails pour l'intégration avec Spring Security
 @Entity
 @Table(name = "users")
 @Data
@@ -23,44 +25,54 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String password;
+    private String firstName;       // Prénom
+    private String lastName;        // Nom
+    private String email;           // Email (utilisé comme identifiant)
+    private String password;        // Mot de passe (hashé avec BCrypt)
+    private String phone;           // Numéro de téléphone
 
-
-    private String phone;
-
-
+    // Département auquel appartient l'utilisateur (relation ManyToOne)
     @ManyToOne
     @JoinColumn(name = "department_id")
     private Department department;
 
+    // Rôle de l'utilisateur (ADMIN, TECHNICIAN, EMPLOYEE)
     @Enumerated(EnumType.STRING)
     private Role role;
 
-
+    // ============================================================
+    // Champ exposé en JSON sous le nom "department"
+    // Permet d'envoyer uniquement le nom du département au front
+    // ============================================================
     @JsonProperty("department")
     public String getDepartmentNameForJson() {
         return department != null ? department.getName() : null;
     }
 
+    // ============================================================
+    // Méthodes de UserDetails (Spring Security)
+    // ============================================================
+
+    // Retourne les autorités (rôles) sous forme "ROLE_XXX"
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         String roleName = (role != null) ? "ROLE_" + role.name() : "ROLE_EMPLOYEE";
         return Collections.singletonList(new SimpleGrantedAuthority(roleName));
     }
 
+    // Utilisé comme username pour l'authentification
     @Override
     public String getUsername() {
         return email;
     }
 
+    // Retourne le mot de passe hashé
     @Override
     public String getPassword() {
         return password;
     }
 
+    // Tous les comptes sont valides par défaut
     @Override
     public boolean isAccountNonExpired() { return true; }
 

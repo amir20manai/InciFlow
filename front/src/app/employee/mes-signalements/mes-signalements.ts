@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 // Module de formulaires
 import { FormsModule } from '@angular/forms';
 // Routage
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 // Service des incidents
 import { IncidentService } from '../../services/incident';
 
@@ -26,7 +26,7 @@ export interface IncidentUI {
 @Component({
   selector: 'app-mes-signalements',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule],
   templateUrl: './mes-signalements.html',
   styleUrls: ['./mes-signalements.css']
 })
@@ -156,6 +156,7 @@ export class MesSignalements implements OnInit {
       case 'NOUVEAU': return 'open';
       case 'RESOLU': return 'resolved';
       case 'REJETE': return 'rejected';
+      case 'ACCEPTE': return 'accepted';
       default: return 'open';
     }
   }

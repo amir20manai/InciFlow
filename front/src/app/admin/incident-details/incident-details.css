@@ -73,7 +73,6 @@
   gap: 20px;
 }
 
-/* Panel Cards (white background, matches Users page style) */
 .panel-card {
   background: #ffffff;
   border-radius: 16px;
@@ -82,6 +81,10 @@
   padding: 24px;
   width: 100%;
   box-sizing: border-box;
+}
+
+.full-width-card {
+  width: 100%;
 }
 
 .incident-meta-row {
@@ -178,6 +181,14 @@
   font-weight: 600;
 }
 
+/* Technicien assigné (mise en valeur) */
+.kv-val.technician-assigned {
+  color: #2563eb;
+  background: rgba(37, 99, 235, 0.08);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
 /* ============ Form controls ============ */
 .form-group label {
   display: block;
@@ -203,6 +214,12 @@
 .form-control:focus {
   border-color: #2563eb;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.form-control:disabled {
+  background: #f1f5f9;
+  cursor: not-allowed;
+  color: #94a3b8;
 }
 
 /* ============ Action buttons ============ */
@@ -245,4 +262,51 @@
 
 .btn-reject:hover:not(:disabled) {
   background-color: #b91c1c;
+}
+
+/* ============ Status Pills ============ */
+.status-pill {
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.status-pill.open { background-color: rgba(59, 130, 246, 0.08); color: #2563eb; }
+.status-pill.in-progress { background-color: rgba(245, 158, 11, 0.08); color: #f59e0b; }
+.status-pill.resolved { background-color: rgba(22, 163, 74, 0.08); color: #16a34a; }
+.status-pill.rejected { background-color: rgba(220, 38, 38, 0.08); color: #dc2626; }
+.status-pill.accepted { background-color: rgba(14, 165, 233, 0.08); color: #0ea5e9; }
+
+/* ============ Rapport d'intervention (Notes) ============ */
+.report-notes-box {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.report-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #16a34a;
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.report-text {
+  color: #1e293b;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+  padding: 12px 16px;
+  background: #ffffff;
+  border-radius: 8px;
+  border-left: 4px solid #16a34a;
+  white-space: pre-wrap;
 }

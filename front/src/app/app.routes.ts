@@ -34,8 +34,10 @@ import { IncidentDetailEmployee } from './employee/incident-detail-employee/inci
 import { Technicien } from './technicien/technicien/technicien';
 import { Dashboard as TechnicienDashboard } from './technicien/dashboard/dashboard';
 import { Interventions } from './technicien/interventions/interventions';
-import { Rapport } from './technicien/rapport/rapport';
 import { Historique } from './technicien/historique/historique';
+import { ProfileTechnicien } from './technicien/profile/profile';
+import { NotificationTechnicien } from './technicien/notification/notification';
+import { IncidentDetailTechnicien } from './technicien/incident-detail-technicien/incident-detail-technicien';
 
 
 export const routes: Routes = [
@@ -65,18 +67,18 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: Admin,
-    canActivate: [authGuard, roleGuard],   // ✅ Double protection
+    canActivate: [authGuard, roleGuard],   //  Double protection
     data: { role: 'admin' },                // Rôle attendu
     children: [
-      { path: 'dashboard',        component: AdminDashboard },
-      { path: 'signalements',     component: Signalements },
-      { path: 'utilisateurs',     component: Utilisateurs },
-      { path: 'categories',       component: Categories },
-      { path: 'departements',     component: Departements },
-      { path: 'statistiques',     component: Statistiques },
-      { path: 'profile',          component: ProfileAdmin },
-      { path: 'signalements/:id', component: IncidentDetails },
-      { path: 'notification',     component: NotificationAdmin }
+      { path: 'dashboard',         component: AdminDashboard },
+      { path: 'signalements',      component: Signalements },
+      { path: 'utilisateurs',      component: Utilisateurs },
+      { path: 'categories',        component: Categories },
+      { path: 'departements',      component: Departements },
+      { path: 'statistiques',      component: Statistiques },
+      { path: 'profile',           component: ProfileAdmin },
+      { path: 'signalements/:id',  component: IncidentDetails },
+      { path: 'notification',      component: NotificationAdmin }
     ]
   },
 
@@ -88,15 +90,15 @@ export const routes: Routes = [
   {
     path: 'employee',
     component: Employee,
-    canActivate: [authGuard, roleGuard],   // ✅ Double protection
+    canActivate: [authGuard, roleGuard],   //  Double protection
     data: { role: 'employee' },             // Rôle attendu
     children: [
-      { path: 'dashboard',           component: EmployeeDashboard },
-      { path: 'nouveau-signalement', component: NouveauSignalement },
-      { path: 'mes-signalements',    component: MesSignalements },
-      { path: 'notifications',       component: Notifications },
-      { path: 'profile',             component: Profile },
-      { path: 'signalements/:id',    component: IncidentDetailEmployee }
+      { path: 'dashboard',             component: EmployeeDashboard },
+      { path: 'nouveau-signalement',   component: NouveauSignalement },
+      { path: 'mes-signalements',      component: MesSignalements },
+      { path: 'notifications',         component: Notifications },
+      { path: 'profile',               component: Profile },
+      { path: 'signalements/:id',      component: IncidentDetailEmployee }
     ]
   },
 
@@ -108,13 +110,15 @@ export const routes: Routes = [
   {
     path: 'technicien',
     component: Technicien,
-    canActivate: [authGuard, roleGuard],   // ✅ Double protection
+    canActivate: [authGuard, roleGuard],   //  Double protection
     data: { role: 'technician' },           // Rôle attendu
     children: [
-      { path: 'dashboard',     component: TechnicienDashboard },
-      { path: 'interventions', component: Interventions },
-      { path: 'rapport',       component: Rapport },
-      { path: 'historique',    component: Historique }
+      { path: 'dashboard',         component: TechnicienDashboard },
+      { path: 'interventions',     component: Interventions },
+      { path: 'historique',        component: Historique },
+      { path: 'profile',           component: ProfileTechnicien },
+      { path: 'notifications',     component: NotificationTechnicien },
+      { path: 'signalements/:id',  component: IncidentDetailTechnicien }
     ]
   },
 

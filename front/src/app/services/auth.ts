@@ -24,12 +24,12 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/authenticate`, credentials);
   }
 
-  // ✅ Enregistre le token JWT avec la clé 'token' (unifiée)
+  //  Enregistre le token JWT avec la clé 'token' (unifiée)
   saveToken(token: string): void {
     localStorage.setItem('token', token);
   }
 
-  // ✅ Récupère le token avec la clé 'token'
+  //  Récupère le token avec la clé 'token'
   getToken(): string | null {
     return localStorage.getItem('token');
   }
@@ -39,7 +39,7 @@ export class AuthService {
     return !!this.getToken();
   }
 
-  // ✅ Déconnexion : supprime le token et le rôle
+  //  Déconnexion : supprime le token et le rôle
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('role');

@@ -17,22 +17,39 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    // ============================================================
+    // Récupérer toutes les catégories
+    // GET /api/categories
+    // ============================================================
     @GetMapping
     public List<CategoryResponseDTO> getAllCategories() {
         return categoryService.getAllCategories();
     }
 
+    // ============================================================
+    // Créer une nouvelle catégorie
+    // POST /api/categories
+    // ============================================================
     @PostMapping
     public ResponseEntity<CategoryResponseDTO> createCategory(@RequestBody Category category) {
         CategoryResponseDTO saved = categoryService.createCategory(category);
         return ResponseEntity.ok(saved);
     }
+
+    // ============================================================
+    // Mettre à jour une catégorie existante
+    // PUT /api/categories/{id}
+    // ============================================================
     @PutMapping("/{id}")
     public ResponseEntity<CategoryResponseDTO> updateCategory(@PathVariable Long id, @RequestBody Category category) {
         CategoryResponseDTO updated = categoryService.updateCategory(id, category);
         return ResponseEntity.ok(updated);
     }
 
+    // ============================================================
+    // Supprimer une catégorie
+    // DELETE /api/categories/{id}
+    // ============================================================
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);

@@ -1,1 +1,217 @@
-<p>dashboard works!</p>
+<div class="dashboard-layout">
+  <!-- En-tête -->
+  <header class="top-header">
+    <div class="header-left">
+      <h1 class="page-title">Tableau de bord</h1>
+    </div>
+  </header>
+
+  <!-- Contenu principal -->
+  <main class="dashboard-body">
+
+    <!-- Section de bienvenue -->
+    <section class="welcome-section">
+      <h2>Bienvenu {{ userName }}</h2>
+      <p class="subtitle">Voici ce qui se passe dans votre organisation aujourd'hui.</p>
+    </section>
+
+    <!-- 3 cartes principales (Assignés, En cours, Résolu) -->
+    <section class="stats-grid three-cols">
+
+      <!-- Carte "Assignés" -->
+      <div class="stat-card stat-assigned">
+        <div class="stat-card-top">
+          <div class="stat-icon-box assigned">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-title">Assignés</span>
+            <h3 class="stat-count">{{ assignedCount }}</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- Carte "En cours" -->
+      <div class="stat-card stat-active">
+        <div class="stat-card-top">
+          <div class="stat-icon-box active">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-title">En cours</span>
+            <h3 class="stat-count">{{ inProgressCount }}</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- Carte "Résolu" -->
+      <div class="stat-card stat-resolved">
+        <div class="stat-card-top">
+          <div class="stat-icon-box resolved">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-title">Résolu</span>
+            <h3 class="stat-count">{{ resolvedCount }}</h3>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- 4 cartes de priorité -->
+    <section class="stats-grid four-cols">
+
+      <div class="priority-card critical">
+        <div class="priority-icon-box critical">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+        <div class="priority-info">
+          <span class="priority-label">Critique</span>
+          <strong class="priority-count">{{ criticalCount }}</strong>
+        </div>
+      </div>
+
+      <div class="priority-card high">
+        <div class="priority-icon-box high">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+        <div class="priority-info">
+          <span class="priority-label">Haute</span>
+          <strong class="priority-count">{{ highCount }}</strong>
+        </div>
+      </div>
+
+      <div class="priority-card medium">
+        <div class="priority-icon-box medium">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+        <div class="priority-info">
+          <span class="priority-label">Moyenne</span>
+          <strong class="priority-count">{{ mediumCount }}</strong>
+        </div>
+      </div>
+
+      <div class="priority-card low">
+        <div class="priority-icon-box low">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+        <div class="priority-info">
+          <span class="priority-label">Basse</span>
+          <strong class="priority-count">{{ lowCount }}</strong>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Section du bas : Historique + Notifications -->
+    <section class="bottom-grid">
+
+      <!-- Table Historique -->
+      <div>
+        <div class="panel-header flex-between">
+          <div>
+            <h3>Historique des interventions</h3>
+            <p>Les incidents résolus récents</p>
+          </div>
+          <a class="link-btn" routerLink="/technicien/historique">Tout afficher</a>
+        </div>
+
+        <div class="table-responsive">
+          <table class="incidents-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>INCIDENT</th>
+                <th>DÉPARTEMENT</th>
+                <th>PRIORITÉ</th>
+                <th>STATUT</th>
+                <th>DATE</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="recentHistory.length === 0">
+                <td colspan="6" style="text-align: center; padding: 24px; color: #94a3b8;">
+                  Aucune intervention terminée.
+                </td>
+              </tr>
+              <tr *ngFor="let inc of recentHistory" (click)="viewDetails(inc.id)" style="cursor: pointer;">
+                <td class="id-cell">INC-{{ inc.id }}</td>
+                <td>
+                  <div class="incident-title">{{ inc.title }}</div>
+                  <div class="incident-sub">{{ inc.categoryName || 'N/A' }}</div>
+                </td>
+                <td>{{ inc.departmentName || 'N/A' }}</td>
+                <td>
+                  <span class="priority-pill" [ngClass]="(inc.priority || '').toLowerCase()">
+                    &bull; {{ inc.priority }}
+                  </span>
+                </td>
+                <td>
+                  <span class="status-pill" [ngClass]="(inc.status || '').toLowerCase()">
+                    &bull; {{ inc.status }}
+                  </span>
+                </td>
+                <td class="time-cell">{{ inc.createdAt | date:'short' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Notifications (5 récentes) -->
+      <div class="right-section-white">
+        <div class="section-header">
+          <div>
+            <h3 class="section-title-dark">Notifications</h3>
+            <p class="section-subtitle-dark">Alertes récentes</p>
+          </div>
+          <a routerLink="/technicien/notifications" class="view-all-link">
+            <span>Tout afficher</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+        <div class="notifications-list">
+          <div *ngIf="notifications.length === 0" class="no-data-msg-dark">
+            Aucune nouvelle notification.
+          </div>
+          <div class="notification-item-white" *ngFor="let n of notifications">
+            <div class="notif-icon-white">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </div>
+            <div class="notif-content">
+              <p class="notif-desc-dark">{{ n.message }}</p>
+              <span class="notif-time-dark">{{ n.time }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+</div>

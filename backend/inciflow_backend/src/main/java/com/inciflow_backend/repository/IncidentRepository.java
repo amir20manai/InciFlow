@@ -11,8 +11,20 @@ import java.util.List;
 @Repository
 public interface IncidentRepository extends JpaRepository<Incident, Long> {
 
-
+    // ============================================================
+    // Récupérer les incidents par statut
+    // (ex : tous les incidents NOUVEAU, EN_COURS, RESOLU, etc.)
+    // ============================================================
     List<Incident> findByStatus(IncidentStatus status);
 
+    // ============================================================
+    // Récupérer les incidents déclarés par un employé donné
+    // ============================================================
     List<Incident> findByEmployee(User employee);
+
+    // ============================================================
+    // Récupérer les incidents assignés à un technicien donné
+    // (via son ID)
+    // ============================================================
+    List<Incident> findByTechnicianId(Long technicianId);
 }

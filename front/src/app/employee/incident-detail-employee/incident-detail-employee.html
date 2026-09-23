@@ -1,16 +1,16 @@
 <div class="reports-container" *ngIf="incident">
   
-  <!-- Top Header Navigation -->
+  <!-- En-tête de la page -->
   <header class="top-header">
     <div class="header-left">
       <h1 class="page-title">Détails de l'incident</h1>
     </div>
   </header>
 
-  <!-- Main Section Card -->
+  <!-- Section principale -->
   <main class="main-body">
     
-    <!-- Back Button -->
+    <!-- Bouton Retour -->
     <div class="back-wrapper">
       <button class="page-btn" (click)="goBack()">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
@@ -18,7 +18,7 @@
       </button>
     </div>
 
-    <!-- Card Principale (Titre, Desc, Image) -->
+    <!-- Carte principale (Titre, Description, Image) -->
     <div class="panel-card full-width-card">
       <div class="incident-meta-row">
         <span class="id-cell">INC-{{ incident.id }}</span>
@@ -40,13 +40,13 @@
       <h2 class="panel-title main-heading">{{ incident.title }}</h2>
       <p class="incident-desc">{{ incident.description }}</p>
 
-      <!-- Dynamic Image using Blob URL -->
+      <!-- Image dynamique -->
       <div *ngIf="attachmentUrl" class="incident-image-container">
         <img [src]="attachmentUrl" alt="Incident attachment">
       </div>
     </div>
 
-    <!-- Details Summary Card (Full Width kober el card elli fouqha w fha kol chay) -->
+    <!-- Carte des détails -->
     <div class="panel-card full-width-card">
       <h3 class="panel-title section-sm-title">Détails</h3>
       <div class="details-kv-list">
@@ -71,13 +71,32 @@
         </div>
         <div class="kv-row"><span class="kv-label">Statut</span><span class="status-pill" [ngClass]="getStatusClass(incident.status)">&bull; {{ incident.status }}</span></div>
         
-        <!-- Technicien & État du traitement mhaţţin houni ta7t el détails -->
+        <!-- Technicien assigné -->
         <div class="kv-row">
           <span class="kv-label">Technicien assigné</span>
           <span class="kv-val" style="font-weight: 600; color: #2563eb;">
-            {{ (incident.status === 'NOUVEAU' || incident.status === 'REJETE') ? 'Unassigned' : technicianName }}
+            {{ (incident.status === 'NOUVEAU' || incident.status === 'REJETE') ? 'Non assigné' : technicianName }}
           </span>
         </div>
+      </div>
+    </div>
+
+    <!--  Carte du rapport d'intervention (ghir ki RESOLU) -->
+    <div class="panel-card full-width-card" *ngIf="incident.status === 'RESOLU'">
+      <h3 class="panel-title section-sm-title">Rapport d'intervention</h3>
+      <div class="report-notes-box">
+        <div class="report-header">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+          <span>Solution apportée par le technicien</span>
+        </div>
+        <p class="report-text">
+          {{ incident.notes || 'Aucune note fournie par le technicien.' }}
+        </p>
       </div>
     </div>
 

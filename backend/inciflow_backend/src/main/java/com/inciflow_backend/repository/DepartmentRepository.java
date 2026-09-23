@@ -8,5 +8,10 @@ import java.util.Optional;
 
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
+
+    // ============================================================
+    // Récupérer un département par son nom
+    // (utilisé lors de l'affectation d'un utilisateur ou d'un incident)
+    // ============================================================
     Optional<Department> findByName(String name);
 }

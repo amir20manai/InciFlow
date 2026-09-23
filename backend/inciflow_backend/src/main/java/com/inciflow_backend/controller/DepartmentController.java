@@ -16,21 +16,37 @@ public class DepartmentController {
     @Autowired
     private DepartmentService departmentService;
 
+    // ============================================================
+    // Récupérer tous les départements
+    // GET /api/departments
+    // ============================================================
     @GetMapping
     public ResponseEntity<List<DepartmentResponseDTO>> getAllDepartments() {
         return ResponseEntity.ok(departmentService.getAllDepartments());
     }
 
+    // ============================================================
+    // Créer un nouveau département
+    // POST /api/departments
+    // ============================================================
     @PostMapping
     public ResponseEntity<DepartmentResponseDTO> createDepartment(@RequestBody Department department) {
         return ResponseEntity.ok(departmentService.createDepartment(department));
     }
 
+    // ============================================================
+    // Mettre à jour un département existant
+    // PUT /api/departments/{id}
+    // ============================================================
     @PutMapping("/{id}")
     public ResponseEntity<DepartmentResponseDTO> updateDepartment(@PathVariable Long id, @RequestBody Department departmentDetails) {
         return ResponseEntity.ok(departmentService.updateDepartment(id, departmentDetails));
     }
 
+    // ============================================================
+    // Supprimer un département
+    // DELETE /api/departments/{id}
+    // ============================================================
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDepartment(@PathVariable Long id) {
         departmentService.deleteDepartment(id);

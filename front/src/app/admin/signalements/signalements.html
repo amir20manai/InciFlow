@@ -1,41 +1,45 @@
 <div class="reports-container">
-  <!-- Top Header Navigation -->
+  <!-- En-tête de la page -->
   <header class="top-header">
     <div class="header-left">
       <h1 class="page-title">Tous Les Incidents</h1>
     </div>
   </header>
 
-  <!-- Main Section Card -->
+  <!-- Contenu principal -->
   <main class="main-body">
     <div class="panel-card">
       
-      <!-- Panel Header & Subtitle -->
+      <!-- En-tête du panneau -->
       <div class="panel-top">
         <h2 class="panel-title">Tous Les Incidents</h2>
         <p class="panel-subtitle">Suivi et affectation de l'ensemble des incidents</p>
       </div>
 
-      <!-- Filter Controls Bar -->
+      <!-- Barre de filtres (Recherche + Statut + Priorité) -->
       <div class="controls-bar">
+        <!-- Champ de recherche -->
         <div class="search-box">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input type="text" placeholder="Rechercher un incident...." [(ngModel)]="searchQuery" (input)="filterIncidents()">
         </div>
 
+        <!-- Filtres à droite -->
         <div class="filters-right">
+          <!-- Icône de filtre -->
           <svg class="filter-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
           
-          <!-- Status Options -->
+          <!-- Sélecteur de statut -->
           <select class="select-btn" [(ngModel)]="selectedStatus" (change)="filterIncidents()">
             <option value="ALL">Tous les statuts</option>
+            <option value="ACCEPTE">Accepté</option>
             <option value="NOUVEAU">Nouveau</option>
             <option value="EN_COURS">En Cours</option>
             <option value="RESOLU">Résolu</option>
             <option value="REJETE">Rejeté</option>
           </select>
 
-          <!-- Priority Options -->
+          <!-- Sélecteur de priorité -->
           <select class="select-btn" [(ngModel)]="selectedPriority" (change)="filterIncidents()">
             <option value="ALL">Toutes les priorités</option>
             <option value="CRITIQUE">Critique</option>
@@ -46,7 +50,7 @@
         </div>
       </div>
 
-      <!-- Table -->
+      <!-- Tableau des incidents -->
       <div class="table-responsive">
         <table class="incidents-table">
           <thead>
@@ -60,38 +64,44 @@
             </tr>
           </thead>
           
-          <!-- 👈 Tadalet el 7imaya houni: Na3رضou el data ken fama 7ata incident wa7ed wela el filteredIncidents mrigl -->
+          <!-- Corps du tableau : si des incidents existent -->
           <tbody *ngIf="filteredIncidents && filteredIncidents.length > 0">
             <tr *ngFor="let inc of filteredIncidents" 
                 [routerLink]="['/admin/signalements', inc.id]" 
                 class="clickable-row">
+              <!-- Colonne : ID -->
               <td class="id-cell">INC-{{ inc.id }}</td>
+              <!-- Colonne : Titre + Catégorie + Département -->
               <td>
                 <div class="incident-title">{{ inc.title }}</div>
                 <div class="incident-sub">{{ inc.categoryName || 'General' }} &bull; {{ inc.departmentName || 'General' }}</div>
               </td>
+              <!-- Colonne : Déclaré par (email) -->
               <td>
                 <div class="reporter-cell">
                   <span class="reporter-name">{{ inc.employeeEmail || 'Unknown' }}</span>
                 </div>
               </td>
+              <!-- Colonne : Priorité -->
               <td>
                 <span class="priority-pill" [ngClass]="getPriorityClass(inc.priority)">
                   &bull; {{ inc.priority || 'N/A' }}
                 </span>
               </td>
+              <!-- Colonne : Statut -->
               <td>
                 <span class="status-pill" [ngClass]="getStatusClass(inc.status)">
                   &bull; {{ inc.status || 'N/A' }}
                 </span>
               </td>
+              <!-- Colonne : Date -->
               <td>
                 <time class="time-cell">{{ inc.createdAt ? (inc.createdAt | date:'short') : 'Recent' }}</time>
               </td>
             </tr>
           </tbody>
 
-          <!-- Message ki yebda el tableau feragh bel 7a9i9a -->
+          <!-- Corps du tableau : si aucun incident -->
           <tbody *ngIf="!filteredIncidents || filteredIncidents.length === 0">
             <tr>
               <td colspan="6" style="text-align: center; padding: 25px; color: #94a3b8; font-weight: 500;">

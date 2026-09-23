@@ -25,4 +25,5 @@ public class IncidentResponse {
     private String categoryName;
     private String employeeEmail;
     private String technicianEmail;
+    private String notes;
 }

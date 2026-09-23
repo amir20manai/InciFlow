@@ -154,6 +154,7 @@ export class Signalements implements OnInit, OnDestroy {
       case 'NOUVEAU': return 'open';
       case 'RESOLU': return 'resolved';
       case 'REJETE': return 'rejected';
+      case 'ACCEPTE': return 'accepted';
       default: return '';
     }
   }

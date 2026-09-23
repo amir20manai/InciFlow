@@ -1,18 +1,11 @@
-// Importation des décorateurs et utilitaires Angular
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-// Module commun pour les directives de base
 import { CommonModule } from '@angular/common';
-// Services de routage pour récupérer l'ID depuis l'URL et naviguer
 import { ActivatedRoute, Router } from '@angular/router';
-// Module de formulaires pour ngModel
 import { FormsModule } from '@angular/forms';
-// Services et modèles nécessaires
 import { IncidentService } from '../../services/incident';
 import { UserService } from '../../services/user';
 import { IncidentResponse, IncidentStatus } from '../../models/incident';
 
-// Composant admin : page de détail d'un incident — affichage complet, assignation
-// à un technicien, et actions Accepter / Rejeter
 @Component({
   selector: 'app-incident-details',
   standalone: true,
@@ -21,20 +14,14 @@ import { IncidentResponse, IncidentStatus } from '../../models/incident';
   styleUrls: ['./incident-details.css']
 })
 export class IncidentDetails implements OnInit {
-  // ID de l'incident récupéré depuis l'URL
   incidentId: number | null = null;
-  // Données complètes de l'incident
-  incident: IncidentResponse | null = null;
-  // URL locale de la pièce jointe (image)
+  incident: any | null = null;
   attachmentUrl: string | null = null;
 
-  // Liste des techniciens disponibles
   technicians: any[] = [];
-  // ID du technicien sélectionné pour l'assignation
   selectedTechnicianId: number | null = null;
+  technicianName: string = 'Non assigné';
 
-  // Styles (couleur, fond, bordure) associés à chaque niveau de priorité,
-  // utilisés dynamiquement dans le template via [ngStyle]
   priorityStyles: { [key: string]: { bg: string, color: string, border: string } } = {
     'BASSE': { bg: 'rgba(100, 116, 139, 0.08)', color: '#64748b', border: '#64748b' },
     'MOYENNE': { bg: 'rgba(245, 158, 11, 0.08)', color: '#f59e0b', border: '#f59e0b' },
@@ -42,7 +29,6 @@ export class IncidentDetails implements OnInit {
     'CRITIQUE': { bg: 'rgba(127, 29, 29, 0.15)', color: '#7f1d1d', border: '#7f1d1d' }
   };
 
-  // Injection des services nécessaires
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -51,9 +37,7 @@ export class IncidentDetails implements OnInit {
     private cdr: ChangeDetectorRef
   ) {}
 
-  // Appelé à l'initialisation
   ngOnInit(): void {
-    // Récupère l'id de l'incident depuis l'URL et charge ses détails à chaque changement
     this.route.paramMap.subscribe(params => {
       const idParam = params.get('id');
       if (idParam) {
@@ -64,20 +48,39 @@ export class IncidentDetails implements OnInit {
     this.loadTechnicians();
   }
 
-  // Charge les détails de l'incident, et sa pièce jointe si une image est associée
+  // ============================================================
+  // Charger les détails de l'incident
+  // ============================================================
   loadIncidentDetails(id: number): void {
-    // Réinitialise les données avant chargement
     this.incident = null;
     this.attachmentUrl = null;
+    this.technicianName = 'Non assigné';
 
     this.incidentService.getIncidentById(id).subscribe({
       next: (res: any) => {
-        // Le backend peut renvoyer directement l'objet ou l'envelopper dans { body: ... }
         this.incident = res.body ? res.body : res;
+        console.log('INCIDENT DETAILS:', JSON.stringify(this.incident, null, 2));
+
+        // Chercher le technicien : objet, email, ou ID
+        const techObj = this.incident?.technician || this.incident?.assignedTechnician || this.incident?.technicien;
+        const techEmail = this.incident?.technicianEmail;
+
+        if (techObj && (techObj.firstName || techObj.lastName || techObj.email)) {
+          this.technicianName = `${techObj.firstName || ''} ${techObj.lastName || ''}`.trim() || techObj.email;
+        } else if (techEmail) {
+          this.loadTechnicianByEmail(techEmail);
+        } else {
+          const techId = Number(this.incident?.technicianId || this.incident?.idTechnicien || this.incident?.technician?.id);
+          if (!isNaN(techId) && techId > 0) {
+            this.loadTechnicianName(techId);
+          } else {
+            this.technicianName = 'Non assigné';
+          }
+        }
+
         this.cdr.detectChanges();
 
-        // Si l'incident a une image, charge la pièce jointe
-        if (this.incident && (this.incident as any).imageUrl) {
+        if (this.incident && this.incident.imageUrl) {
           this.loadAttachment(this.incident.id);
         }
       },
@@ -85,11 +88,56 @@ export class IncidentDetails implements OnInit {
     });
   }
 
-  // Télécharge la pièce jointe en tant que Blob et crée une URL locale pour l'afficher dans le template
+  // ============================================================
+  // Charger le nom du technicien par ID
+  // ============================================================
+  loadTechnicianName(techId: number): void {
+    this.userService.getAllUsers().subscribe({
+      next: (res: any) => {
+        const list = Array.isArray(res) ? res : (res?.content || res?.data || []);
+        const tech = list.find((u: any) => Number(u.id) === Number(techId));
+        if (tech) {
+          this.technicianName = `${tech.firstName || ''} ${tech.lastName || ''}`.trim() || tech.email || 'Non assigné';
+        } else {
+          this.technicianName = 'Non assigné';
+        }
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => {
+        this.technicianName = 'Non assigné';
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  // ============================================================
+  // Charger le nom du technicien par email
+  // ============================================================
+  loadTechnicianByEmail(email: string): void {
+    this.userService.getAllUsers().subscribe({
+      next: (res: any) => {
+        const list = Array.isArray(res) ? res : (res?.content || res?.data || []);
+        const tech = list.find((u: any) => u.email?.toLowerCase() === email.toLowerCase());
+        if (tech) {
+          this.technicianName = `${tech.firstName || ''} ${tech.lastName || ''}`.trim() || tech.email || email;
+        } else {
+          this.technicianName = email;
+        }
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => {
+        this.technicianName = email;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  // ============================================================
+  // Charger la pièce jointe (image)
+  // ============================================================
   loadAttachment(id: number): void {
     this.incidentService.getAttachment(id).subscribe({
       next: (blob: Blob) => {
-        // Crée une URL locale à partir du Blob
         this.attachmentUrl = URL.createObjectURL(blob);
         this.cdr.detectChanges();
       },
@@ -97,28 +145,27 @@ export class IncidentDetails implements OnInit {
     });
   }
 
-  // Charge tous les utilisateurs puis ne garde que ceux ayant le rôle technicien
+  // ============================================================
+  // Charger la liste des techniciens
+  // ============================================================
   loadTechnicians(): void {
     this.userService.getAllUsers().subscribe({
       next: (res: any) => {
-        // Normalise la réponse en tableau
         const list = Array.isArray(res) ? res : (res?.content || res?.data || []);
-
-        // Filtre les techniciens
         this.technicians = list.filter((u: any) => {
           const role = u.role ? u.role.toUpperCase() : '';
           return role === 'TECHNICIAN' || role === 'TECHNICIEN';
         });
-
         this.cdr.detectChanges();
       },
       error: (err: any) => console.error('Error fetching users for technicians', err)
     });
   }
 
-  // Accepte l'incident : exige qu'un technicien soit sélectionné, puis crée l'intervention côté backend
+  // ============================================================
+  // Accepter l'incident (assigner technicien)
+  // ============================================================
   acceptIncident(): void {
-    // Vérifie qu'un technicien est sélectionné et que l'ID de l'incident existe
     if (!this.selectedTechnicianId || this.incidentId === null) {
       alert('Veuillez sélectionner un technicien !');
       return;
@@ -128,9 +175,9 @@ export class IncidentDetails implements OnInit {
 
     this.incidentService.acceptIncidentWithIntervention(this.incidentId, technicianIdNumber).subscribe({
       next: (res: any) => {
-        alert('Incident accepté avec succès, notification envoyée et intervention créée !');
-        // Met à jour l'incident avec la réponse du backend
+        alert('Incident accepté avec succès, notification envoyée !');
         this.incident = res.incident || res;
+        this.loadIncidentDetails(this.incidentId!);
         this.cdr.detectChanges();
       },
       error: (err: any) => {
@@ -140,18 +187,18 @@ export class IncidentDetails implements OnInit {
     });
   }
 
-  // Rejette l'incident ; le technicien est optionnel dans ce cas
+  // ============================================================
+  // Rejeter l'incident
+  // ============================================================
   rejectIncident(): void {
     if (this.incidentId === null) return;
-
-    // Le technicien est optionnel pour un rejet
     const technicianIdNumber = this.selectedTechnicianId ? Number(this.selectedTechnicianId) : null;
 
     this.incidentService.rejectIncident(this.incidentId, { technicianId: technicianIdNumber }).subscribe({
       next: (res: any) => {
         alert('Incident rejeté avec succès et notification envoyée !');
-        // Met à jour l'incident avec la réponse du backend
         this.incident = res.incident || res;
+        this.loadIncidentDetails(this.incidentId!);
         this.cdr.detectChanges();
       },
       error: (err: any) => {
@@ -161,12 +208,16 @@ export class IncidentDetails implements OnInit {
     });
   }
 
-  // Retourne à la liste des signalements
+  // ============================================================
+  // Retour
+  // ============================================================
   goBack(): void {
     this.router.navigate(['/admin/signalements']);
   }
 
-  // Convertit le statut backend (majuscules) en classe CSS pour le badge de statut
+  // ============================================================
+  // Classe CSS du statut
+  // ============================================================
   getStatusClass(status: IncidentStatus | undefined): string {
     if (!status) return '';
     switch (status) {
@@ -174,11 +225,11 @@ export class IncidentDetails implements OnInit {
       case 'NOUVEAU': return 'open';
       case 'RESOLU': return 'resolved';
       case 'REJETE': return 'rejected';
+      case 'ACCEPTE': return 'accepted';
       default: return '';
     }
   }
 
-  // Convertit la priorité en minuscules pour l'utiliser comme classe CSS
   getPriorityClass(priority: string | undefined): string {
     return priority ? priority.toLowerCase() : '';
   }

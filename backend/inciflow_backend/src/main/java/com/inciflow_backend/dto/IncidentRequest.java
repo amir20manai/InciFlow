@@ -18,6 +18,4 @@ public class IncidentRequest {
     private String department;
     private String category;
     private MultipartFile image;
-
-    // Getters and Setters
 }

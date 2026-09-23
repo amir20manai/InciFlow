@@ -1,14 +1,19 @@
 <div class="profile-page">
+  <!-- En-tête de la page -->
   <div class="page-header-title">
     <h1>Profil</h1>
   </div>
 
+  <!-- Contenu principal -->
   <main class="profile-content">
+    <!-- Carte héro (avatar + nom + rôle) -->
     <div class="profile-hero-card">
       <div class="hero-content-clean">
+        <!-- Avatar avec initiales -->
         <div class="avatar-container">
           <div class="avatar-large">{{ initials }}</div>
         </div>
+        <!-- Texte : nom, email, département -->
         <div class="hero-text">
           <h2>{{ fullName }}</h2>
           <p>{{ email }} • {{ department }}</p>
@@ -19,22 +24,28 @@
       </div>
     </div>
 
+    <!-- Grille des cartes (Infos perso + Mot de passe) -->
     <div class="profile-grid">
+      <!-- Carte : Informations personnelles -->
       <div class="profile-card">
         <div class="card-header">
           <h3>Informations personnelles</h3>
           <p>Mettez à jour vos coordonnées</p>
         </div>
 
+        <!-- Formulaire de mise à jour -->
         <form class="form-grid" (ngSubmit)="updateProfile()">
+          <!-- Prénom -->
           <div class="input-group">
             <label>Prénom</label>
             <input type="text" [(ngModel)]="firstName" name="firstName" placeholder="First name">
           </div>
+          <!-- Nom -->
           <div class="input-group">
             <label>Nom </label>
             <input type="text" [(ngModel)]="lastName" name="lastName" placeholder="Last name">
           </div>
+          <!-- Email -->
           <div class="input-group">
             <label>Email</label>
             <div class="input-icon-wrap">
@@ -42,6 +53,7 @@
               <input type="email" [(ngModel)]="email" name="email" placeholder="Email">
             </div>
           </div>
+          <!-- Département -->
           <div class="input-group">
             <label>Département</label>
             <div class="input-icon-wrap">
@@ -49,6 +61,7 @@
               <input type="text" class="form-control" [(ngModel)]="department" name="department" placeholder="Department">
             </div>
           </div>
+          <!-- Téléphone -->
           <div class="input-group">
             <label>Téléphone</label>
             <div class="input-icon-wrap">
@@ -58,18 +71,21 @@
           </div>
         </form>
 
+        <!-- Bouton de mise à jour -->
         <div class="form-action-right">
           <button class="btn-blue" (click)="updateProfile()">Mettre à jour le profil</button>
         </div>
       </div>
 
-      <!-- قسم تغيير كلمة السر -->
+      <!-- Carte : Changer le mot de passe -->
       <div class="profile-card">
         <div class="card-header">
           <h3>Changer le mot de passe</h3>
         </div>
 
+        <!-- Formulaire de changement de mot de passe -->
         <form class="form-stack">
+          <!-- Mot de passe actuel -->
           <div class="input-group">
             <label>Mot de passe actuel</label>
             <div class="input-icon-wrap">
@@ -77,6 +93,7 @@
               <input type="password" [(ngModel)]="currentPassword" name="currentPassword" placeholder="••••••••">
             </div>
           </div>
+          <!-- Nouveau mot de passe -->
           <div class="input-group">
             <label>Nouveau mot de passe</label>
             <div class="input-icon-wrap">
@@ -84,6 +101,7 @@
               <input type="password" [(ngModel)]="newPassword" name="newPassword" placeholder="••••••••">
             </div>
           </div>
+          <!-- Confirmation du mot de passe -->
           <div class="input-group">
             <label>Confirmer le nouveau mot de passe</label>
             <div class="input-icon-wrap">
@@ -93,6 +111,7 @@
           </div>
         </form>
 
+        <!-- Bouton de changement de mot de passe -->
         <div class="form-action-right">
           <button class="btn-blue" (click)="changePassword()">Changer le mot de passe</button>
         </div>

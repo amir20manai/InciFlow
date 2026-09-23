@@ -1,15 +1,15 @@
 <div class="statistics-container">
-  <!-- Top Header -->
+  <!-- En-tête de la page -->
   <header class="top-header">
     <div class="header-left">
       <h1 class="page-title">Statistiques</h1>
     </div>
   </header>
 
-  <!-- Main Body -->
+  <!-- Contenu principal -->
   <main class="main-body">
     
-    <!-- Top Metrics Cards Grid (4 Priorités: BASSE, MOYENNE, HAUTE, CRITIQUE) -->
+    <!-- Cartes des métriques (4 priorités) -->
     <div class="metrics-grid four-cols">
       <div class="metric-card" *ngFor="let m of metrics" [style.border-left]="'5px solid ' + m.border" [style.background-color]="m.bg">
         <div class="metric-info">
@@ -19,9 +19,9 @@
       </div>
     </div>
 
-    <!-- Middle Section: Incidents par catégorie & Charge par technicien -->
+    <!-- Section du milieu : Incidents par catégorie & Charge par technicien -->
     <div class="charts-row">
-      <!-- Incidents par catégorie -->
+      <!-- Carte : Incidents par catégorie -->
       <div class="panel-card chart-category-card">
         <div class="chart-header">
           <h3 class="panel-title">Incidents par catégorie</h3>
@@ -39,7 +39,7 @@
         </div>
       </div>
 
-      <!-- Charge par technicien -->
+      <!-- Carte : Charge par technicien -->
       <div class="panel-card chart-status-card">
         <div class="chart-header">
           <h3 class="panel-title">Charge par technicien</h3>
@@ -56,22 +56,22 @@
       </div>
     </div>
 
-    <!-- Bottom Section: Incidents par Département -->
-  <div class="panel-card weekly-trend-card">
-    <div class="chart-header">
-      <h3 class="panel-title">Incidents par département</h3>
-    </div>
-    <div class="weekly-bars-container">
-      <div class="weekly-bar-group" *ngFor="let w of weeklyTrend">
-        <!-- Optional: tnajem t7ot el count lfoq el liser ken theb yban -->
-        <span class="dept-count-badge" *ngIf="w.count > 0">{{ w.count }}</span>
-        <div class="bar-track">
-          <div class="bar-fill" [style.height]="w.height" style="background-color: #2563eb;"></div>
+    <!-- Section du bas : Incidents par département -->
+    <div class="panel-card weekly-trend-card">
+      <div class="chart-header">
+        <h3 class="panel-title">Incidents par département</h3>
+      </div>
+      <div class="weekly-bars-container">
+        <div class="weekly-bar-group" *ngFor="let w of weeklyTrend">
+          <!-- Badge avec le nombre (visible si > 0) -->
+          <span class="dept-count-badge" *ngIf="w.count > 0">{{ w.count }}</span>
+          <div class="bar-track">
+            <div class="bar-fill" [style.height]="w.height" style="background-color: #2563eb;"></div>
+          </div>
+          <span class="bar-label">{{ w.day }}</span>
         </div>
-        <span class="bar-label">{{ w.day }}</span>
       </div>
     </div>
-  </div>
 
   </main>
 </div>

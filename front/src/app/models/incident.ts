@@ -1,4 +1,4 @@
-export type IncidentStatus = 'NOUVEAU' | 'EN_COURS' | 'RESOLU' | 'REJETE';
+export type IncidentStatus = 'NOUVEAU' | 'EN_COURS' | 'RESOLU' | 'REJETE' | 'ACCEPTE';
 export type IncidentPriority = 'BASSE' | 'MOYENNE' | 'HAUTE' | 'CRITIQUE';
 
 export interface IncidentRequest {

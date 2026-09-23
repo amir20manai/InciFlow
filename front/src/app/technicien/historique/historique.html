@@ -1,1 +1,115 @@
-<p>historique works!</p>
+<div class="reports-container">
+
+  <!-- En-tête de la page -->
+  <header class="top-header">
+    <div class="header-left">
+      <h1 class="page-title">Historique des Interventions</h1>
+    </div>
+  </header>
+
+  <!-- Contenu principal -->
+  <main class="main-body">
+    <div class="table-card">
+
+      <!-- En-tête de la carte -->
+      <div class="card-header-info">
+        <h2>Interventions terminées</h2>
+        <p>{{ filteredInterventions.length }} interventions résolues</p>
+      </div>
+
+      <!-- Barre de filtres (Recherche + Priorité) -->
+      <div class="controls-bar">
+        <!-- Champ de recherche -->
+        <div class="search-box">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" placeholder="Rechercher dans l'historique..." [(ngModel)]="searchQuery" (input)="filterInterventions()">
+        </div>
+
+        <!-- Filtres à droite -->
+        <div class="filters-right">
+          <!-- Icône de filtre -->
+          <svg class="filter-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+          </svg>
+
+          <!-- Sélecteur de priorité -->
+          <select class="select-btn" [(ngModel)]="selectedPriority" (change)="filterInterventions()">
+            <option value="ALL">Toutes les priorités</option>
+            <option value="CRITIQUE">Critique</option>
+            <option value="HAUTE">Haute</option>
+            <option value="MOYENNE">Moyenne</option>
+            <option value="BASSE">Basse</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- État de chargement -->
+      <div *ngIf="isLoading" style="text-align: center; padding: 40px; color: #94a3b8;">
+        Chargement de l'historique...
+      </div>
+
+      <!-- État d'erreur -->
+      <div *ngIf="errorMessage && !isLoading" style="text-align: center; padding: 30px; color: #ef4444;">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Tableau des interventions -->
+      <div class="table-responsive" *ngIf="!isLoading && !errorMessage">
+        <table class="incidents-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>INCIDENT</th>
+              <th>DÉPARTEMENT</th>
+              <th>PRIORITÉ</th>
+              <th>STATUT</th>
+              <th>DATE</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Message si aucune intervention -->
+            <tr *ngIf="filteredInterventions.length === 0">
+              <td colspan="6" style="text-align: center; padding: 30px; color: #94a3b8;">
+                Aucune intervention terminée trouvée.
+              </td>
+            </tr>
+
+            <!-- Boucle des interventions -->
+            <tr *ngFor="let inc of filteredInterventions" (click)="viewDetails(inc.id)" style="cursor: pointer;">
+              <!-- Colonne : ID -->
+              <td class="col-id">INC-{{ inc.id }}</td>
+              <!-- Colonne : Titre + Catégorie -->
+              <td class="col-incident">
+                <span class="inc-title">{{ inc.title || 'Sans titre' }}</span>
+                <span class="inc-sub">{{ inc.categoryName || 'N/A' }}</span>
+              </td>
+              <!-- Colonne : Département -->
+              <td class="col-reporter">
+                <div class="reporter-info">
+                  <span class="reporter-name">{{ inc.departmentName || 'N/A' }}</span>
+                </div>
+              </td>
+              <!-- Colonne : Priorité -->
+              <td>
+                <span class="badge-priority" [ngClass]="getPriorityClass(inc.priority)">
+                  <span class="dot"></span> {{ inc.priority || 'N/A' }}
+                </span>
+              </td>
+              <!-- Colonne : Statut (toujours RESOLU) -->
+              <td>
+                <span class="badge-status resolved">
+                  <span class="dot"></span> {{ inc.status }}
+                </span>
+              </td>
+              <!-- Colonne : Date -->
+              <td class="col-updated">{{ inc.createdAt | date:'short' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </main>
+</div>

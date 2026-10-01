@@ -11,3 +11,21 @@ html, body {
 *, *:before, *:after {
   box-sizing: border-box;
 }
+
+@media (max-width: 760px) {
+  app-admin .admin-content > *:not(router-outlet),
+  app-employee .employee-content > *:not(router-outlet),
+  app-technicien .technicien-content > *:not(router-outlet) {
+    top: 126px !important;
+    left: 0 !important;
+    width: auto !important;
+  }
+}
+
+@media (max-width: 480px) {
+  app-admin .admin-content > *:not(router-outlet),
+  app-employee .employee-content > *:not(router-outlet),
+  app-technicien .technicien-content > *:not(router-outlet) {
+    top: 172px !important;
+  }
+}

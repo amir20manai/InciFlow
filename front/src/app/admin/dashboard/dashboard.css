@@ -64,59 +64,63 @@
   margin: 0;
 }
 
-/* ============ Stat Cards Grid (Supports 4 or 5 columns) ============ */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-}
-
 .stats-grid.five-cols {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
 }
 
 @media (max-width: 1400px) {
   .stats-grid.five-cols {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 1200px) {
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 900px) {
   .stats-grid.five-cols {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 .stat-card {
-  background-color: #ffffff;
+  --stat-accent: #2563eb;
+  --stat-tint: #ffffff;
+  min-width: 0;
+  min-height: 104px;
+  background-color: var(--stat-tint);
   border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  padding: 1.25rem;
+  border-top: 3px solid var(--stat-accent);
+  border-radius: 10px;
+  padding: 15px 17px;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  justify-content: space-between;
+  gap: 10px;
 }
+
+.stat-card:nth-child(2) { --stat-accent: #7f1d1d; --stat-tint: rgba(127, 29, 29, 0.15); }
+.stat-card:nth-child(3) { --stat-accent: #dc2626; --stat-tint: rgba(220, 38, 38, 0.08); }
+.stat-card:nth-child(4) { --stat-accent: #f59e0b; --stat-tint: rgba(245, 158, 11, 0.08); }
+.stat-card:nth-child(5) { --stat-accent: #64748b; --stat-tint: rgba(100, 116, 139, 0.08); }
 
 .stat-title {
   color: #64748b;
-  font-size: 0.8rem;
-  font-weight: 500;
+  font-size: 0.76rem;
+  font-weight: 600;
 }
 
 .stat-count {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #0f172a;
   margin: 0;
+  color: var(--stat-accent);
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+@media (max-width: 600px) {
+  .stats-grid.five-cols {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ============ Charts Grid (Equal Size Ring Charts) ============ */

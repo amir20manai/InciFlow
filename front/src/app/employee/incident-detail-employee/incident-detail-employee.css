@@ -214,3 +214,15 @@
   border-left: 4px solid #16a34a;
   white-space: pre-wrap;
 }
+
+@media (max-width: 600px) {
+  .reports-container { padding: 20px 14px; }
+  .panel-card { padding: 16px; }
+  .incident-meta-row { flex-wrap: wrap; gap: 8px; }
+  .main-heading { overflow-wrap: anywhere; }
+  .kv-row { align-items: flex-start; gap: 8px; }
+  .kv-label { flex: 0 1 40%; }
+  .kv-val { max-width: 60%; min-width: 0; overflow-wrap: anywhere; text-align: right; }
+  .report-notes-box { padding: 14px; }
+  .report-text { padding: 10px 12px; overflow-wrap: anywhere; }
+}

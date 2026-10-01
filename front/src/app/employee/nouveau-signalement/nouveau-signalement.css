@@ -94,6 +94,9 @@
 .form-group input,
 .form-group textarea,
 .form-group select {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   background: #ffffff;
   border: 1px solid #cbd5e1;
   border-radius: 8px;
@@ -124,8 +127,28 @@
 }
 
 @media (max-width: 600px) {
+  .signal-container {
+    padding: 20px 14px;
+  }
+
+  .form-card {
+    padding: 1.25rem;
+  }
+
   .form-row {
     grid-template-columns: 1fr;
+  }
+
+  .priority-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .form-actions {
+    flex-wrap: wrap;
+  }
+
+  .form-actions button {
+    flex: 1 1 130px;
   }
 }
 

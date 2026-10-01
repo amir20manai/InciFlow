@@ -11,8 +11,8 @@
     
     <!-- Section de bienvenue -->
     <section class="welcome-section">
-      <h2>Bienvenu {{ userName }} </h2>
-      <p class="subtitle">Voici ce qui se passe dans votre organisation aujourd'hui.</p>
+      <h2>Bienvenue, {{ userName }}</h2>
+      <p class="subtitle">Voici les informations du jour pour votre organisation.</p>
     </section>
 
     <!-- Rangée des cartes de statistiques (Total + 4 priorités) -->
@@ -59,8 +59,8 @@
       <!-- Graphique : Vue d'ensemble du statut -->
       <div class="panel-card status-panel">
         <div class="panel-header">
-          <h3>Vue d'ensemble du statut</h3>
-          <p>État actuel de tous les incidents</p>
+          <h3>Répartition par statut</h3>
+          <p>État actuel de l’ensemble des incidents</p>
         </div>
         <div class="ring-chart-container">
           <div class="ring-graphic">
@@ -97,9 +97,9 @@
         <div class="panel-header flex-between">
           <div>
             <h3>Incidents récents</h3>
-            <p>le bilan de tous les départements</p>
+            <p>État des incidents dans tous les départements</p>
           </div>
-          <a class="link-btn" routerLink="/admin/signalements" routerLinkActive="active">Tout afficher</a>
+          <a class="link-btn" routerLink="/admin/signalements" routerLinkActive="active">Voir tous les incidents</a>
         </div>
 
         <div class="table-responsive">
@@ -108,10 +108,10 @@
               <tr>
                 <th>ID</th>
                 <th>INCIDENT</th>
-                <th>REPORTER</th>
+                <th>DÉCLARANT</th>
                 <th>PRIORITÉ</th>
                 <th>STATUT</th>
-                <th>MIS À JOUR</th>
+                <th>DERNIÈRE MISE À JOUR</th>
               </tr>
             </thead>
             <tbody>
@@ -158,7 +158,7 @@
             <p class="section-subtitle-dark">Alertes récentes</p>
           </div>
           <a routerLink="/admin/notification" class="view-all-link">
-            <span>Tout afficher</span>
+            <span>Voir toutes les notifications</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
         </div>

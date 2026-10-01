@@ -73,7 +73,7 @@
           <!-- Message d'erreur : téléphone doit contenir uniquement chiffres, espaces et "+" -->
           <small class="error-text"
                  *ngIf="phoneControl?.errors?.['pattern'] && (phoneControl?.dirty || phoneControl?.touched)">
-            Le téléphone doit contenir uniquement des chiffres et le caractère "+".
+            Le numéro de téléphone doit contenir uniquement des chiffres et le signe « + ».
           </small>
         </div>
 
@@ -88,13 +88,13 @@
           <!-- Message d'erreur : email obligatoire -->
           <small class="error-text"
                  *ngIf="emailControl?.errors?.['required'] && (emailControl?.dirty || emailControl?.touched)">
-            L'email est obligatoire.
+            L’adresse e-mail est obligatoire.
           </small>
 
           <!-- Message d'erreur : format d'email invalide -->
           <small class="error-text"
                  *ngIf="(emailControl?.errors?.['email'] || emailControl?.errors?.['pattern']) && (emailControl?.dirty || emailControl?.touched)">
-            L'email doit être valide (ex: nom&#64;domaine.com).
+            L’adresse e-mail doit être valide (ex. : nom&#64;domaine.com).
           </small>
         </div>
 

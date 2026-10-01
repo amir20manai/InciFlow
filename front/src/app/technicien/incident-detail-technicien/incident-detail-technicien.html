@@ -42,7 +42,7 @@
 
       <!-- Image dynamique via Blob URL -->
       <div *ngIf="attachmentUrl" class="incident-image-container">
-        <img [src]="attachmentUrl" alt="Incident attachment">
+        <img [src]="attachmentUrl" alt="Pièce jointe de l’incident">
       </div>
 
       <!-- Message si aucune image n'est jointe -->
@@ -93,7 +93,7 @@
             [(ngModel)]="reportNotes" 
             class="form-control" 
             rows="4" 
-            placeholder="Saisissez les détails de l'intervention ou la solution apportée..."
+            placeholder="Décrivez l’intervention réalisée ou la solution apportée…"
             [readonly]="incident?.status === 'RESOLU' || incident?.status === 'REJETE'"
             [ngClass]="{'readonly-textarea': incident?.status === 'RESOLU' || incident?.status === 'REJETE'}"
           ></textarea>
@@ -131,5 +131,5 @@
 
 <!-- État de chargement -->
 <div *ngIf="!incident" style="text-align: center; padding: 50px; color: #94a3b8;">
-  Chargement des détails de l'intervention...
+  Chargement des détails de l’intervention…
 </div>

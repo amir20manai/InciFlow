@@ -32,7 +32,7 @@
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             </div>
             <div style="display: flex; align-items: center; gap: 10px;">
-              <span class="dept-members-count">{{ dept.membersCount }} membres</span>
+              <span class="dept-members-count">Effectif : {{ dept.membersCount }}</span>
               <button class="edit-btn" (click)="openEditModal(dept)">Modifier</button>
             </div>
           </div>
@@ -66,13 +66,13 @@
       <!-- Champ : Nom -->
       <div class="form-group">
         <label>Nom du département</label>
-        <input type="text" [(ngModel)]="newDeptName" placeholder="e.g. Legal, Engineering...">
+        <input type="text" [(ngModel)]="newDeptName" placeholder="Ex. : Juridique, ingénierie…">
       </div>
       <!-- Champ : Chef -->
       <div class="form-group">
         <label>Chef de département</label>
         <select class="form-control" [(ngModel)]="newDeptHead">
-          <option value="" disabled selected>Sélectionner le chef du département</option>
+          <option value="" disabled selected>Sélectionnez un responsable de département</option>
           <option *ngFor="let emp of employees" [value]="(emp.prenom && emp.nom) ? (emp.prenom + ' ' + emp.nom) : emp.username">
             {{ (emp.prenom && emp.nom) ? (emp.prenom + ' ' + emp.nom) : emp.username }}
           </option>
@@ -81,7 +81,7 @@
       <!-- Actions -->
       <div class="modal-actions">
         <button type="button" class="btn-cancel" (click)="closeAddModal()">Annuler</button>
-        <button type="button" class="btn-primary" (click)="saveDepartment()">Sauvegarder</button>
+        <button type="button" class="btn-primary" (click)="saveDepartment()">Enregistrer</button>
       </div>
     </div>
   </div>
@@ -99,7 +99,7 @@
       <div class="form-group">
         <label>Chef de département</label>
         <select class="form-control" [(ngModel)]="newDeptHead">
-          <option value="" disabled selected>Sélectionnez un employé</option>
+          <option value="" disabled selected>Sélectionnez un responsable de département</option>
           <option *ngFor="let emp of employees" [value]="(emp.prenom && emp.nom) ? (emp.prenom + ' ' + emp.nom) : emp.username">
             {{ (emp.prenom && emp.nom) ? (emp.prenom + ' ' + emp.nom) : emp.username }}
           </option>
@@ -110,7 +110,7 @@
         <button type="button" class="btn-cancel" style="background-color: #ef4444; color: white;" (click)="deleteDepartment()">Supprimer</button>
         <div style="display: flex; gap: 10px;">
           <button type="button" class="btn-cancel" (click)="closeEditModal()">Annuler</button>
-          <button type="button" class="btn-primary" (click)="updateDepartment()">Sauvegarder</button>
+          <button type="button" class="btn-primary" (click)="updateDepartment()">Enregistrer</button>
         </div>
       </div>
     </div>

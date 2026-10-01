@@ -267,3 +267,12 @@
 .btn-blue:hover {
   background-color: #2563eb;
 }
+
+@media (max-width: 600px) {
+  .page-header-title { padding: 22px 20px 0; }
+  .profile-content { padding: 20px; gap: 16px; }
+  .hero-content-clean { padding: 18px; gap: 14px; }
+  .hero-text { min-width: 0; overflow-wrap: anywhere; }
+  .profile-card { padding: 18px; gap: 16px; }
+  .form-action-right .btn-blue { width: 100%; }
+}

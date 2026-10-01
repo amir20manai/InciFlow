@@ -11,7 +11,7 @@
 
     <!-- Section de bienvenue -->
     <section class="welcome-section">
-      <h2>Bienvenu {{ userName }}</h2>
+      <h2>Bienvenue, {{ userName }}</h2>
       <p class="subtitle">Voici ce qui se passe dans votre organisation aujourd'hui.</p>
     </section>
 
@@ -27,7 +27,7 @@
             </svg>
           </div>
           <div class="stat-info">
-            <span class="stat-title">Assignés</span>
+            <span class="stat-title">Incidents assignés</span>
             <h3 class="stat-count">{{ assignedCount }}</h3>
           </div>
         </div>
@@ -59,7 +59,7 @@
             </svg>
           </div>
           <div class="stat-info">
-            <span class="stat-title">Résolu</span>
+            <span class="stat-title">Incidents résolus</span>
             <h3 class="stat-count">{{ resolvedCount }}</h3>
           </div>
         </div>

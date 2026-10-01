@@ -3,7 +3,7 @@
   <!-- En-tête de la page -->
   <header class="top-header">
     <div class="header-left">
-      <h1 class="page-title">Mes Interventions</h1>
+      <h1 class="page-title">Mes interventions</h1>
     </div>
   </header>
 
@@ -24,7 +24,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
           </svg>
-          <input type="text" placeholder="Rechercher une intervention..." [(ngModel)]="searchQuery" (input)="filterInterventions()">
+          <input type="text" placeholder="Rechercher une intervention…" [(ngModel)]="searchQuery" (input)="filterInterventions()">
         </div>
 
         <!-- Filtres à droite -->
@@ -38,7 +38,7 @@
           <select class="select-btn" [(ngModel)]="selectedStatus" (change)="filterInterventions()">
             <option value="ALL">Tous les statuts</option>
             <option value="ACCEPTE">Accepté</option>
-            <option value="EN_COURS">En Cours</option>
+            <option value="EN_COURS">En cours</option>
           </select>
 
           <!-- Sélecteur de priorité -->
@@ -54,7 +54,7 @@
 
       <!-- État de chargement -->
       <div *ngIf="isLoading" style="text-align: center; padding: 40px; color: #94a3b8;">
-        Chargement des interventions...
+        Chargement des interventions…
       </div>
 
       <!-- État d'erreur -->
@@ -79,7 +79,7 @@
             <!-- Message si aucune intervention -->
             <tr *ngIf="filteredInterventions.length === 0">
               <td colspan="6" style="text-align: center; padding: 30px; color: #94a3b8;">
-                Aucune intervention active trouvée.
+                Aucune intervention en cours.
               </td>
             </tr>
 

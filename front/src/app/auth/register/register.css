@@ -6,7 +6,9 @@
   display: block;
   font-family: 'Inter', sans-serif;
   position: fixed;
+  inset: 0;
   width: 100%;
+  overflow-y: auto;
 }
 
 /* ============ RÉINITIALISATION GLOBALE ============ */
@@ -16,18 +18,19 @@
   padding: 0;
 }
 
-/* ============ CONTENEUR PRINCIPAL (2 COLONNES) ============ */
+/* ============ CONTENEUR PRINCIPAL ============ */
 .auth-container {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
+  min-height: 100dvh;
   width: 100%;
   background-color: #030712;
   color: #ffffff;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 /* ============================================================
-   PANNEAU GAUCHE : FORMULAIRE D'INSCRIPTION
+   PANNEAU GAUCHE : FORMULAIRE D'INSCRIPTION (FOND BLANC)
    ============================================================ */
 .auth-left {
   flex: 1;
@@ -36,6 +39,8 @@
   flex-direction: column;
   justify-content: space-between;
   max-width: 600px;
+  background-color: #ffffff;
+  color: #111827;
 }
 
 /* --- Logo et nom de la marque --- */
@@ -59,6 +64,7 @@
 .logo-text {
   font-weight: bold;
   letter-spacing: -0.5px;
+  color: #111827;
 }
 
 /* --- Conteneur du formulaire (avec scroll si trop long) --- */
@@ -75,7 +81,7 @@
   width: 4px;
 }
 .form-wrapper::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #d1d5db;
   border-radius: 4px;
 }
 
@@ -84,10 +90,11 @@
   font-weight: 700;
   margin-bottom: 0.2rem;
   letter-spacing: -0.5px;
+  color: #111827;
 }
 
 .subtitle {
-  color: #9ca3af;
+  color: #6b7280;
   font-size: 0.9rem;
   margin-bottom: 1rem;
 }
@@ -102,7 +109,7 @@
   font-size: 0.82rem;
   font-weight: 500;
   margin-bottom: 0.3rem;
-  color: #e5e7eb;
+  color: #374151;
 }
 
 /* --- Conteneur d'input avec icônes --- */
@@ -115,37 +122,37 @@
 .field-icon {
   position: absolute;
   left: 14px;
-  color: #6b7280;
+  color: #9ca3af;
   pointer-events: none;
 }
 
 .eye-icon {
   position: absolute;
   right: 14px;
-  color: #6b7280;
+  color: #9ca3af;
   cursor: pointer;
   transition: color 0.2s ease;
 }
 
 .eye-icon:hover {
-  color: #9ca3af;
+  color: #6b7280;
 }
 
-/* --- Champ input de base --- */
+/* --- Champ input de base (FOND BLANC) --- */
 .input-icon-wrapper input {
   width: 100%;
   padding: 0.6rem 1rem 0.6rem 2.75rem;
-  background-color: #0f172a;
-  border: 1px solid #1e293b;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
   border-radius: 8px;
-  color: white;
+  color: #111827;
   font-size: 0.9rem;
   outline: none;
   transition: all 0.2s ease;
 }
 
 .input-icon-wrapper input::placeholder {
-  color: #6b7280;
+  color: #9ca3af;
 }
 
 .input-icon-wrapper input:focus {
@@ -153,7 +160,7 @@
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
-/* ============ ÉTAT INVALIDE (BORDURE ROUGE) ============ */
+/* ============ ÉTAT INVALIDE ============ */
 .input-icon-wrapper input.is-invalid,
 .input-icon-wrapper input.ng-invalid.ng-touched {
   border-color: #dc2626;
@@ -166,10 +173,10 @@
   box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.25);
 }
 
-/* ============ MESSAGES D'ERREUR SOUS LES CHAMPS ============ */
+/* ============ MESSAGES D'ERREUR ============ */
 .error-text {
   display: block;
-  color: #f87171;
+  color: #dc2626;
   font-size: 12px;
   margin-top: 4px;
   font-weight: 500;
@@ -181,8 +188,8 @@
 /* ============ MESSAGE D'ERREUR GLOBAL ============ */
 .alert-error {
   display: block;
-  background-color: rgba(220, 38, 38, 0.15);
-  color: #fecaca;
+  background-color: rgba(220, 38, 38, 0.08);
+  color: #b91c1c;
   border: 1px solid #dc2626;
   border-left: 4px solid #dc2626;
   border-radius: 8px;
@@ -198,15 +205,15 @@
 .alert-error::before {
   content: "⚠ ";
   font-size: 16px;
-  color: #f87171;
+  color: #dc2626;
   font-weight: 700;
 }
 
 /* ============ MESSAGE DE SUCCÈS ============ */
 .alert-success {
   display: block;
-  background-color: rgba(16, 185, 129, 0.15);
-  color: #a7f3d0;
+  background-color: rgba(16, 185, 129, 0.08);
+  color: #047857;
   border: 1px solid #10b981;
   border-left: 4px solid #10b981;
   border-radius: 8px;
@@ -226,20 +233,14 @@
   font-weight: 700;
 }
 
-/* ============ ANIMATION D'APPARITION ============ */
+/* ============ ANIMATION ============ */
 @keyframes fadeInError {
-  from {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ============================================================
-   BOUTON PRINCIPAL "CRÉER MON COMPTE"
+   BOUTON PRINCIPAL
    ============================================================ */
 .btn-primary {
   width: 100%;
@@ -264,8 +265,8 @@
 }
 
 .btn-primary:disabled {
-  background-color: #1e3a8a;
-  opacity: 0.6;
+  background-color: #93c5fd;
+  opacity: 0.7;
   cursor: not-allowed;
 }
 
@@ -276,23 +277,23 @@
   text-align: center;
   margin-top: 1rem;
   font-size: 0.85rem;
-  color: #9ca3af;
+  color: #6b7280;
 }
 
 .switch-auth a {
-  color: #3b82f6;
+  color: #2563eb;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s ease;
 }
 
 .switch-auth a:hover {
-  color: #60a5fa;
+  color: #1d4ed8;
   text-decoration: underline;
 }
 
 /* ============================================================
-   PANNEAU DROIT : BANNIÈRE HERO
+   PANNEAU DROIT : BANNIÈRE HERO (INCHANGÉ)
    ============================================================ */
 .auth-right {
   flex: 1.2;
@@ -303,9 +304,7 @@
   justify-content: center;
 }
 
-.hero-content {
-  max-width: 520px;
-}
+.hero-content { max-width: 520px; }
 
 .badge {
   display: inline-flex;
@@ -361,9 +360,7 @@
   gap: 1rem;
 }
 
-.avatars {
-  display: flex;
-}
+.avatars { display: flex; }
 
 .avatar {
   width: 28px;
@@ -386,20 +383,33 @@
 }
 
 /* ============================================================
-   RESPONSIVE : ADAPTATION MOBILE
+   RESPONSIVE
    ============================================================ */
 @media (max-width: 900px) {
-  .auth-right {
-    display: none;
-  }
+  .auth-right { display: none; }
 
   .auth-left {
     max-width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
     padding: 2rem 1.5rem;
   }
 
   .form-wrapper {
     max-width: 100%;
-    max-height: 92vh;
+    max-height: 92dvh;
+  }
+}
+
+@media (max-width: 600px) {
+  .auth-left {
+    padding: 1.25rem 1rem;
+  }
+
+  .form-wrapper {
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+    margin: auto;
   }
 }

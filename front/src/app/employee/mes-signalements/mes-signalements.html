@@ -13,7 +13,7 @@
       <!-- En-tête de la carte -->
       <div class="card-header-info">
         <h2>Mes incidents</h2>
-        <p>{{ filteredIncidents.length }} les incidents que vous avez signalés</p>
+        <p>Nombre d’incidents signalés : {{ filteredIncidents.length }}</p>
       </div>
 
       <!-- Barre de filtres (Recherche + Statut + Priorité) -->
@@ -21,7 +21,7 @@
         <!-- Champ de recherche -->
         <div class="search-box">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" placeholder="Rechercher un incident...." [(ngModel)]="searchQuery" (input)="filterIncidents()">
+          <input type="text" placeholder="Rechercher un incident…" [(ngModel)]="searchQuery" (input)="filterIncidents()">
         </div>
 
         <!-- Filtres à droite -->
@@ -34,7 +34,7 @@
             <option value="ALL">Tous les statuts</option>
             <option value="ACCEPTE">Accepté</option>
             <option value="NOUVEAU">Nouveau</option>
-            <option value="EN_COURS">En Cours</option>
+            <option value="EN_COURS">En cours</option>
             <option value="RESOLU">Résolu</option>
             <option value="REJETE">Rejeté</option>
           </select>
@@ -52,7 +52,7 @@
 
       <!-- État de chargement -->
       <div *ngIf="isLoading" style="text-align: center; padding: 40px; color: #94a3b8;">
-        Chargement des incidents depuis la base de données...
+        Chargement de vos incidents…
       </div>
 
       <!-- État d'erreur -->
@@ -67,7 +67,7 @@
             <tr>
               <th>ID</th>
               <th>INCIDENT</th>
-              <th>DEPARTEMENT</th>
+              <th>DÉPARTEMENT</th>
               <th>PRIORITÉ</th>
               <th>STATUT</th>
               <th>MIS À JOUR</th>
@@ -77,7 +77,7 @@
             <!-- Message si aucun incident -->
             <tr *ngIf="filteredIncidents.length === 0">
               <td colspan="6" style="text-align: center; padding: 30px; color: #94a3b8;">
-                Aucun incident détecté.
+                Aucun incident trouvé.
               </td>
             </tr>
 

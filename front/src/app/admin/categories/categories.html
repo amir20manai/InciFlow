@@ -34,7 +34,7 @@
             <!-- Nom + nombre d'incidents -->
             <div class="cat-details">
               <span class="cat-name">{{ cat.name }}</span>
-              <span class="cat-count">{{ cat.count }} incidents</span>
+              <span class="cat-count">Incidents : {{ cat.count }}</span>
             </div>
           </div>
           <!-- Bouton Modifier -->
@@ -52,7 +52,7 @@
       <!-- Champ : Nom -->
       <div class="form-group">
         <label>Nom de la catégorie</label>
-        <input type="text" [(ngModel)]="newCategoryName" placeholder="e.g. Cloud, Database...">
+        <input type="text" [(ngModel)]="newCategoryName" placeholder="Ex. : Cloud, base de données…">
       </div>
       <!-- Champ : Couleur -->
       <div class="form-group">
@@ -62,7 +62,7 @@
       <!-- Actions -->
       <div class="modal-actions">
         <button class="btn-cancel" (click)="closeAddModal()">Annuler</button>
-        <button class="btn-primary" (click)="saveCategory()">Sauvegarder</button>
+        <button class="btn-primary" (click)="saveCategory()">Enregistrer</button>
       </div>
     </div>
   </div>
@@ -74,7 +74,7 @@
       <!-- Champ : Nom -->
       <div class="form-group">
         <label>Nom de la catégorie</label>
-        <input type="text" [(ngModel)]="editCategoryName" placeholder="Category Name">
+          <input type="text" [(ngModel)]="editCategoryName" placeholder="Nom de la catégorie">
       </div>
       <!-- Champ : Couleur -->
       <div class="form-group">
@@ -86,7 +86,7 @@
         <button type="button" class="btn-cancel" style="background-color: #ef4444; color: white;" (click)="deleteCategory()">Supprimer</button>
         <div style="display: flex; gap: 10px;">
           <button type="button" class="btn-cancel" (click)="closeEditModal()">Annuler</button>
-          <button type="button" class="btn-primary" (click)="updateCategory()">Sauvegarder</button>
+          <button type="button" class="btn-primary" (click)="updateCategory()">Enregistrer</button>
         </div>
       </div>
     </div>

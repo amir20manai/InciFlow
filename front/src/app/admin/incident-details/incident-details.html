@@ -44,7 +44,7 @@
 
       <!-- Image dynamique (Blob URL) -->
       <div *ngIf="attachmentUrl" class="incident-image-container">
-        <img [src]="attachmentUrl" alt="Incident attachment">
+        <img [src]="attachmentUrl" alt="Pièce jointe de l’incident">
       </div>
     </div>
 
@@ -52,7 +52,7 @@
     <div class="bottom-grid-section">
       
       <!-- Carte : Détails de l'incident -->
-      <div class="panel-card">
+      <div class="panel-card incident-details-card">
         <h3 class="panel-title section-sm-title">Détails</h3>
         <div class="details-kv-list">
           <div class="kv-row"><span class="kv-label">Catégorie</span><span class="kv-val">{{ incident.categoryName }}</span></div>
@@ -89,13 +89,13 @@
 
       <!-- Carte : Attribution et Traitement -->
       <div class="panel-card">
-        <h3 class="panel-title section-sm-title">Attribuer et traiter</h3>
+        <h3 class="panel-title section-sm-title">Affectation et traitement</h3>
         
         <!-- Sélecteur de technicien -->
         <div class="form-group" style="margin-bottom: 20px;">
-          <label style="display: block; margin-bottom: 8px; font-weight: 500; font-size: 13px; color: #475569;">Sélectionner un technicien</label>
+          <label style="display: block; margin-bottom: 8px; font-weight: 500; font-size: 13px; color: #475569;">Sélectionnez un technicien</label>
           <select [(ngModel)]="selectedTechnicianId" class="form-control" [disabled]="incident?.status !== 'NOUVEAU'">
-            <option [ngValue]="null" disabled>-- Choisir un technicien --</option>
+            <option [ngValue]="null" disabled>Choisissez un technicien…</option>
             <option *ngFor="let tech of technicians" [value]="tech.id">
               {{ tech.firstName }} {{ tech.lastName }}
             </option>
@@ -137,5 +137,5 @@
 
 <!-- État de chargement -->
 <div *ngIf="!incident" style="text-align: center; padding: 50px; color: #94a3b8;">
-  Chargement des détails de l'incident...
+  Chargement des détails de l’incident…
 </div>

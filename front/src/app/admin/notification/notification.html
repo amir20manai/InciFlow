@@ -11,7 +11,7 @@
       <!-- En-tête du panneau -->
       <div class="notif-panel-top">
         <h2 class="notif-panel-title">Notifications</h2>
-        <p class="notif-panel-subtitle">{{ unreadCount }} non lues sur {{ notifications.length }} au total</p>
+        <p class="notif-panel-subtitle">Notifications non lues : {{ unreadCount }} sur {{ notifications.length }}</p>
       </div>
 
       <!-- Barre de contrôles (Recherche + Filtre + Tout marquer) -->
@@ -19,7 +19,7 @@
         <!-- Champ de recherche -->
         <div class="search-box">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" placeholder="Rechercher une notification..." [(ngModel)]="searchQuery">
+          <input type="text" placeholder="Rechercher une notification…" [(ngModel)]="searchQuery">
         </div>
 
         <!-- Filtres à droite -->
@@ -30,8 +30,8 @@
           <!-- Sélecteur d'état (Tous / Non lu / Lu) -->
           <select class="select-btn" [(ngModel)]="activeTab">
             <option value="all">Tous les états</option>
-            <option value="unread">Non lu</option>
-            <option value="read">Lu</option>
+            <option value="unread">Non lues</option>
+            <option value="read">Lues</option>
           </select>
 
           <!-- Bouton "Tout marquer comme lu" -->
@@ -44,7 +44,7 @@
 
       <!-- État de chargement -->
       <div *ngIf="isLoading" style="text-align: center; padding: 40px; color: #64748b;">
-        Chargement des notifications...
+        Chargement des notifications…
       </div>
 
       <!-- Liste des notifications -->

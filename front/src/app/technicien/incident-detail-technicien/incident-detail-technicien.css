@@ -335,3 +335,15 @@
   background-color: rgba(14, 165, 233, 0.08);
   color: #0ea5e9;
 }
+
+@media (max-width: 600px) {
+  .reports-container { padding: 20px 14px; }
+  .panel-card { padding: 16px; }
+  .incident-meta-row { flex-wrap: wrap; gap: 8px; }
+  .main-heading { overflow-wrap: anywhere; }
+  .kv-row { align-items: flex-start; gap: 8px; }
+  .kv-label { flex: 0 1 40%; }
+  .kv-val { max-width: 60%; min-width: 0; overflow-wrap: anywhere; text-align: right; }
+  .action-buttons-row { flex-wrap: wrap; }
+  .btn-accept, .btn-reject { flex: 1 1 130px; }
+}

@@ -296,3 +296,18 @@
   color: #ffffff;
   border-color: #172a54;
 }
+
+@media (max-width: 600px) {
+  .notifications-page { padding: 20px 14px; }
+  .notifications-container { padding: 16px; }
+  .controls-bar { align-items: stretch; }
+  .search-box { flex-basis: 100%; min-width: 0; }
+  .filter-select-wrapper { flex: 1 1 140px; min-width: 0; }
+  .filter-select { width: 100%; min-width: 0; }
+  .mark-all-btn { flex: 1 1 100%; justify-content: center; }
+  .notification-item { align-items: flex-start; flex-wrap: wrap; gap: 12px; padding: 14px; }
+  .notif-left { flex: 1; min-width: 0; }
+  .notif-texts { min-width: 0; overflow-wrap: anywhere; }
+  .notif-right { width: 100%; }
+  .mark-read-btn { width: 100%; }
+}

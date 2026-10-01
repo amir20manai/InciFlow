@@ -156,19 +156,34 @@
   margin: 0 0 16px 0;
 }
 
+.incident-details-card {
+  border-top: 3px solid #2563eb;
+}
+
+.incident-details-card .section-sm-title {
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e8edf3;
+}
+
 .details-kv-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0;
 }
 
 .kv-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(110px, 0.8fr) minmax(0, 1.2fr);
   justify-content: space-between;
   align-items: center;
   font-size: 13px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #f1f5f9;
+  min-height: 46px;
+  padding: 9px 0;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.kv-row:last-child {
+  border-bottom: 0;
 }
 
 .kv-label {
@@ -179,6 +194,8 @@
 .kv-val {
   color: #0f172a;
   font-weight: 600;
+  text-align: right;
+  overflow-wrap: anywhere;
 }
 
 /* Technicien assigné (mise en valeur) */

@@ -1,0 +1,32 @@
+
+# Angular / Node.js
+node_modules/
+dist/
+.angular/
+.npm/
+
+# Java / Spring Boot
+target/
+*.class
+*.jar
+*.war
+
+# IDE
+.idea/
+.vscode/
+*.iml
+.settings/
+.project
+.classpath
+
+# Environment files
+.env
+.env.*
+
+# Logs
+*.log
+
+# Operating System
+.DS_Store
+Thumbs.db
+desktop.ini

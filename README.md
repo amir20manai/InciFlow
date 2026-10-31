@@ -94,6 +94,24 @@ http://localhost:4200
 
 InciFlow aims to provide an organized and efficient solution for handling workplace incidents, from initial reporting to final resolution.
 
+📸 Application Screenshots
+
+👨‍💼 Admin Dashboard
+
+<img width="1864" height="903" alt="Capture d&#39;écran 2026-09-24 155253" src="https://github.com/user-attachments/assets/77c29752-60bc-4104-bf0e-3ec436a22603" />
+
+👤 Employee Dashboard
+
+<img width="1882" height="904" alt="Capture d&#39;écran 2026-09-24 152702" src="https://github.com/user-attachments/assets/39a44d1e-022c-4733-b8d3-05863fd7f694" />
+
+🛠️ Technician Dashboard
+
+<img width="1889" height="882" alt="Capture d&#39;écran 2026-09-24 160429" src="https://github.com/user-attachments/assets/222a4cac-1231-4134-a40a-4eabc32dadea" />
+
+📝 Incident Reporting
+
+<img width="1887" height="899" alt="Capture d&#39;écran 2026-09-24 154140" src="https://github.com/user-attachments/assets/1144d8e6-2cd0-4371-bcab-26ff4908047e" />
+
 👨‍💻 Developer
 
 Amir Manai
